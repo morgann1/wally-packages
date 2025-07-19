@@ -1,0 +1,9 @@
+#!/bin/sh
+
+for dir in modules/*/; do
+  if [ -d "$dir" ]; then
+    cd "$dir" || continue
+    wally publish
+    cd - > /dev/null
+  fi
+done

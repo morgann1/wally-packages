@@ -1,0 +1,8 @@
+[package]
+name = "morgann1/disconnect-and-clear"
+description = "Utility function that disconnects all given RBXScriptConnection objects and then clears the table."
+version = "0.1.0"
+license = "MIT"
+authors = ["morgann1"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"

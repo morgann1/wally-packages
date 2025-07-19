@@ -1,0 +1,8 @@
+[package]
+name = "morgann1/safe-player-added"
+description = "Utility function that runs a callback for all current players and connects it for future ones."
+version = "0.1.0"
+license = "MIT"
+authors = ["morgann1"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"

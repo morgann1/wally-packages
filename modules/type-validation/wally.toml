@@ -1,0 +1,8 @@
+[package]
+name = "morgann1/type-validation"
+description = "Runtime type validation"
+version = "1.0.2"
+license = "MIT"
+authors = ["morgann1"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "server"
