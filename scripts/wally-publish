@@ -1,5 +1,4 @@
 #!/bin/sh
-
 for dir in modules/*/; do
   if [ -d "$dir" ]; then
     cd "$dir" || continue
