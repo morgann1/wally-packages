@@ -7,3 +7,4 @@
 | [safePlayerAdded](https://github.com/morgann1/wally-packages/tree/main/modules/safe-player-added) | `safePlayerAdded = "morgann1/safe-player-added@0.1.0"` | Utility function that runs a callback for all current players and connects it for future ones. |
 | [SimpleLogger](https://github.com/morgann1/wally-packages/tree/main/modules/simple-logger) | `SimpleLogger = "morgann1/simple-logger@0.1.0"` | Simple logging utility |
 | [TypeValidation](https://github.com/morgann1/wally-packages/tree/main/modules/type-validation) | `TypeValidation = "morgann1/type-validation@1.0.2"` | Runtime type validation | 
+| [CharacterPromiseUtils](https://github.com/morgann1/wally-packages/tree/main/modules/character-promise-utils) | `CharacterPromiseUtils = "morgann1/character-promise-utils@0.1.0"` | Wally port of Quenty's CharacterPromiseUtils.lua | .
