@@ -1,0 +1,11 @@
+[package]
+name = "morgann1/character-promise-utils"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+description = "Wally port of Quenty's CharacterPromiseUtils.lua"
+license = "MIT"
+
+[dependencies]
+Promise = "evaera/promise@4.0.0"
+disconnectAndClear = "morgann1/disconnect-and-clear@0.1.0"
