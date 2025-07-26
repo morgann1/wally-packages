@@ -1,6 +1,7 @@
 -- https://github.com/grilme99/roblox-project-template/blob/main/src/Common/Log.lua
 
-local __DEV__ = _G.__DEV__ == "true"
+local RunService = game:GetService("RunService")
+local __DEV__ = RunService:IsStudio()
 
 local Log = {}
 
