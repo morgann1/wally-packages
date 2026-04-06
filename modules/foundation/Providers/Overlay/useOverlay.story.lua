@@ -1,6 +1,6 @@
 local HttpService = game:GetService("HttpService")
 
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 local Dash = require(Packages.Dash)
 local React = require(Packages.React)

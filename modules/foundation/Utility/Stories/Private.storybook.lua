@@ -1,6 +1,6 @@
 --!nonstrict
 local Stories = script.Parent
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 
 -- local DocUtils = require(Packages.Dev.DocUtils)

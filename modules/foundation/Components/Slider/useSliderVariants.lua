@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local InputSize = require(Foundation.Enums.InputSize)
 type InputSize = InputSize.InputSize

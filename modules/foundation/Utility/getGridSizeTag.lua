@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Types = require(Foundation.Components.Types)
 
 type ResponsiveValue<T> = Types.ResponsiveValue<T>

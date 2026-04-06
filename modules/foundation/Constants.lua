@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local ColorMode = require(Foundation.Enums.ColorMode)
 local Types = require(Foundation.Components.Types)
 type ColorMode = ColorMode.ColorMode

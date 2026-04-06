@@ -1,4 +1,4 @@
-local FoundationRoot = script:FindFirstAncestor("Foundation")
+local FoundationRoot = script:FindFirstAncestor("Foundation") or script:FindFirstAncestor("foundation")
 local Foundation = require(FoundationRoot)
 local Components = FoundationRoot.Components:GetChildren()
 local Providers = FoundationRoot.Providers:GetChildren()

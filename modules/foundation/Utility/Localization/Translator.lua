@@ -1,5 +1,5 @@
 local Localization = script.Parent
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local Wrappers = require(Foundation.Utility.Wrappers)
 local LocalizationService = Wrappers.Services.LocalizationService

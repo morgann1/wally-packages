@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local Constants = require(Foundation.Constants)
 local DialogSize = require(Foundation.Enums.DialogSize)

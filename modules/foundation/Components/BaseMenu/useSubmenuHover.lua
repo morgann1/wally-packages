@@ -11,7 +11,7 @@
 	state updates and stale closure issues.
 ]]
 
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 
 local React = require(Packages.React)

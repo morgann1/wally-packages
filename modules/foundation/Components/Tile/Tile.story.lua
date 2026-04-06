@@ -9,7 +9,7 @@ local _, StudioService = pcall(function()
 	return game:GetService("StudioService")
 end)
 
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 
 local Players = require(Foundation.Utility.Wrappers).Services.Players

@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 local ControlState = require(Foundation.Enums.ControlState)
 local Dash = require(Packages.Dash)

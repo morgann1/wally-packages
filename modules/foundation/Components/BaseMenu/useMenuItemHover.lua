@@ -7,7 +7,7 @@
 	For leaf items (isSubmenu = false):    hover closes any open sibling submenu.
 	Disabled items are ignored entirely.
 ]]
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 
 local React = require(Packages.React)

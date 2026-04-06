@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local BadgeVariant = require(Foundation.Enums.BadgeVariant)
 type BadgeVariant = BadgeVariant.BadgeVariant

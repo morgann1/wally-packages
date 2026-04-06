@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local CoreGui = require(Foundation.Utility.Wrappers).Services.CoreGui
 
 local success, _ = pcall(function()

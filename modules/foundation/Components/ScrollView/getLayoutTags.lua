@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local StaticRules = require(Foundation.StyleSheet.Rules.staticRules)
 local Tokens = require(Foundation.Providers.Style.Tokens)

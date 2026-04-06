@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local ThumbnailType = require(Foundation.Enums.ThumbnailType)
 type ThumbnailType = ThumbnailType.ThumbnailType

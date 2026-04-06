@@ -2,7 +2,7 @@
 	A component for displaying a square ViewportFrame of a given 3D object.
 	Object should be of type Model and passed in as props.model
 ]]
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 
 local React = require(Packages.React)

@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local DialogContext = require(script.Parent.DialogContext)
 local createUseModalNavigation = require(Foundation.Utility.createUseModalNavigation)

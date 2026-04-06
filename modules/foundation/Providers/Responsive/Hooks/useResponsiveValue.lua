@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local Breakpoint = require(Foundation.Enums.Breakpoint)
 local ResponsiveContext = require(Foundation.Providers.Responsive.ResponsiveContext)

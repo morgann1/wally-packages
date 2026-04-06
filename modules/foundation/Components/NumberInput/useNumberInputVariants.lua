@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local NumberInputControlsVariant = require(Foundation.Enums.NumberInputControlsVariant)
 type NumberInputControlsVariant = NumberInputControlsVariant.NumberInputControlsVariant

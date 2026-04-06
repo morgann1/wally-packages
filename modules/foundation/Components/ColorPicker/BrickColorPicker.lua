@@ -7,7 +7,7 @@
 	Sized to fit within the 192px-wide ColorPicker content area per Figma spec.
 ]]
 
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 local React = require(Packages.React)
 

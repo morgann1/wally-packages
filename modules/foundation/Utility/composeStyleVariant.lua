@@ -1,6 +1,6 @@
 -- Implements merge of style variants.
 -- Close to https://cva.style/docs/getting-started/variants and https://www.tailwind-variants.org/docs/slots#slots-with-variants
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 local Dash = require(Packages.Dash)
 

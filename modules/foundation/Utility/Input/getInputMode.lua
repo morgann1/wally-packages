@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local InputMode = require(Foundation.Utility.Input.InputMode)
 type InputMode = InputMode.InputMode

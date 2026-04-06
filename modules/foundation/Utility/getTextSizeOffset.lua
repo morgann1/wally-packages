@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local TextService = require(Foundation.Utility.Wrappers).Services.TextService
 local noYield = require(Foundation.Utility.noYield)
 

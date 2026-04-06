@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local React = require(Foundation.Parent.React)
 
 local Theme = require(Foundation.Enums.Theme)

@@ -1,5 +1,5 @@
 local PreferencesContext = script.Parent
-local Foundation = PreferencesContext:FindFirstAncestor("Foundation")
+local Foundation = PreferencesContext:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 
 export type Preferences = {

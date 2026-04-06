@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local AccessoryType = require(Foundation.Enums.AccessoryType)
 type AccessoryType = AccessoryType.AccessoryType

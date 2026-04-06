@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local ElevationLayer = require(Foundation.Enums.ElevationLayer)
 type ElevationLayer = ElevationLayer.ElevationLayer

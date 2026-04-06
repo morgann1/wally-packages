@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local AlertSeverity = require(Foundation.Enums.AlertSeverity)
 type AlertSeverity = AlertSeverity.AlertSeverity

@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local Device = require(Foundation.Enums.Device)
 local StyleTagFormat = require(Foundation.Enums.StyleTagFormat)

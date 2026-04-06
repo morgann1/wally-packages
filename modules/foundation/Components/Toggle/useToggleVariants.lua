@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local Input = require(Foundation.Components.InternalInput)
 type InputVariantProps = Input.InputVariantProps

@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local BaseMenu = require(Foundation.Components.BaseMenu)
 local Types = require(Foundation.Components.Types)

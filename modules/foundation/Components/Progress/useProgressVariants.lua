@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local ProgressSize = require(Foundation.Enums.ProgressSize)
 type ProgressSize = ProgressSize.ProgressSize

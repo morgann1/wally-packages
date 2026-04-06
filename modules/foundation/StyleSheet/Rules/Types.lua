@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Tokens = require(Foundation.Providers.Style.Tokens)
 
 type Tokens = Tokens.Tokens

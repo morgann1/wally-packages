@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Constants = require(Foundation.Constants)
 local Types = require(Foundation.Components.Types)
 type ColorStyleValue = Types.ColorStyleValue

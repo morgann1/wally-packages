@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local Flags = require(Foundation.Utility.Flags)
 local LocalizationService = require(Foundation.Utility.Wrappers).Services.LocalizationService

@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 
 local Logger = require(Foundation.Utility.Logger)
 local useTokens = require(Foundation.Providers.Style.useTokens)

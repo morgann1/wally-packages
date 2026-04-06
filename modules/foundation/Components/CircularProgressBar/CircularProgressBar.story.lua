@@ -1,4 +1,4 @@
-local Foundation = script:FindFirstAncestor("Foundation")
+local Foundation = script:FindFirstAncestor("foundation")
 local Packages = Foundation.Parent
 local CircularProgressBar = require(Foundation.Components.CircularProgressBar)
 local React = require(Packages.React)
