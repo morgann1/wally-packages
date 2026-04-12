@@ -12,3 +12,4 @@ packages/*/Packages
 *.rbxl
 *.rbxl.lock
 sourcemap.json
+.claude
