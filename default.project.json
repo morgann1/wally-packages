@@ -1,5 +1,5 @@
 {
-    "name": "packages",
+    "name": "wally-packages",
     "tree": {
         "$className": "DataModel",
         "ReplicatedStorage": {
