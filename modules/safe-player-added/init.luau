@@ -1,6 +1,7 @@
+--!strict
 local Players = game:GetService("Players")
 
-local function safePlayerAdded(callback: (Player) -> ())
+local function safePlayerAdded(callback: (Player) -> ()): RBXScriptConnection
 	for _, player in Players:GetPlayers() do
 		task.spawn(callback, player)
 	end

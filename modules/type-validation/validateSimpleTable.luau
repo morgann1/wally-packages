@@ -1,16 +1,15 @@
-local function validateSimpleTable(tbl: { [any]: any }, keyType: string, validator: (any) -> boolean): boolean
-	-- Make sure this is actually a table
-	if typeof(tbl) ~= "table" then
+--!strict
+local function validateSimpleTable(value: unknown, keyType: string, validator: (unknown) -> boolean): boolean
+	if typeof(value) ~= "table" then
 		return false
 	end
 
-	-- Validate all keys and values
-	for key, value in tbl do
+	for key, item in value :: { [unknown]: unknown } do
 		if typeof(key) ~= keyType then
 			return false
 		end
 
-		if not validator(value) then
+		if not validator(item) then
 			return false
 		end
 	end

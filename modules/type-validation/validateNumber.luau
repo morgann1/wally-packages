@@ -1,11 +1,11 @@
-local function validateNumber(number: number): boolean
-	-- Make sure this is actually a number
-	if typeof(number) ~= "number" then
+--!strict
+local function validateNumber(value: unknown): boolean
+	if typeof(value) ~= "number" then
 		return false
 	end
 
-	-- Make sure the number is not NaN
-	if number ~= number then
+	-- NaN check
+	if value ~= value then
 		return false
 	end
 

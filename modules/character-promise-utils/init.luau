@@ -1,10 +1,11 @@
+--!strict
 --[=[
 	Utility for Roblox character objects that involve promises.
 	@class CharacterPromiseUtils
 ]=]
 
-local Promise = require(script.Parent.Promise)
 local disconnectAndClear = require(script.Parent.disconnectAndClear)
+local Promise = require(script.Parent.Promise)
 
 local CharacterPromiseUtils = {}
 
@@ -15,12 +16,10 @@ local CharacterPromiseUtils = {}
 	@return Promise<Model>
 ]=]
 function CharacterPromiseUtils.promiseCharacter(player: Player)
-	assert(typeof(player) == "Instance", "Bad player")
+	local connections: { RBXScriptConnection } = {}
 
-	local connections = {}
-
-	local promise = Promise.new(function(resolve, reject)
-		if player.Character then
+	local promise = Promise.new(function(resolve, _reject)
+		if player.Character ~= nil then
 			resolve(player.Character)
 			return
 		end
@@ -29,7 +28,6 @@ function CharacterPromiseUtils.promiseCharacter(player: Player)
 			connections,
 			player.CharacterAdded:Connect(function(character)
 				resolve(character)
-				return
 			end)
 		)
 	end)

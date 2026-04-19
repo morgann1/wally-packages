@@ -1,16 +1,16 @@
+--!strict
 local validateVector3 = require(script.Parent.validateVector3)
 
-local function validateCFrame(cframe: CFrame): boolean
-	-- Make sure this is actually a CFrame
-	if typeof(cframe) ~= "CFrame" then
+local function validateCFrame(value: unknown): boolean
+	if typeof(value) ~= "CFrame" then
 		return false
 	end
 
-	if not validateVector3(cframe.Position) then
+	if not validateVector3(value.Position) then
 		return false
 	end
 
-	if not validateVector3(cframe.LookVector) then
+	if not validateVector3(value.LookVector) then
 		return false
 	end
 

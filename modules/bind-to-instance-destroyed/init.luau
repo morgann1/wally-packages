@@ -1,3 +1,4 @@
+--!strict
 local Players = game:GetService("Players")
 
 local player = Players.LocalPlayer
@@ -7,7 +8,7 @@ local destructionHandlerTemplate = script.DestructionHandler
 -- disconnected up before being executed.
 -- To avoid this, we'll use a hacky solution and clone a listener script into PlayerScripts.
 -- This script will continue running after the instance is destroyed and allow us to run e.g. cleanup code when it gets destroyed.
-local function bindToInstanceDestroyed(instance: Instance, callback: () -> ())
+local function bindToInstanceDestroyed(instance: Instance, callback: () -> ()): ()
 	local destructionHandler = destructionHandlerTemplate:Clone()
 	destructionHandler.Parent = player.PlayerScripts
 

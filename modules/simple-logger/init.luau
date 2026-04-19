@@ -1,20 +1,24 @@
--- https://github.com/grilme99/roblox-project-template/blob/main/src/Common/Log.lua
-
+--!strict
 local RunService = game:GetService("RunService")
 local __DEV__ = RunService:IsStudio()
 
-local Log = {}
+type LogFn = (...any) -> ()
 
-local function createLogFunction(levelName: string, logFn: (...string) -> (), printInDev: boolean)
-	return function(...: any)
+local Log: {
+	debug: LogFn,
+	info: LogFn,
+	warn: LogFn,
+} = {} :: any
+
+local function createLogFunction(levelName: string, logFn: (...string) -> (), printInDev: boolean): LogFn
+	return function(...)
 		if printInDev and not __DEV__ then
 			return
 		end
 
-		-- Get the full path of the module (Path.To.Module), and then take the
-		-- final segment as the name (`Module`).
+		-- Take the final segment of the module path as the display name.
 		local modulePath = debug.info(2, "s")
-		local moduleName = modulePath:match("[^.]+$")
+		local moduleName = modulePath:match("[^.]+$") or "unknown"
 
 		logFn(`[{moduleName}] {levelName}:`, ...)
 	end

@@ -1,3 +1,4 @@
+--!strict
 local validateCFrame = require(script.validateCFrame)
 local validateInstance = require(script.validateInstance)
 local validateNumber = require(script.validateNumber)

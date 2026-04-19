@@ -1,11 +1,11 @@
-local function validateVector3(vector3: Vector3): boolean
-	-- Make sure this is actually a Vector3
-	if typeof(vector3) ~= "Vector3" then
+--!strict
+local function validateVector3(value: unknown): boolean
+	if typeof(value) ~= "Vector3" then
 		return false
 	end
 
-	-- Make sure the vector3 does not contain any NaN components
-	if vector3 ~= vector3 then
+	-- NaN check (Vector3 == itself is false when any component is NaN)
+	if value ~= value then
 		return false
 	end
 

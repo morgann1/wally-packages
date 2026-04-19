@@ -1,5 +1,6 @@
+--!strict
 --[[
-	Ensures the instance is not an 'imposter' and is of the expected class.
+	Ensures the value is not an 'imposter' and is of the expected class.
 
 	In cases where the server is expecting an instance, exploiters can pass a table with keys
 	that mimic the instance's properties but set to whatever they want.
@@ -15,12 +16,12 @@
 	checking it is a valid instance first.
 ]]
 
-local function validateInstance(instance: Instance, expectedClass: string): boolean
-	if typeof(instance) ~= "Instance" then
+local function validateInstance(value: unknown, expectedClass: string): boolean
+	if typeof(value) ~= "Instance" then
 		return false
 	end
 
-	return instance:IsA(expectedClass)
+	return value:IsA(expectedClass)
 end
 
 return validateInstance

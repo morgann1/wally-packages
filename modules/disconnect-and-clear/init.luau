@@ -1,4 +1,5 @@
-local function disconnectAndClear(connections: { RBXScriptConnection })
+--!strict
+local function disconnectAndClear(connections: { RBXScriptConnection }): ()
 	for _, connection in connections do
 		connection:Disconnect()
 	end
