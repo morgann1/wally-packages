@@ -6,6 +6,7 @@
 | [CharacterPromiseUtils](https://github.com/morgann1/wally-packages/tree/main/modules/character-promise-utils) | `CharacterPromiseUtils = "morgann1/character-promise-utils@0.1.0"` | Wally port of Quenty's CharacterPromiseUtils.lua |
 | [Cryo](https://github.com/morgann1/wally-packages/tree/main/modules/cryo) | `Cryo = "morgann1/cryo@1.1.0"` | A collection of methods for working with immutable data in a functional way. |
 | [disconnectAndClear](https://github.com/morgann1/wally-packages/tree/main/modules/disconnect-and-clear) | `disconnectAndClear = "morgann1/disconnect-and-clear@0.1.0"` | Utility function that disconnects all given RBXScriptConnection objects and then clears the table. |
+| [iasWrapper](https://github.com/morgann1/wally-packages/tree/main/modules/ias-wrapper) | `iasWrapper = "morgann1/ias-wrapper@0.1.0"` | Wrapper over Roblox's InputAction/InputContext/InputBinding API. |
 | [safePlayerAdded](https://github.com/morgann1/wally-packages/tree/main/modules/safe-player-added) | `safePlayerAdded = "morgann1/safe-player-added@0.1.0"` | Utility function that runs a callback for all current players and connects it for future ones. |
 | [SimpleLogger](https://github.com/morgann1/wally-packages/tree/main/modules/simple-logger) | `SimpleLogger = "morgann1/simple-logger@0.1.1"` | Simple logging utility |
 | [TypeValidation](https://github.com/morgann1/wally-packages/tree/main/modules/type-validation) | `TypeValidation = "morgann1/type-validation@1.0.2"` | Runtime type validation |
