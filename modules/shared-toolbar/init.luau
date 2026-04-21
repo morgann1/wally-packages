@@ -2,11 +2,11 @@
 local HttpService = game:GetService("HttpService")
 local StudioService = game:GetService("StudioService")
 
-local DEFAULT_PROTOCOL_VERSION = 1
--- Short quiet period after boot so peers can exchange hellos before any peer
--- creates a toolbar. Prevents a flicker where we build, then tear down on
--- learning a lower-sessioned peer exists.
-local BOOT_SETTLE_SECONDS = 0.5
+local DEFAULT_PROTOCOL_VERSION = 2
+-- Short quiet period after boot so we can hear from existing peers before
+-- deciding whether to claim leadership. Prevents a new plugin from briefly
+-- building its own toolbar next to an already-running one during reinstalls.
+local BOOT_SETTLE_SECONDS = 1
 
 export type ButtonSpec = {
 	id: string,
@@ -97,7 +97,12 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 		table.insert(ownSerialButtons, serializeButton(spec))
 	end
 
-	local peers: { [string]: PeerRecord? } = {}
+	local peers: { [string]: PeerRecord } = {}
+	-- Sticky leader: once a peer is known to hold the toolbar, other peers
+	-- defer to them regardless of sessionId ordering. This is what prevents
+	-- the duplicate-toolbar symptom during local reinstalls — a new peer
+	-- asks "who is leader?" and defers, rather than racing to claim it.
+	local currentLeaderSessionId: string? = nil
 
 	local currentToolbar: PluginToolbar? = nil
 	local currentToolbarTitle: string? = nil
@@ -120,24 +125,12 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 		local winningPeerId = selfPeerId
 		local winningTitle = toolbarTitle
 		for _, peer in peers do
-			if peer == nil then
-				continue
-			end
 			if peer.peerId < winningPeerId then
 				winningPeerId = peer.peerId
 				winningTitle = peer.toolbarTitle
 			end
 		end
 		return winningTitle
-	end
-
-	local function isLeader(): boolean
-		for otherSessionId in peers do
-			if otherSessionId < sessionId then
-				return false
-			end
-		end
-		return true
 	end
 
 	local function tearDownToolbar()
@@ -173,18 +166,11 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 		})
 	end
 
-	local function createButtonOnToolbar(
-		peerSessionId: string,
-		serialized: SerializableButton
-	): PluginToolbarButton
+	local function createButtonOnToolbar(peerSessionId: string, serialized: SerializableButton): PluginToolbarButton
 		assert(currentToolbar ~= nil, "no toolbar to create button on")
 		local id = hybridId(peerSessionId, serialized.id)
-		local button = currentToolbar:CreateButton(
-			id,
-			serialized.tooltip or "",
-			serialized.iconId or "",
-			serialized.title
-		)
+		local button =
+			currentToolbar:CreateButton(id, serialized.tooltip or "", serialized.iconId or "", serialized.title)
 		if serialized.clickableWhenViewportHidden ~= nil then
 			button.ClickableWhenViewportHidden = serialized.clickableWhenViewportHidden
 		end
@@ -203,17 +189,13 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 		currentToolbar = plugin:CreateToolbar(resolvedTitle)
 		currentToolbarTitle = resolvedTitle
 
-		-- Deterministic ordering: own buttons first, then peers sorted by peerId.
 		for _, serialized in ownSerialButtons do
-			currentButtons[hybridId(sessionId, serialized.id)] =
-				createButtonOnToolbar(sessionId, serialized)
+			currentButtons[hybridId(sessionId, serialized.id)] = createButtonOnToolbar(sessionId, serialized)
 		end
 
 		local sortedPeers: { PeerRecord } = {}
 		for _, peer in peers do
-			if peer ~= nil then
-				table.insert(sortedPeers, peer)
-			end
+			table.insert(sortedPeers, peer)
 		end
 		table.sort(sortedPeers, function(a, b)
 			if a.peerId ~= b.peerId then
@@ -229,22 +211,38 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 		end
 	end
 
-	local function reconcileLeadership()
+	local function claimLeadership()
+		currentLeaderSessionId = sessionId
+		fire({ kind = "leaderClaim", sessionId = sessionId })
+		if currentToolbar == nil then
+			buildToolbar()
+		elseif currentToolbarTitle ~= resolveToolbarTitle() then
+			tearDownToolbar()
+			buildToolbar()
+		end
+	end
+
+	local function elect()
 		if destroyed or not bootSettled then
 			return
 		end
-		local shouldLead = isLeader()
-		if shouldLead then
-			if currentToolbar == nil then
-				buildToolbar()
-			elseif currentToolbarTitle ~= resolveToolbarTitle() then
-				-- A peer with a lower peerId joined/left and changed the winning
-				-- title; rebuild so the toolbar reflects the new name.
-				tearDownToolbar()
+		if currentLeaderSessionId ~= nil then
+			-- Someone already leads. If it's us, make sure the toolbar is up.
+			if currentLeaderSessionId == sessionId and currentToolbar == nil then
 				buildToolbar()
 			end
-		elseif currentToolbar ~= nil then
-			tearDownToolbar()
+			return
+		end
+		-- No known leader. Lowest sessionId among self + peers wins. If every
+		-- peer runs this deterministically, exactly one claims leadership.
+		local lowestSessionId = sessionId
+		for peerSessionId in peers do
+			if peerSessionId < lowestSessionId then
+				lowestSessionId = peerSessionId
+			end
+		end
+		if lowestSessionId == sessionId then
+			claimLeadership()
 		end
 	end
 
@@ -261,14 +259,17 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 		end
 		local hadPeer = peers[record.sessionId] ~= nil
 		peers[record.sessionId] = record
-		if not hadPeer and currentToolbar ~= nil then
-			-- Live-add the new peer's buttons to an existing toolbar.
+		if not hadPeer and currentLeaderSessionId == sessionId and currentToolbar ~= nil then
+			-- We lead; mirror the new peer's buttons onto our toolbar.
 			for _, serialized in record.buttons do
 				currentButtons[hybridId(record.sessionId, serialized.id)] =
 					createButtonOnToolbar(record.sessionId, serialized)
 			end
+			if currentToolbarTitle ~= resolveToolbarTitle() then
+				tearDownToolbar()
+				buildToolbar()
+			end
 		end
-		reconcileLeadership()
 	end
 
 	local function removePeer(peerSessionId: string)
@@ -276,7 +277,7 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 			return
 		end
 		peers[peerSessionId] = nil
-		if currentToolbar ~= nil then
+		if currentLeaderSessionId == sessionId and currentToolbar ~= nil then
 			local prefix = peerSessionId .. "/"
 			local prefixLen = #prefix
 			local toRemove: { string } = {}
@@ -292,8 +293,16 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 				end
 				currentButtons[id] = nil
 			end
+			if currentToolbarTitle ~= resolveToolbarTitle() then
+				tearDownToolbar()
+				buildToolbar()
+			end
 		end
-		reconcileLeadership()
+		if peerSessionId == currentLeaderSessionId then
+			-- Leader left; run a fresh election.
+			currentLeaderSessionId = nil
+			elect()
+		end
 	end
 
 	fire = function(msg)
@@ -324,6 +333,7 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 				protocolVersion = protocolVersion,
 				toolbarTitle = toolbarTitle,
 				buttons = ownSerialButtons,
+				leaderSessionId = currentLeaderSessionId,
 			})
 		elseif kind == "welcome" then
 			if msg.toSessionId ~= sessionId then
@@ -336,6 +346,22 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 				toolbarTitle = msg.toolbarTitle,
 				buttons = msg.buttons,
 			})
+			-- Adopt the sender's view of who leads, if we don't already know.
+			-- This is how a newly-booted peer discovers an existing toolbar
+			-- owner without waiting for the next election cycle.
+			if currentLeaderSessionId == nil and typeof(msg.leaderSessionId) == "string" then
+				currentLeaderSessionId = msg.leaderSessionId
+			end
+		elseif kind == "leaderClaim" then
+			if msg.sessionId == sessionId then
+				return
+			end
+			local previousLeader = currentLeaderSessionId
+			currentLeaderSessionId = msg.sessionId
+			if previousLeader == sessionId and currentToolbar ~= nil then
+				-- We thought we were leader; yield to the claimant.
+				tearDownToolbar()
+			end
 		elseif kind == "goodbye" then
 			if msg.sessionId == sessionId then
 				return
@@ -376,10 +402,10 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 			return
 		end
 		bootSettled = true
-		reconcileLeadership()
+		elect()
 	end)
 
-	plugin.Unloading:Connect(function()
+	local function teardownEverything()
 		if destroyed then
 			return
 		end
@@ -387,7 +413,9 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 		fire({ kind = "goodbye", sessionId = sessionId })
 		conn:Disconnect()
 		tearDownToolbar()
-	end)
+	end
+
+	plugin.Unloading:Connect(teardownEverything)
 
 	local handle = {} :: SharedToolbarHandle
 
@@ -426,13 +454,7 @@ function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 	end
 
 	function handle:destroy()
-		if destroyed then
-			return
-		end
-		destroyed = true
-		fire({ kind = "goodbye", sessionId = sessionId })
-		conn:Disconnect()
-		tearDownToolbar()
+		teardownEverything()
 	end
 
 	return handle
