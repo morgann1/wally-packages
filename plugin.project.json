@@ -1,0 +1,12 @@
+{
+    "name": "wally-plugin-packages",
+    "tree": {
+        "$className": "DataModel",
+        "ReplicatedStorage": {
+            "$className": "ReplicatedStorage",
+            "Modules": {
+                "$path": "plugin"
+            }
+        }
+    }
+}
