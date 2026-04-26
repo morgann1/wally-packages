@@ -1,12 +1,60 @@
 {
-    "name": "wally-packages",
-    "tree": {
-        "$className": "DataModel",
-        "ReplicatedStorage": {
-            "$className": "ReplicatedStorage",
-            "Modules": {
-                "$path": "modules"
-            }
+  "name": "wally-packages",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Modules": {
+        "$className": "Folder",
+        "bind-to-instance-destroyed": {
+          "$path": "modules/bind-to-instance-destroyed"
+        },
+        "character-promise-utils": {
+          "$path": "modules/character-promise-utils",
+          "disconnectAndClear": {
+            "$path": "modules/disconnect-and-clear"
+          }
+        },
+        "cryo": {
+          "$path": "modules/cryo"
+        },
+        "disconnect-and-clear": {
+          "$path": "modules/disconnect-and-clear"
+        },
+        "ias-wrapper": {
+          "$path": "modules/ias-wrapper"
+        },
+        "safe-player-added": {
+          "$path": "modules/safe-player-added"
+        },
+        "shared-toolbar": {
+          "$path": "modules/shared-toolbar"
+        },
+        "simple-logger": {
+          "$path": "modules/simple-logger"
+        },
+        "type-validation": {
+          "$path": "modules/type-validation"
+        },
+        "zzlib": {
+          "$path": "modules/zzlib"
         }
+      },
+      "PluginLib": {
+        "$className": "Folder",
+        "elttob-log": {
+          "$path": "plugin/elttob-log",
+          "IsLocalDev": {
+            "$path": "plugin/is-local-dev"
+          }
+        },
+        "is-local-dev": {
+          "$path": "plugin/is-local-dev"
+        },
+        "maybe": {
+          "$path": "plugin/maybe"
+        }
+      }
     }
+  }
 }
