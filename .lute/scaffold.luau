@@ -66,7 +66,7 @@ local year = tostring(os.date("%Y"))
 local pascalName = slug:gsub("%-(%w)", string.upper):gsub("^%w", string.upper)
 
 local wallyToml = "[package]\n"
-	.. `name = "{author}/{slug}"\n`
+	.. `name = "{DEFAULT_AUTHOR}/{slug}"\n`
 	.. `description = "TODO: describe {slug}"\n`
 	.. 'version = "0.1.0"\n'
 	.. 'license = "MIT"\n'
@@ -99,7 +99,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
-local license = licenseBody:gsub("__YEAR__", year):gsub("__AUTHOR__", author)
+local license = licenseBody:gsub("__YEAR__", year):gsub("__AUTHOR__", DEFAULT_AUTHOR)
 
 fs.createDirectory(packageDir, { makeParents = true })
 fs.writeStringToFile(`{packageDir}/wally.toml`, wallyToml)
