@@ -1,0 +1,8 @@
+[package]
+name = "Elttob/sensation-sounds"
+description = "TODO: describe sensation-sounds"
+version = "0.1.0"
+license = "MIT"
+authors = ["Elttob", "morgann1"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
