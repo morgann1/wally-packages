@@ -1,0 +1,9 @@
+[package]
+name = "morgann1/plugin-is-local-dev"
+description = "https://github.com/Elttob/LibStudioElttob/tree/main/LibStudioElttob/IsLocalDev"
+version = "0.1.1"
+license = "MIT"
+authors = ["Elttob", "morgann1"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/Elttob/LibStudioElttob"
