@@ -70,6 +70,15 @@
             }, 
             "$className": "ReplicatedStorage", 
             "PluginLib": {
+                "icon-ramp": {
+                    "icon-ramp": {
+                        "$path": "plugin/icon-ramp"
+                    }, 
+                    "$className": "Folder", 
+                    "ty": {
+                        "$path": "plugin/ty"
+                    }
+                }, 
                 "is-local-dev": {
                     "is-local-dev": {
                         "$path": "plugin/is-local-dev"
