@@ -234,6 +234,12 @@ local function protocol<StaticInfo>(
 			if toPeer == selfPeer then
 				handlers.events[id](selfPeer, args)
 			elseif toPeer == "everyone" or waitUntilJoined(toPeer, `event {id}`) then
+				if toPeer ~= "everyone" and otherPeers[toPeer] == nil then
+					logger.info(
+						`{selfPeer} - Skipping {protocolDef.id} event {id} to {toPeer}: peer left before send`
+					)
+					return
+				end
 				local ok, result = pcall(function()
 					local def = protocolDef.events[id]
 					assert(def ~= nil, `No {id} event defined for protocol {protocolDef.id}`)
@@ -265,6 +271,11 @@ local function protocol<StaticInfo>(
 		assert(def ~= nil, `No {id} request defined for protocol {protocolDef.id}`)
 		assert(def.argumentType:Matches(args), `Arguments of {id} request don't match the type definition`)
 		if not waitUntilJoined(toPeer, `request {id}`) then
+			return { ok = false, because = "timeout" }
+		end
+		if otherPeers[toPeer] == nil then
+			-- Peer disappeared between waitUntilJoined and the send. The cast below
+			-- would otherwise throw via KnownPeer's predicate.
 			return { ok = false, because = "timeout" }
 		end
 		local pushReturn, pullReturn: () -> Types.RequestResult<any> = PushPull.yield()
