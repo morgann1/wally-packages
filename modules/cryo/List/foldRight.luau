@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function foldRight
+
 	Performs a right-fold of the list with the given initial value and callback.
 ]=]
 local function foldRight<T, A>(list: { T }, callback: (A, T, number) -> A, initialValue: A): A

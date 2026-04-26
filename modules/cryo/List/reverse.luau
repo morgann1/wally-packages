@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function reverse
+
 	Returns a new list with the reversed order of the given list.
 ]=]
 local function reverse<T>(list: { T }): { T }

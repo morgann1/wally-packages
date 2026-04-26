@@ -1,0 +1,31 @@
+gitRepoUrl = "https://github.com/morgann1/wally-packages"
+gitSourceBranch = "main"
+
+[[classOrder]]
+section = "Modules"
+classes = [
+    "bindToInstanceDestroyed",
+    "CharacterPromiseUtils",
+    "disconnectAndClear",
+    "input",
+    "safePlayerAdded",
+    "SharedToolbar",
+    "SimpleLogger",
+    "TypeValidation",
+    "zzlib",
+]
+
+[[classOrder]]
+section = "Cryo"
+classes = ["Cryo", "Dictionary", "List"]
+
+[[classOrder]]
+section = "Plugin"
+classes = ["IsLocalDev", "ElttobLog"]
+
+[home]
+enabled = true
+includeReadme = false
+
+[docusaurus]
+tagline = "A collection of Roblox Luau modules for both plugin and game development."

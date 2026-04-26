@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function find
+
 	Returns the index of the first value found or nil if not found.
 ]=]
 local function find<T>(list: { T }, value: T): number?

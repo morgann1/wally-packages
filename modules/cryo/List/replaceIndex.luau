@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function replaceIndex
+
 	Returns a new list with the new value replaced at the given index.
 ]=]
 local function replaceIndex<T>(list: { T }, index: number, value: T): { T }

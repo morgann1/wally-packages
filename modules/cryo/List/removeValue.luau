@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function removeValue
+
 	Creates a new list that has no occurrences of the given value.
 ]=]
 local function removeValue<T>(list: { T }, value: T): { T }

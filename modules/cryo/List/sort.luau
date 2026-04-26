@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function sort
+
 	Returns a new list, ordered with the given sort callback.
 	If no callback is given, the default table.sort will be used.
 ]=]

@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function removeIndex
+
 	Remove the element at the given index.
 ]=]
 local function removeIndex<T>(list: { T }, index: number): { T }

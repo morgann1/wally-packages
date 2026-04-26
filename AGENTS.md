@@ -13,5 +13,5 @@
 
 ## Style guides
 
-- [docs/process/luau-style.md](docs/process/luau-style.md) — Luau (Roblox plugin).
-- [docs/process/react-patterns.md](docs/process/react-patterns.md) — React (Roblox plugin).
+- [llm-docs/process/luau-style.md](llm-docs/process/luau-style.md) — Luau (Roblox plugin).
+- [llm-docs/process/react-patterns.md](llm-docs/process/react-patterns.md) — React (Roblox plugin).

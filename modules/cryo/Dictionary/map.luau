@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within Dictionary
+	@function map
+
 	Returns a new Dictionary with keys and values passed through a mapper function.
 
 	Returning a second value in the mapper function will reassign the key.

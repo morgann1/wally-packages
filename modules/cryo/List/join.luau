@@ -2,6 +2,9 @@
 local None = require(script.Parent.Parent.None)
 
 --[=[
+	@within List
+	@function join
+
 	Joins any number of lists together into a new list.
 	Entries equal to `Cryo.None` are skipped.
 ]=]

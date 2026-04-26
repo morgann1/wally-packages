@@ -2,6 +2,9 @@
 local None = require(script.Parent.Parent.None)
 
 --[=[
+	@within Dictionary
+	@function join
+
 	Combine a number of dictionary-like tables into a new table.
 
 	Keys specified in later tables will overwrite keys in previous tables.

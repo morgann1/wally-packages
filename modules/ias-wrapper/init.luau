@@ -1,4 +1,21 @@
 --!strict
+--[=[
+	@class input
+
+	Lightweight wrapper over Roblox's `InputAction` / `InputContext` /
+	`InputBinding` instances. Lets you declare input contexts as nested
+	tables of actions, register them once, then enable or disable whole
+	contexts on demand.
+
+	The model is: **bindings** (key combinations) live on **actions**
+	(named, typed inputs like "jump" or "move"), which live on
+	**contexts** (collections of actions enabled together, e.g. "gameplay"
+	vs "menu"). A context is enabled when its enable count is positive;
+	[input.enable] / [input.disable] increment and decrement that count.
+
+	See:
+	[alicesaidhi/383b04a42cad53acb27e017f50fd8086](https://gist.github.com/alicesaidhi/383b04a42cad53acb27e017f50fd8086).
+]=]
 
 local UserInputService = game:GetService("UserInputService")
 --[[
@@ -224,6 +241,15 @@ local function reconcile_context(name: string, ctx: Context, parent: Context?)
 	update_enabled(ctx)
 end
 
+--[=[
+	@within input
+	Increments the enable count of a context by `n` (default 1). The
+	context's underlying `InputContext.Enabled` becomes true once the
+	count is positive.
+
+	@param v Context
+	@param n number? -- Increment amount; defaults to 1.
+]=]
 function input.enable(v: Context, n: number?)
 	local count = map_ctx_enabled[v]
 	if count == nil then
@@ -234,6 +260,15 @@ function input.enable(v: Context, n: number?)
 	update_enabled(v)
 end
 
+--[=[
+	@within input
+	Decrements the enable count of a context by `n` (default 1). The
+	underlying `InputContext.Enabled` becomes false once the count drops
+	to zero or below.
+
+	@param v Context
+	@param n number? -- Decrement amount; defaults to 1.
+]=]
 function input.disable(v: Context, n: number?)
 	local count = map_ctx_enabled[v]
 	if count == nil then
@@ -244,11 +279,36 @@ function input.disable(v: Context, n: number?)
 	update_enabled(v)
 end
 
+--[=[
+	@within input
+	Reconciles a context (and any nested contexts/actions it contains)
+	into actual `InputContext` instances. Returns the same table you
+	passed in for chaining/storing.
+
+	@param name string -- Name applied to the underlying `InputContext`.
+	@param v Context
+	@return Context
+]=]
 function input.context(name: string, v: Context): Context
 	reconcile_context(name, v)
 	return v
 end
 
+--[=[
+	@within input
+	@function action
+
+	Reconciles an action descriptor into an `InputAction` instance and
+	returns it augmented with the `ActionFunctions` API (`is_pressed`,
+	`is_released`, `is_changed`, `get_state`, plus `pressed`, `released`,
+	and `state_changed` signals).
+
+	The return type is narrowed by the `type` field on the descriptor:
+	`"bool"` → `ActionBool`, `"1d"` → `Action1D`, etc.
+
+	@param v Action -- An action descriptor with a `type` discriminator.
+	@return ActionTypes
+]=]
 input.action = function(v: any)
 	reconcile_action(v, nil)
 
@@ -262,10 +322,24 @@ end :: (
 	& ((v: Action<"viewport">) -> ActionViewport)
 )
 
+--[=[
+	@within input
+	Identity helper that returns its argument typed as a [Binding]. Useful
+	for declaring bindings inline with type inference.
+
+	@param v Binding
+	@return Binding
+]=]
 function input.binding(v: Binding): Binding
 	return v
 end
 
+--[=[
+	@within input
+	Clears the per-frame transient state (`is_pressed`, `is_released`,
+	`is_changed` flags) for every action. Call this once per frame before
+	polling so each press/release/state-change is observed exactly once.
+]=]
 function input.clear_state()
 	table.clear(pressed)
 	table.clear(released)
@@ -290,7 +364,17 @@ local map_input_type = {
 	[Enum.UserInputType.Touch] = Enum.KeyCode.Touch,
 }
 
---- yields, captures the next input and returns some data
+--[=[
+	@within input
+	@yields
+
+	Yields until the user produces input, then returns a table containing
+	the primary `KeyCode` along with up to two modifier keys held during
+	the press. Mouse buttons and touch are translated to their `KeyCode`
+	equivalents.
+
+	@return { bind: Enum.KeyCode, modifier1: Enum.KeyCode, modifier2: Enum.KeyCode }
+]=]
 function input.capture_input(): { bind: Enum.KeyCode, modifier1: Enum.KeyCode, modifier2: Enum.KeyCode }
 	local captured: { InputObject } = {}
 

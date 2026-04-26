@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within Dictionary
+	@function omit
+
 	Returns a Dictionary which excludes the given `keys`.
 ]=]
 

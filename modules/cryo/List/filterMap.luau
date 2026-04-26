@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function filterMap
+
 	Create a copy of a list doing a combination filter and map.
 
 	If callback returns nil for any item, it is considered filtered from the

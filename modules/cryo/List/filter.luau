@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function filter
+
 	Create a copy of a list with only values for which `callback` returns true.
 	Calls the callback with (value, index).
 ]=]

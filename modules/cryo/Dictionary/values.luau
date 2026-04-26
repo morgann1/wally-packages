@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within Dictionary
+	@function values
+
 	Returns a list of the values of the given dictionary.
 ]=]
 local function values<K, V>(dictionary: { [K]: V }): { V }

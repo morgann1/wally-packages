@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function removeRange
+
 	Remove the range from the list starting from the index.
 ]=]
 local function removeRange<T>(list: { T }, startIndex: number, endIndex: number): { T }

@@ -7,6 +7,14 @@
 -- To Public License, Version 2, as published by Sam Hocevar. See
 -- the COPYING file or http://www.wtfpl.net/ for more details.
 
+--[=[
+	@class zzlib
+
+	Pure-Lua zlib/gzip/zip decompression, ported from
+	[zzlib](https://github.com/zerkman/zzlib). Inputs are byte strings;
+	outputs are decompressed byte strings.
+]=]
+
 local infl = require(script.inflatebit32)
 type BitStream = infl.BitStream
 
@@ -120,10 +128,24 @@ local function inflate_raw(buf: string, offset: number, crc: number?)
 	return result
 end
 
+--[=[
+	@within zzlib
+	Decompresses a gzip-formatted byte string and returns the raw bytes.
+
+	@param str string -- Gzip-compressed input.
+	@return string -- Decompressed output.
+]=]
 function zzlib.gunzip(str)
 	return inflate_gzip(infl.bitstream_init(str))
 end
 
+--[=[
+	@within zzlib
+	Decompresses a zlib-formatted byte string and returns the raw bytes.
+
+	@param str string -- Zlib-compressed input.
+	@return string -- Decompressed output.
+]=]
 function zzlib.inflate(str)
 	return inflate_zlib(infl.bitstream_init(str))
 end
@@ -157,6 +179,15 @@ local function nextfile(buf, p)
 	return p, name, offset, size, packed, crc
 end
 
+--[=[
+	@within zzlib
+	Returns a stateless iterator over every entry in a ZIP archive.
+
+	Each iteration yields `(name, offset, size, packed, crc)` for one file
+	header. Use [zzlib.unzip] to extract a specific entry.
+
+	@param buf string -- The full ZIP archive bytes.
+]=]
 function zzlib.files(buf: string)
 	local p = #buf - 21
 	if int4le(buf, p) ~= 0x06054b50 then
@@ -166,6 +197,20 @@ function zzlib.files(buf: string)
 	return nextfile, buf, cdoffset
 end
 
+--[=[
+	@within zzlib
+	Extracts a single file from a ZIP archive.
+
+	When `arg1` is a string, it's treated as the filename to extract;
+	the function searches the archive and returns the decompressed bytes,
+	or errors if the file isn't present. When `arg1` is a number, it's
+	treated as a raw offset into `buf` and `arg2` is the expected CRC.
+
+	@param buf string -- The full ZIP archive bytes.
+	@param arg1 string | number -- Filename to extract, or raw offset.
+	@param arg2 number? -- Expected CRC when `arg1` is a numeric offset.
+	@return string -- Decompressed file contents.
+]=]
 function zzlib.unzip(buf: string, arg1: string | number, arg2: number?)
 	if type(arg1) == "number" then
 		return inflate_raw(buf, arg1, arg2)

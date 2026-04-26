@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within Dictionary
+	@function keys
+
 	Returns a list of the keys from the given dictionary.
 ]=]
 local function keys<K, V>(dictionary: { [K]: V }): { K }

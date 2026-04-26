@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within Dictionary
+	@function filter
+
 	Returns a Dictionary of only entries for which the `predicate` function returns true.
 ]=]
 

@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function toSet
+
 	Create a dictionary where each value in the given list corresponds to a key
 	in the dictionary with a value of true.
 ]=]

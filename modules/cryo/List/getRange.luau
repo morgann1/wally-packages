@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function getRange
+
 	Returns a new list containing only the elements within the given range.
 ]=]
 local function getRange<T>(list: { T }, startIndex: number, endIndex: number): { T }

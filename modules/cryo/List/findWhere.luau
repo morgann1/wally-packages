@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function findWhere
+
 	Returns the index of the first value for which predicate(value, index) is truthy, or nil if not found.
 ]=]
 local function findWhere<T>(list: { T }, predicate: (T, number) -> boolean): number?

@@ -1,5 +1,7 @@
 --!strict
 --[=[
+	@class List
+
 	Defines utilities for working with 'list-like' tables.
 ]=]
 

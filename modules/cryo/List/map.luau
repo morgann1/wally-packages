@@ -1,5 +1,8 @@
 --!strict
 --[=[
+	@within List
+	@function map
+
 	Create a copy of a list where each value is transformed by `callback`.
 ]=]
 local function map<T, U>(list: { T }, callback: (T, number) -> U): { U }

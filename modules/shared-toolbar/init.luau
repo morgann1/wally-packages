@@ -1,4 +1,19 @@
 --!strict
+--[=[
+	@class SharedToolbar
+
+	Lets multiple Studio plugins cooperatively own a single
+	`PluginToolbar`. Peers discover each other through a shared
+	`BindableEvent` medium parented under `StudioService`, elect a leader
+	(lowest sessionId wins), and the leader builds the toolbar with every
+	peer's buttons mirrored onto it. Clicks, active state, and enabled
+	state are forwarded to the originating peer over the same medium.
+
+	Why: installing several plugins that each call `plugin:CreateToolbar`
+	with the same name produces duplicate toolbars in Studio. Sharing the
+	toolbar via this module collapses them into one.
+]=]
+
 local HttpService = game:GetService("HttpService")
 local StudioService = game:GetService("StudioService")
 
@@ -8,6 +23,13 @@ local DEFAULT_PROTOCOL_VERSION = 2
 -- building its own toolbar next to an already-running one during reinstalls.
 local BOOT_SETTLE_SECONDS = 1
 
+--[=[
+	@within SharedToolbar
+	@type ButtonSpec { id: string, title: string, tooltip: string?, iconId: string?, clickableWhenViewportHidden: boolean?, onClick: () -> () }
+
+	Describes a button to register on the shared toolbar. `id` must be
+	unique within the calling peer.
+]=]
 export type ButtonSpec = {
 	id: string,
 	title: string,
@@ -17,6 +39,21 @@ export type ButtonSpec = {
 	onClick: () -> (),
 }
 
+--[=[
+	@within SharedToolbar
+	@type RegisterOptions { plugin: Plugin, mediumName: string, toolbarTitle: string, peerId: string, protocolVersion: number?, buttons: { ButtonSpec } }
+
+	Options passed to [SharedToolbar.register].
+
+	- `plugin` — your plugin instance.
+	- `mediumName` — a name shared by every cooperating plugin; the
+	   `BindableEvent` parented under `StudioService` uses this as its name.
+	- `toolbarTitle` — the title to advertise. The peer with the lowest
+	   `peerId` wins, so authoritative naming is stable across reshuffles.
+	- `peerId` — a stable identifier for this plugin (e.g. its name).
+	- `protocolVersion` — optional override for the wire protocol version.
+	- `buttons` — list of buttons to contribute.
+]=]
 export type RegisterOptions = {
 	plugin: Plugin,
 	mediumName: string,
@@ -26,6 +63,16 @@ export type RegisterOptions = {
 	buttons: { ButtonSpec },
 }
 
+--[=[
+	@within SharedToolbar
+	@interface SharedToolbarHandle
+	.setActive (self, buttonId: string, isActive: boolean) -> ()
+	.setEnabled (self, buttonId: string, isEnabled: boolean) -> ()
+	.destroy (self) -> ()
+
+	Returned by [SharedToolbar.register]. The methods only affect this
+	peer's own buttons; calling them on another peer's `id` errors.
+]=]
 export type SharedToolbarHandle = {
 	setActive: (self: SharedToolbarHandle, buttonId: string, isActive: boolean) -> (),
 	setEnabled: (self: SharedToolbarHandle, buttonId: string, isEnabled: boolean) -> (),
@@ -77,6 +124,17 @@ end
 
 local SharedToolbar = {}
 
+--[=[
+	@within SharedToolbar
+	Joins (or creates) a shared toolbar identified by `options.mediumName`
+	and contributes the buttons in `options.buttons` to it. Returns a
+	[SharedToolbarHandle] for managing this peer's button state.
+
+	Cleans up automatically when `options.plugin` unloads.
+
+	@param options RegisterOptions
+	@return SharedToolbarHandle
+]=]
 function SharedToolbar.register(options: RegisterOptions): SharedToolbarHandle
 	local plugin = options.plugin
 	local mediumName = options.mediumName
