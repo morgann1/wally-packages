@@ -1,4 +1,5 @@
 --!strict
+--!nolint LocalShadow
 -- Originally (c) Daniel P H Fox.
 
 local Package = script.Parent.Parent

@@ -1,4 +1,5 @@
 --!strict
+--!nolint LocalShadow
 -- Originally (c) Daniel P H Fox.
 
 local Package = script.Parent.Parent
@@ -36,7 +37,7 @@ local Struct: Types.FnStruct = function<K, V>(options, struct: { [K & string]: T
 		local modifiedReturn = {}
 		for key, innerDef in struct do
 			local value = x[key]
-			local castedValue = innerDef:Cast(value)
+			local castedValue = (innerDef :: any):Cast(value)
 			if not castedValue.some then
 				return Maybe.none(
 					`{self.NotOfTypeError}\n...because of the value at key {tostring(key)}: {castedValue.reason}`

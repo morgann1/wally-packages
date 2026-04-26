@@ -1,0 +1,14 @@
+[package]
+name = "morgann1/owned-toolbar"
+description = "https://github.com/Elttob/LibStudioElttob/tree/main/LibStudioElttob/OwnedToolbar"
+version = "0.1.0"
+license = "MIT"
+authors = ["Elttob"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/Elttob/LibStudioElttob/"
+
+[dependencies]
+IsLocalDev = "morgann1/plugin-is-local-dev@0.1.1"
+IconRamp = "morgann1/icon-ramp@0.1.0"
+React = "jsdotlua/react@17.2.1"
