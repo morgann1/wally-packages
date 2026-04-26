@@ -1,8 +1,9 @@
 [package]
-name = "Elttob/sensation-sounds"
-description = "TODO: describe sensation-sounds"
-version = "0.1.0"
+name = "morgann1/sensation-sounds"
+description = "https://github.com/Elttob/LibStudioElttob/tree/main/LibStudioElttob/SensationSounds"
+version = "0.1.1"
 license = "MIT"
 authors = ["Elttob", "morgann1"]
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
+repository = "https://github.com/Elttob/LibStudioElttob"
