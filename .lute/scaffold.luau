@@ -1,19 +1,38 @@
 --!strict
 -- Scaffold a new Wally package under modules/<slug> (default) or plugin/<slug>.
--- Run with: `lute run .lute/scaffold.luau <slug> [--plugin]`
+-- Run with: `lute run .lute/scaffold.luau <slug> [--plugin] [--author <name>]`
 
 local fs = require("@std/fs")
 local io = require("@std/io")
 local process = require("@std/process")
 
-local AUTHOR = "morgann1"
+local DEFAULT_AUTHOR = "morgann1"
 local REGISTRY = "https://github.com/UpliftGames/wally-index"
 
+local function usage(): never
+	io.write("usage: lute run .lute/scaffold.luau <slug> [--plugin] [--author <name>]\n")
+	process.exit(1)
+end
+
+-- Lute's `process.args[1]` is the script path itself; the user-supplied
+-- arguments start at index 2.
 local slug: string? = nil
 local isPlugin = false
-for _, arg in process.args do
+local author = DEFAULT_AUTHOR
+
+local i = 2
+while i <= #process.args do
+	local arg = process.args[i]
 	if arg == "--plugin" or arg == "-p" then
 		isPlugin = true
+	elseif arg == "--author" or arg == "-a" then
+		i += 1
+		local value = process.args[i]
+		if not value then
+			io.write("error: --author requires a value\n")
+			process.exit(1)
+		end
+		author = value
 	elseif arg:sub(1, 1) == "-" then
 		io.write(`error: unknown flag "{arg}"\n`)
 		process.exit(1)
@@ -23,11 +42,11 @@ for _, arg in process.args do
 		io.write(`error: unexpected argument "{arg}"\n`)
 		process.exit(1)
 	end
+	i += 1
 end
 
 if not slug or slug == "" then
-	io.write("usage: lute run .lute/scaffold.luau <slug> [--plugin]\n")
-	process.exit(1)
+	usage()
 end
 
 if not slug:match("^[a-z0-9]+%-?[a-z0-9]+[%-a-z0-9]*$") then
@@ -47,11 +66,11 @@ local year = tostring(os.date("%Y"))
 local pascalName = slug:gsub("%-(%w)", string.upper):gsub("^%w", string.upper)
 
 local wallyToml = "[package]\n"
-	.. `name = "{AUTHOR}/{slug}"\n`
+	.. `name = "{author}/{slug}"\n`
 	.. `description = "TODO: describe {slug}"\n`
 	.. 'version = "0.1.0"\n'
 	.. 'license = "MIT"\n'
-	.. `authors = ["{AUTHOR}"]\n`
+	.. `authors = ["{author}"]\n`
 	.. `registry = "{REGISTRY}"\n`
 	.. 'realm = "shared"\n'
 
@@ -80,7 +99,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ]]
 
-local license = licenseBody:gsub("__YEAR__", year):gsub("__AUTHOR__", AUTHOR)
+local license = licenseBody:gsub("__YEAR__", year):gsub("__AUTHOR__", author)
 
 fs.createDirectory(packageDir, { makeParents = true })
 fs.writeStringToFile(`{packageDir}/wally.toml`, wallyToml)
