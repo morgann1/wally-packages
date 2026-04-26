@@ -1,6 +1,8 @@
 [package]
 name = "morgann1/zzlib"
-version = "0.1.0"
+description = "zlib decompression in Lua"
+version = "0.1.1"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 license = "MIT"
+repository = "https://github.com/morgann1/wally-packages"

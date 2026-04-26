@@ -1,8 +1,9 @@
 [package]
 name = "morgann1/ias-wrapper"
 description = "https://gist.github.com/alicesaidhi/383b04a42cad53acb27e017f50fd8086"
-version = "0.1.0"
+version = "0.1.1"
 license = "MIT"
 authors = ["alicesaidhi"]
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"

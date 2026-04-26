@@ -1,8 +1,9 @@
 [package]
 name = "morgann1/bind-to-instance-destroyed"
 description = "A reliable way to execute cleanup code when an instance is destroyed."
-version = "0.1.0"
+version = "0.1.1"
 license = "MIT"
 authors = ["morgann1"]
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"

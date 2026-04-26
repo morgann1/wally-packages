@@ -1,8 +1,9 @@
 [package]
 name = "morgann1/simple-logger"
 description = "Simple logging utility"
-version = "0.1.1"
+version = "0.1.2"
 license = "MIT"
 authors = ["morgann1"]
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"
