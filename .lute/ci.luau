@@ -1,6 +1,6 @@
 --!strict
 -- Run the full lint/typecheck pipeline locally.
--- Run with: `lute run .lune/ci.luau`
+-- Run with: `lute run .lute/ci.luau`
 
 local fs = require("@std/fs")
 local io = require("@std/io")
@@ -47,7 +47,7 @@ local steps: { { name: string, program: string, args: { string } } } = {
 	{
 		name = "stylua",
 		program = "stylua",
-		args = { "--check", "modules", ".lune" },
+		args = { "--check", "modules", ".lute" },
 	},
 	{
 		name = "selene",

@@ -1,6 +1,6 @@
 --!strict
 -- Publish every module under modules/ to the Wally registry.
--- Run with: `lute run .lune/publish.luau`
+-- Run with: `lute run .lute/publish.luau`
 
 local fs = require("@std/fs")
 local io = require("@std/io")

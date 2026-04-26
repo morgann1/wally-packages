@@ -1,6 +1,6 @@
 --!strict
 -- Regenerate the module table in README.md from modules/*/wally.toml.
--- Run with: `lute run .lune/update-readme.luau`
+-- Run with: `lute run .lute/update-readme.luau`
 
 local fs = require("@std/fs")
 local io = require("@std/io")

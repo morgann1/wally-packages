@@ -1,6 +1,6 @@
 --!strict
 -- Scaffold a new Wally package under modules/<slug> (default) or plugin/<slug>.
--- Run with: `lute run .lune/scaffold.luau <slug> [--plugin]`
+-- Run with: `lute run .lute/scaffold.luau <slug> [--plugin]`
 
 local fs = require("@std/fs")
 local io = require("@std/io")
@@ -26,7 +26,7 @@ for _, arg in process.args do
 end
 
 if not slug or slug == "" then
-	io.write("usage: lute run .lune/scaffold.luau <slug> [--plugin]\n")
+	io.write("usage: lute run .lute/scaffold.luau <slug> [--plugin]\n")
 	process.exit(1)
 end
 

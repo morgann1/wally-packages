@@ -1,6 +1,6 @@
 --!strict
 -- Generate sourcemap and build the place file.
--- Run with: `lute run .lune/build.luau`
+-- Run with: `lute run .lute/build.luau`
 
 local io = require("@std/io")
 local process = require("@std/process")

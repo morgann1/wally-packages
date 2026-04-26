@@ -2,7 +2,7 @@
 -- Wipe moonwave's per-project cache so the next `moonwave dev` rebuilds
 -- from the current repo state. Useful after renaming or removing folders
 -- under `docs/`, since moonwave's cache layer doesn't reconcile deletions.
--- Run with: `lute run .lune/clear-moonwave-cache.luau`
+-- Run with: `lute run .lute/clear-moonwave-cache.luau`
 
 local fs = require("@std/fs")
 local io = require("@std/io")

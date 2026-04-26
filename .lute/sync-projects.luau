@@ -4,7 +4,7 @@
 -- `require(script.Parent.<Dep>)` resolve at sourcemap time the same way
 -- Wally lays them out post-install. Both modules/ and plugin/ are merged
 -- into one project file because luau-lsp only consumes a single Rojo file.
--- Run with: `lute run .lune/sync-projects.luau`
+-- Run with: `lute run .lute/sync-projects.luau`
 
 local fs = require("@std/fs")
 local io = require("@std/io")
