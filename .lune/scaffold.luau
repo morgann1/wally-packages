@@ -1,10 +1,10 @@
 --!strict
 -- Scaffold a new Wally package under modules/<slug> (default) or plugin/<slug>.
--- Run with: `lune run scaffold <slug> [--plugin]`
+-- Run with: `lute run .lune/scaffold.luau <slug> [--plugin]`
 
-local fs = require("@lune/fs")
-local process = require("@lune/process")
-local stdio = require("@lune/stdio")
+local fs = require("@std/fs")
+local io = require("@std/io")
+local process = require("@std/process")
 
 local AUTHOR = "morgann1"
 local REGISTRY = "https://github.com/UpliftGames/wally-index"
@@ -15,34 +15,34 @@ for _, arg in process.args do
 	if arg == "--plugin" or arg == "-p" then
 		isPlugin = true
 	elseif arg:sub(1, 1) == "-" then
-		stdio.ewrite(`error: unknown flag "{arg}"\n`)
+		io.write(`error: unknown flag "{arg}"\n`)
 		process.exit(1)
 	elseif slug == nil then
 		slug = arg
 	else
-		stdio.ewrite(`error: unexpected argument "{arg}"\n`)
+		io.write(`error: unexpected argument "{arg}"\n`)
 		process.exit(1)
 	end
 end
 
 if not slug or slug == "" then
-	stdio.ewrite("usage: lune run scaffold <slug> [--plugin]\n")
+	io.write("usage: lute run .lune/scaffold.luau <slug> [--plugin]\n")
 	process.exit(1)
 end
 
 if not slug:match("^[a-z0-9]+%-?[a-z0-9]+[%-a-z0-9]*$") then
-	stdio.ewrite(`error: slug "{slug}" must be lowercase kebab-case (a-z, 0-9, '-')\n`)
+	io.write(`error: slug "{slug}" must be lowercase kebab-case (a-z, 0-9, '-')\n`)
 	process.exit(1)
 end
 
 local rootDir = if isPlugin then "plugin" else "modules"
 local packageDir = `{rootDir}/{slug}`
-if fs.isDir(packageDir) then
-	stdio.ewrite(`error: {packageDir} already exists\n`)
+if fs.exists(packageDir) then
+	io.write(`error: {packageDir} already exists\n`)
 	process.exit(1)
 end
 
-local year = os.date("%Y")
+local year = tostring(os.date("%Y"))
 
 local pascalName = slug:gsub("%-(%w)", string.upper):gsub("^%w", string.upper)
 
@@ -82,9 +82,9 @@ SOFTWARE.
 
 local license = licenseBody:gsub("__YEAR__", year):gsub("__AUTHOR__", AUTHOR)
 
-fs.writeDir(packageDir)
-fs.writeFile(`{packageDir}/wally.toml`, wallyToml)
-fs.writeFile(`{packageDir}/init.luau`, initLuau)
-fs.writeFile(`{packageDir}/LICENSE`, license)
+fs.createDirectory(packageDir, { makeParents = true })
+fs.writeStringToFile(`{packageDir}/wally.toml`, wallyToml)
+fs.writeStringToFile(`{packageDir}/init.luau`, initLuau)
+fs.writeStringToFile(`{packageDir}/LICENSE`, license)
 
-stdio.write(`scaffolded {packageDir}\n`)
+io.write(`scaffolded {packageDir}\n`)

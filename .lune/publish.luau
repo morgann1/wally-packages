@@ -1,24 +1,24 @@
 --!strict
 -- Publish every module under modules/ to the Wally registry.
--- Run with: `lune run publish`
+-- Run with: `lute run .lune/publish.luau`
 
-local fs = require("@lune/fs")
-local process = require("@lune/process")
-local stdio = require("@lune/stdio")
+local fs = require("@std/fs")
+local io = require("@std/io")
+local process = require("@std/process")
 
 local MODULES_DIR = "modules"
 
-for _, slug in fs.readDir(MODULES_DIR) do
-	local moduleDir = `{MODULES_DIR}/{slug}`
-	if not fs.isDir(moduleDir) then
+for _, entry in fs.listDirectory(MODULES_DIR) do
+	if entry.type ~= "dir" then
 		continue
 	end
-	stdio.write(`\n==> wally publish ({slug})\n`)
-	local result = process.exec("wally", { "publish" }, {
+	local moduleDir = `{MODULES_DIR}/{entry.name}`
+	io.write(`\n==> wally publish ({entry.name})\n`)
+	local result = process.run({ "wally", "publish" }, {
 		cwd = moduleDir,
-		stdio = "forward",
+		stdio = "inherit",
 	})
 	if not result.ok then
-		process.exit(result.code)
+		process.exit(result.exitcode)
 	end
 end

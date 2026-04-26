@@ -1,10 +1,10 @@
 --!strict
 -- Regenerate the module table in README.md from modules/*/wally.toml.
--- Run with: `lune run update-readme`
+-- Run with: `lute run .lune/update-readme.luau`
 
-local fs = require("@lune/fs")
-local process = require("@lune/process")
-local stdio = require("@lune/stdio")
+local fs = require("@std/fs")
+local io = require("@std/io")
+local process = require("@std/process")
 
 local REPO_URL = "https://github.com/morgann1/wally-packages"
 local MODULES_DIR = "modules"
@@ -18,6 +18,14 @@ type Module = {
 	slug: string,
 }
 
+local function isFile(path: string): boolean
+	return fs.exists(path) and fs.type(path) == "file"
+end
+
+local function isDir(path: string): boolean
+	return fs.exists(path) and fs.type(path) == "dir"
+end
+
 local function kebabToPascal(name: string): string
 	local out = {}
 	for part in string.gmatch(name, "[^-]+") do
@@ -27,10 +35,10 @@ local function kebabToPascal(name: string): string
 end
 
 local function findReturnIdentifier(initPath: string): string?
-	if not fs.isFile(initPath) then
+	if not isFile(initPath) then
 		return nil
 	end
-	local lines = string.split(fs.readFile(initPath), "\n")
+	local lines = string.split(fs.readFileToString(initPath), "\n")
 	for i = #lines, 1, -1 do
 		local line = lines[i]:match("^%s*(.-)%s*$")
 		if line == "" or line:sub(1, 2) == "--" then
@@ -55,7 +63,7 @@ end
 local function readPackage(tomlPath: string): { [string]: string }
 	local result: { [string]: string } = {}
 	local inPackage = false
-	for _, raw in string.split(fs.readFile(tomlPath), "\n") do
+	for _, raw in string.split(fs.readFileToString(tomlPath), "\n") do
 		local line = raw:match("^%s*(.-)%s*$")
 		if line == "" or line:sub(1, 1) == "#" then
 			continue
@@ -77,10 +85,10 @@ local function readPackage(tomlPath: string): { [string]: string }
 end
 
 local modules: { Module } = {}
-for _, slug in fs.readDir(MODULES_DIR) do
-	local moduleDir = `{MODULES_DIR}/{slug}`
+for _, entry in fs.listDirectory(MODULES_DIR) do
+	local moduleDir = `{MODULES_DIR}/{entry.name}`
 	local tomlPath = `{moduleDir}/wally.toml`
-	if not fs.isDir(moduleDir) or not fs.isFile(tomlPath) then
+	if not isDir(moduleDir) or not isFile(tomlPath) then
 		continue
 	end
 	local pkg = readPackage(tomlPath)
@@ -88,16 +96,16 @@ for _, slug in fs.readDir(MODULES_DIR) do
 		continue
 	end
 	table.insert(modules, {
-		alias = displayName(moduleDir, slug),
+		alias = displayName(moduleDir, entry.name),
 		package = pkg.name,
 		version = pkg.version,
 		description = pkg.description or "",
-		slug = slug,
+		slug = entry.name,
 	})
 end
 
 if #modules == 0 then
-	stdio.ewrite("No modules found.\n")
+	io.write("No modules found.\n")
 	process.exit(1)
 end
 
@@ -117,5 +125,5 @@ for _, m in modules do
 	table.insert(lines, `| {link} | {dep} | {m.description} |`)
 end
 
-fs.writeFile(README_PATH, table.concat(lines, "\n") .. "\n")
-stdio.write(`Wrote {#modules} modules to {README_PATH}\n`)
+fs.writeStringToFile(README_PATH, table.concat(lines, "\n") .. "\n")
+io.write(`Wrote {#modules} modules to {README_PATH}\n`)

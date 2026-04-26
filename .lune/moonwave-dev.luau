@@ -2,10 +2,11 @@
 -- Start moonwave's dev server with the source paths this monorepo uses.
 -- Moonwave's default `--code` is ["lib", "src"]; ours live under
 -- `modules` and `plugin`, so the API tab is empty without these flags.
--- Run with: `lune run moonwave-dev`
+-- Run with: `lute run .lune/moonwave-dev.luau`
 
-local process = require("@lune/process")
-local stdio = require("@lune/stdio")
+local io = require("@std/io")
+local process = require("@std/process")
+local system = require("@std/system")
 
 local args = { "dev", "--code", "modules", "--code", "plugin" }
 for _, arg in process.args do
@@ -14,9 +15,13 @@ for _, arg in process.args do
 	end
 end
 
-local program = if process.os == "windows" then "moonwave.cmd" else "moonwave"
-stdio.write(`$ {program} {table.concat(args, " ")}\n`)
-local result = process.exec(program, args, { stdio = "forward" })
+local program = if system.win32 then "moonwave.cmd" else "moonwave"
+local cmd = { program }
+for _, a in args do
+	table.insert(cmd, a)
+end
+io.write(`$ {program} {table.concat(args, " ")}\n`)
+local result = process.run(cmd, { stdio = "inherit" })
 if not result.ok then
-	process.exit(result.code)
+	process.exit(result.exitcode)
 end

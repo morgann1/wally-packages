@@ -4,11 +4,11 @@
 -- `require(script.Parent.<Dep>)` resolve at sourcemap time the same way
 -- Wally lays them out post-install. Both modules/ and plugin/ are merged
 -- into one project file because luau-lsp only consumes a single Rojo file.
--- Run with: `lune run sync-projects`
+-- Run with: `lute run .lune/sync-projects.luau`
 
-local fs = require("@lune/fs")
-local serde = require("@lune/serde")
-local stdio = require("@lune/stdio")
+local fs = require("@std/fs")
+local io = require("@std/io")
+local json = require("@std/json")
 local toml = require("./batteries/toml")
 
 type PackageInfo = {
@@ -17,20 +17,28 @@ type PackageInfo = {
 }
 
 local function readWallyToml(path: string): any
-	return toml.deserialize(fs.readFile(path))
+	return toml.deserialize(fs.readFileToString(path))
+end
+
+local function isDir(path: string): boolean
+	return fs.exists(path) and fs.type(path) == "dir"
+end
+
+local function isFile(path: string): boolean
+	return fs.exists(path) and fs.type(path) == "file"
 end
 
 local function indexPackages(rootDir: string, into: { [string]: PackageInfo })
-	if not fs.isDir(rootDir) then
+	if not isDir(rootDir) then
 		return
 	end
-	for _, slug in fs.readDir(rootDir) do
-		local folder = `{rootDir}/{slug}`
-		local toml = `{folder}/wally.toml`
-		if not fs.isFile(toml) then
+	for _, entry in fs.listDirectory(rootDir) do
+		local folder = `{rootDir}/{entry.name}`
+		local tomlPath = `{folder}/wally.toml`
+		if not isFile(tomlPath) then
 			continue
 		end
-		local data = readWallyToml(toml)
+		local data = readWallyToml(tomlPath)
 		if not data.package or not data.package.name then
 			continue
 		end
@@ -41,29 +49,36 @@ local function indexPackages(rootDir: string, into: { [string]: PackageInfo })
 	end
 end
 
+-- Each package becomes a container folder holding the package itself
+-- alongside its in-monorepo wally dependencies as siblings, mirroring
+-- wally's _Index install layout. This makes `require(script.Parent.<Dep>)`
+-- resolve the same way at sourcemap time as it does post-install.
 local function buildModulesTree(rootDir: string, packagesByName: { [string]: PackageInfo }): any?
-	if not fs.isDir(rootDir) then
+	if not isDir(rootDir) then
 		return nil
 	end
 	local modulesTree: any = { ["$className"] = "Folder" }
-	for _, slug in fs.readDir(rootDir) do
-		local folder = `{rootDir}/{slug}`
-		local toml = `{folder}/wally.toml`
-		if not fs.isFile(toml) then
+	for _, entry in fs.listDirectory(rootDir) do
+		local folder = `{rootDir}/{entry.name}`
+		local tomlPath = `{folder}/wally.toml`
+		if not isFile(tomlPath) then
 			continue
 		end
-		local data = readWallyToml(toml)
-		local node: any = { ["$path"] = folder }
+		local data = readWallyToml(tomlPath)
+		local container: any = {
+			["$className"] = "Folder",
+			[entry.name] = { ["$path"] = folder },
+		}
 		if data.dependencies then
 			for alias, spec in data.dependencies do
 				local depName = (spec :: string):match("^([^@]+)")
 				local info = depName and packagesByName[depName]
 				if info then
-					node[alias] = { ["$path"] = info.folder }
+					container[alias] = { ["$path"] = info.folder }
 				end
 			end
 		end
-		modulesTree[slug] = node
+		modulesTree[entry.name] = container
 	end
 	return modulesTree
 end
@@ -90,5 +105,5 @@ local project = {
 	},
 }
 
-fs.writeFile("default.project.json", serde.encode("json", project, true) .. "\n")
-stdio.write("wrote default.project.json\n")
+fs.writeStringToFile("default.project.json", json.serialize(project, true) .. "\n")
+io.write("wrote default.project.json\n")

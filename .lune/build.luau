@@ -1,15 +1,19 @@
 --!strict
 -- Generate sourcemap and build the place file.
--- Run with: `lune run build`
+-- Run with: `lute run .lune/build.luau`
 
-local process = require("@lune/process")
-local stdio = require("@lune/stdio")
+local io = require("@std/io")
+local process = require("@std/process")
 
 local function run(program: string, args: { string })
-	stdio.write(`$ {program} {table.concat(args, " ")}\n`)
-	local result = process.exec(program, args, { stdio = "forward" })
+	io.write(`$ {program} {table.concat(args, " ")}\n`)
+	local cmd = { program }
+	for _, a in args do
+		table.insert(cmd, a)
+	end
+	local result = process.run(cmd, { stdio = "inherit" })
 	if not result.ok then
-		process.exit(result.code)
+		process.exit(result.exitcode)
 	end
 end
 

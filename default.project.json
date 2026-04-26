@@ -1,60 +1,99 @@
 {
-  "name": "wally-packages",
-  "tree": {
-    "$className": "DataModel",
-    "ReplicatedStorage": {
-      "$className": "ReplicatedStorage",
-      "Modules": {
-        "$className": "Folder",
-        "bind-to-instance-destroyed": {
-          "$path": "modules/bind-to-instance-destroyed"
-        },
-        "character-promise-utils": {
-          "$path": "modules/character-promise-utils",
-          "disconnectAndClear": {
-            "$path": "modules/disconnect-and-clear"
-          }
-        },
-        "cryo": {
-          "$path": "modules/cryo"
-        },
-        "disconnect-and-clear": {
-          "$path": "modules/disconnect-and-clear"
-        },
-        "ias-wrapper": {
-          "$path": "modules/ias-wrapper"
-        },
-        "safe-player-added": {
-          "$path": "modules/safe-player-added"
-        },
-        "shared-toolbar": {
-          "$path": "modules/shared-toolbar"
-        },
-        "simple-logger": {
-          "$path": "modules/simple-logger"
-        },
-        "type-validation": {
-          "$path": "modules/type-validation"
-        },
-        "zzlib": {
-          "$path": "modules/zzlib"
-        }
-      },
-      "PluginLib": {
-        "$className": "Folder",
-        "elttob-log": {
-          "$path": "plugin/elttob-log",
-          "IsLocalDev": {
-            "$path": "plugin/is-local-dev"
-          }
-        },
-        "is-local-dev": {
-          "$path": "plugin/is-local-dev"
-        },
-        "maybe": {
-          "$path": "plugin/maybe"
-        }
-      }
+    "name": "wally-packages", 
+    "tree": {
+        "ReplicatedStorage": {
+            "Modules": {
+                "character-promise-utils": {
+                    "character-promise-utils": {
+                        "$path": "modules/character-promise-utils"
+                    }, 
+                    "$className": "Folder", 
+                    "disconnectAndClear": {
+                        "$path": "modules/disconnect-and-clear"
+                    }
+                }, 
+                "ias-wrapper": {
+                    "ias-wrapper": {
+                        "$path": "modules/ias-wrapper"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "safe-player-added": {
+                    "safe-player-added": {
+                        "$path": "modules/safe-player-added"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "bind-to-instance-destroyed": {
+                    "bind-to-instance-destroyed": {
+                        "$path": "modules/bind-to-instance-destroyed"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "zzlib": {
+                    "zzlib": {
+                        "$path": "modules/zzlib"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "type-validation": {
+                    "type-validation": {
+                        "$path": "modules/type-validation"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "cryo": {
+                    "cryo": {
+                        "$path": "modules/cryo"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "simple-logger": {
+                    "simple-logger": {
+                        "$path": "modules/simple-logger"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "$className": "Folder", 
+                "disconnect-and-clear": {
+                    "disconnect-and-clear": {
+                        "$path": "modules/disconnect-and-clear"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "shared-toolbar": {
+                    "shared-toolbar": {
+                        "$path": "modules/shared-toolbar"
+                    }, 
+                    "$className": "Folder"
+                }
+            }, 
+            "$className": "ReplicatedStorage", 
+            "PluginLib": {
+                "elttob-log": {
+                    "elttob-log": {
+                        "$path": "plugin/elttob-log"
+                    }, 
+                    "$className": "Folder", 
+                    "IsLocalDev": {
+                        "$path": "plugin/is-local-dev"
+                    }
+                }, 
+                "$className": "Folder", 
+                "is-local-dev": {
+                    "is-local-dev": {
+                        "$path": "plugin/is-local-dev"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "maybe": {
+                    "maybe": {
+                        "$path": "plugin/maybe"
+                    }, 
+                    "$className": "Folder"
+                }
+            }
+        }, 
+        "$className": "DataModel"
     }
-  }
 }

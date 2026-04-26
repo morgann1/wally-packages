@@ -1,11 +1,11 @@
 --!strict
 -- Run the full lint/typecheck pipeline locally.
--- Run with: `lune run ci`
+-- Run with: `lute run .lune/ci.luau`
 
-local fs = require("@lune/fs")
-local net = require("@lune/net")
-local process = require("@lune/process")
-local stdio = require("@lune/stdio")
+local fs = require("@std/fs")
+local io = require("@std/io")
+local net = require("@std/net")
+local process = require("@std/process")
 
 local SOURCEMAP = "sourcemap.json"
 local TYPES_DIR = ".ci"
@@ -13,25 +13,29 @@ local TYPES_PATH = `{TYPES_DIR}/globalTypes.d.luau`
 local TYPES_URL = "https://raw.githubusercontent.com/JohnnyMorganz/luau-lsp/main/scripts/globalTypes.d.luau"
 
 local function run(program: string, args: { string }): number
-	stdio.write(`\n$ {program} {table.concat(args, " ")}\n`)
-	local result = process.exec(program, args, { stdio = "forward" })
-	return result.code
+	io.write(`\n$ {program} {table.concat(args, " ")}\n`)
+	local cmd = { program }
+	for _, a in args do
+		table.insert(cmd, a)
+	end
+	local result = process.run(cmd, { stdio = "inherit" })
+	return result.exitcode
 end
 
 local function ensureRobloxTypes()
-	if fs.isFile(TYPES_PATH) then
+	if fs.exists(TYPES_PATH) and fs.type(TYPES_PATH) == "file" then
 		return
 	end
-	if not fs.isDir(TYPES_DIR) then
-		fs.writeDir(TYPES_DIR)
+	if not fs.exists(TYPES_DIR) then
+		fs.createDirectory(TYPES_DIR, { makeParents = true })
 	end
-	stdio.write(`Fetching Roblox type definitions → {TYPES_PATH}\n`)
-	local response = net.request({ url = TYPES_URL })
+	io.write(`Fetching Roblox type definitions → {TYPES_PATH}\n`)
+	local response = net.request(TYPES_URL)
 	if not response.ok then
-		stdio.ewrite(`Failed to download {TYPES_URL}: {response.statusCode} {response.statusMessage}\n`)
+		io.write(`Failed to download {TYPES_URL}: status {response.status}\n`)
 		process.exit(1)
 	end
-	fs.writeFile(TYPES_PATH, response.body)
+	fs.writeStringToFile(TYPES_PATH, response.body)
 end
 
 local steps: { { name: string, program: string, args: { string } } } = {
@@ -73,9 +77,9 @@ for _, step in steps do
 	end
 end
 
-stdio.write("\n")
+io.write("\n")
 if #failures > 0 then
-	stdio.ewrite(`CI failed: {table.concat(failures, ", ")}\n`)
+	io.write(`CI failed: {table.concat(failures, ", ")}\n`)
 	process.exit(1)
 end
-stdio.write("CI passed.\n")
+io.write("CI passed.\n")
