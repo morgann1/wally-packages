@@ -341,6 +341,7 @@ function SharedToolbar.connect(
 		local ownedToolbar = OwnedToolbar.create(plugin, devEnvName, toolbarTitle)
 		currentOwnedToolbar = ownedToolbar
 		table.insert(scope, function()
+			currentOwnedToolbar = nil
 			ownedToolbar:destroy()
 		end)
 
