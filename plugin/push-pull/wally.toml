@@ -1,0 +1,12 @@
+[package]
+name = "morgann1/push-pull"
+description = "https://github.com/Elttob/LibOpen/tree/main/LibOpen/PushPull"
+version = "0.1.0"
+license = "MIT"
+authors = ["Elttob", "morgann1"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/Elttob/LibOpen/"
+
+[dependencies]
+Maybe = "morgann1/maybe@0.1.0"
