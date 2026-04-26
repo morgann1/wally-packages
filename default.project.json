@@ -77,21 +77,27 @@
                     "$className": "Folder"
                 }, 
                 "interposer": {
-                    "IsLocalDev": {
-                        "$path": "plugin/is-local-dev"
-                    }, 
                     "Maybe": {
                         "$path": "plugin/maybe"
                     }, 
-                    "PushPull": {
-                        "$path": "plugin/push-pull"
+                    "ty": {
+                        "$path": "plugin/ty"
+                    }, 
+                    "IsLocalDev": {
+                        "$path": "plugin/is-local-dev"
+                    }, 
+                    "ElttobLog": {
+                        "$path": "plugin/elttob-log"
+                    }, 
+                    "interposer": {
+                        "$path": "plugin/interposer"
                     }, 
                     "$className": "Folder", 
                     "Event": {
                         "$path": "plugin/event"
                     }, 
-                    "interposer": {
-                        "$path": "plugin/interposer"
+                    "PushPull": {
+                        "$path": "plugin/push-pull"
                     }
                 }, 
                 "event": {
