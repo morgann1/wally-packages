@@ -1,0 +1,11 @@
+[package]
+name = "morgann1/elttob-log"
+description = "TODO: describe elttob-log"
+version = "0.1.0"
+license = "MIT"
+authors = ["morgann1"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+IsLocalDev = "morgann1/plugin-is-local-dev@0.1.0"
