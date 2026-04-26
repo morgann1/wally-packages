@@ -79,15 +79,6 @@
                         "$path": "plugin/maybe"
                     }
                 }, 
-                "finally-task": {
-                    "$className": "Folder", 
-                    "finally-task": {
-                        "$path": "plugin/finally-task"
-                    }, 
-                    "doCleanup": {
-                        "$path": "plugin/do-cleanup"
-                    }
-                }, 
                 "owned-toolbar": {
                     "IconRamp": {
                         "$path": "plugin/icon-ramp"
@@ -111,6 +102,21 @@
                     "owned-toolbar": {
                         "$path": "plugin/owned-toolbar"
                     }
+                }, 
+                "finally-task": {
+                    "$className": "Folder", 
+                    "finally-task": {
+                        "$path": "plugin/finally-task"
+                    }, 
+                    "doCleanup": {
+                        "$path": "plugin/do-cleanup"
+                    }
+                }, 
+                "sorting-by": {
+                    "sorting-by": {
+                        "$path": "plugin/sorting-by"
+                    }, 
+                    "$className": "Folder"
                 }, 
                 "interposer": {
                     "Maybe": {
@@ -136,9 +142,57 @@
                         "$path": "plugin/push-pull"
                     }
                 }, 
-                "sorting-by": {
-                    "sorting-by": {
+                "shared-toolbar": {
+                    "_Index": {
+                        "$path": "Packages/_Index"
+                    }, 
+                    "doCleanup": {
+                        "$path": "plugin/do-cleanup"
+                    }, 
+                    "OwnedToolbar": {
+                        "$path": "plugin/owned-toolbar"
+                    }, 
+                    "PushPull": {
+                        "$path": "plugin/push-pull"
+                    }, 
+                    "Leader": {
+                        "$path": "plugin/leader"
+                    }, 
+                    "IconRamp": {
+                        "$path": "plugin/icon-ramp"
+                    }, 
+                    "ElttobLog": {
+                        "$path": "plugin/elttob-log"
+                    }, 
+                    "shared-toolbar": {
+                        "$path": "plugin/shared-toolbar"
+                    }, 
+                    "FinallyTask": {
+                        "$path": "plugin/finally-task"
+                    }, 
+                    "Event": {
+                        "$path": "plugin/event"
+                    }, 
+                    "Maybe": {
+                        "$path": "plugin/maybe"
+                    }, 
+                    "ty": {
+                        "$path": "plugin/ty"
+                    }, 
+                    "IsLocalDev": {
+                        "$path": "plugin/is-local-dev"
+                    }, 
+                    "SortingBy": {
                         "$path": "plugin/sorting-by"
+                    }, 
+                    "React": {
+                        "$path": "Packages/React.lua"
+                    }, 
+                    "DoCleanup": {
+                        "$path": "plugin/do-cleanup"
+                    }, 
+                    "Interposer": {
+                        "$path": "plugin/interposer"
                     }, 
                     "$className": "Folder"
                 }, 

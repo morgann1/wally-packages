@@ -66,15 +66,17 @@ local function findExternalTrampoline(alias: string): string?
 	return nil
 end
 
--- Walk an in-monorepo package's dependency graph and return every
--- transitive in-monorepo package keyed by the alias under which it
--- should appear (i.e. the alias used by the package that depends on
--- it). When a transitive dep collides with the consumer's own alias
--- choice, the consumer wins.
-local function collectTransitiveInMonorepoDeps(
+-- Walk an in-monorepo package's dependency graph and bucket every
+-- transitive dependency. In-monorepo deps go into `intoInRepo` keyed by
+-- alias, pointing at the on-disk package; external deps go into
+-- `intoExternal` keyed by alias, pointing at the matching `Packages/`
+-- trampoline. When a transitive dep collides with an alias the consumer
+-- has already chosen, the consumer wins.
+local function collectTransitiveDeps(
 	packageName: string,
 	packagesByName: { [string]: PackageInfo },
-	into: { [string]: PackageInfo },
+	intoInRepo: { [string]: PackageInfo },
+	intoExternal: { [string]: string },
 	seen: { [string]: true }
 )
 	if seen[packageName] then
@@ -92,9 +94,16 @@ local function collectTransitiveInMonorepoDeps(
 	for alias, spec in data.dependencies do
 		local depName = (spec :: string):match("^([^@]+)")
 		local depInfo = depName and packagesByName[depName]
-		if depInfo ~= nil and into[alias] == nil then
-			into[alias] = depInfo
-			collectTransitiveInMonorepoDeps(depName, packagesByName, into, seen)
+		if depInfo ~= nil then
+			if intoInRepo[alias] == nil then
+				intoInRepo[alias] = depInfo
+			end
+			collectTransitiveDeps(depName, packagesByName, intoInRepo, intoExternal, seen)
+		else
+			local trampolinePath = findExternalTrampoline(alias)
+			if trampolinePath ~= nil and intoExternal[alias] == nil then
+				intoExternal[alias] = trampolinePath
+			end
 		end
 	end
 end
@@ -140,14 +149,21 @@ local function buildModulesTree(rootDir: string, packagesByName: { [string]: Pac
 				end
 			end
 		end
-		local transitive: { [string]: PackageInfo } = {}
+		local transitiveInRepo: { [string]: PackageInfo } = {}
+		local transitiveExternal: { [string]: string } = {}
 		local seen: { [string]: true } = {}
 		for _, info in directInMonorepoDeps do
-			collectTransitiveInMonorepoDeps(info.name, packagesByName, transitive, seen)
+			collectTransitiveDeps(info.name, packagesByName, transitiveInRepo, transitiveExternal, seen)
 		end
-		for alias, info in transitive do
+		for alias, info in transitiveInRepo do
 			if container[alias] == nil then
 				container[alias] = { ["$path"] = info.folder }
+			end
+		end
+		for alias, trampolinePath in transitiveExternal do
+			if container[alias] == nil then
+				container[alias] = { ["$path"] = trampolinePath }
+				needsExternalIndex = true
 			end
 		end
 		if needsExternalIndex and isDir(PACKAGES_INDEX_DIR) then
