@@ -77,7 +77,22 @@ function Leader.track(scope: Scope, interposer: Interposer.InterposerApi): Types
 	local function searchForLeader(scope: Scope): ()
 		task.wait(1) -- wait for other peers to arrive
 		local pushPeer, pullPeer = PushPull.maybe()
-		table.insert(scope, interposer.onPeerDiscovered(pushPeer))
+		-- pullWake yields, so the tie-break wait branch below actually sleeps instead of busy-looping.
+		-- Fed by both peer discovery and leader-change events so the loop wakes for either signal.
+		local pushWake, pullWake = PushPull.yield()
+		table.insert(
+			scope,
+			interposer.onPeerDiscovered(function(peer: Interposer.Peer)
+				pushPeer(peer)
+				pushWake()
+			end)
+		)
+		table.insert(
+			scope,
+			onLeaderChanged(function()
+				pushWake()
+			end)
+		)
 		for peer in interposer.otherPeers do
 			pushPeer(peer)
 		end
@@ -109,12 +124,10 @@ function Leader.track(scope: Scope, interposer: Interposer.InterposerApi): Types
 					return
 				end
 				-- Wait for the lower-id peer to broadcast or for a new peer to discover.
-				local nextDiscovered = pullPeer()
-				if nextDiscovered.some then
-					possibleLeader = nextDiscovered.value
-				end
+				pullWake()
 				continue
 			end
+			possibleLeader = nil
 			local result = protocolApi.sendRequest("whoIsLeader", nextPeer.value)
 			if result.ok then
 				possibleLeader = result.value
