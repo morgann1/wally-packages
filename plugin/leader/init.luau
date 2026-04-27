@@ -90,12 +90,30 @@ function Leader.track(scope: Scope, interposer: Interposer.InterposerApi): Types
 			end
 			local nextPeer = if possibleLeader ~= nil then Maybe.some(possibleLeader) else pullPeer()
 			if not nextPeer.some then
-				-- Nobody knows who the leader is. We might be alone, or everyone might be confused. Best to just
-				-- announce that we're the leader and get everyone on the same page.
-				changeLeader(interposer.selfPeer, {
-					broadcastChange = true,
-				})
-				return
+				-- Nobody knows who the leader is. To avoid a co-arrival race where every peer self-elects in the
+				-- same tick (and each builds its own toolbar before any leaderChanged broadcast is observed), only
+				-- the peer with the lexicographically lowest id self-elects. Everyone else loops and waits for the
+				-- winner's broadcast. Peer ids are GUIDs (see Interposer.logon), so the ordering is stable and
+				-- agreed by every peer.
+				local shouldSelfElect = true
+				for otherPeer in interposer.otherPeers do
+					if otherPeer < interposer.selfPeer then
+						shouldSelfElect = false
+						break
+					end
+				end
+				if shouldSelfElect then
+					changeLeader(interposer.selfPeer, {
+						broadcastChange = true,
+					})
+					return
+				end
+				-- Wait for the lower-id peer to broadcast or for a new peer to discover.
+				local nextDiscovered = pullPeer()
+				if nextDiscovered.some then
+					possibleLeader = nextDiscovered.value
+				end
+				continue
 			end
 			local result = protocolApi.sendRequest("whoIsLeader", nextPeer.value)
 			if result.ok then
