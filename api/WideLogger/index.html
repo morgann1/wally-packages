@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="plugin-moonwave plugin-id-moonwave" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.7.0">
+<title data-rh="true">WideLogger | wally-packages</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://morgann1.github.io/wally-packages/api/WideLogger"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="WideLogger | wally-packages"><meta data-rh="true" name="description" content="A logger built around &quot;wide events&quot; (https://loggingsucks.com/): one
+structured event per operation, enriched with context as the operation
+runs, emitted exactly once when the span finishes.
+
+Instead of scattering `print` calls across a code path, you open a span
+at the start of an operation, attach high-cardinality context fields
+(user ids, request ids, business state) along the way, and let the
+logger emit a single readable record at the end.
+
+```lua
+local Log = require(path.to.WideLogger)
+
+Log.withSpan(&quot;checkout.process&quot;, { request_id = id }, function(span)
+    span:set(&quot;user_id&quot;, user.Id)
+    span:set(&quot;cart_total_cents&quot;, cart.totalCents)
+    -- ... do work; if this errors the span auto-fails ...
+    span:set(&quot;payment_provider&quot;, &quot;stripe&quot;)
+end)
+```
+
+Output goes to `print` (ok) or `warn` (failed) and is formatted for
+Studio readability:
+
+```
+[checkout.process] OK 142.30ms
+  cart_total_cents = 4200
+  payment_provider = &quot;stripe&quot;
+  request_id = &quot;abc&quot;
+  user_id = 5
+```"><meta data-rh="true" property="og:description" content="A logger built around &quot;wide events&quot; (https://loggingsucks.com/): one
+structured event per operation, enriched with context as the operation
+runs, emitted exactly once when the span finishes.
+
+Instead of scattering `print` calls across a code path, you open a span
+at the start of an operation, attach high-cardinality context fields
+(user ids, request ids, business state) along the way, and let the
+logger emit a single readable record at the end.
+
+```lua
+local Log = require(path.to.WideLogger)
+
+Log.withSpan(&quot;checkout.process&quot;, { request_id = id }, function(span)
+    span:set(&quot;user_id&quot;, user.Id)
+    span:set(&quot;cart_total_cents&quot;, cart.totalCents)
+    -- ... do work; if this errors the span auto-fails ...
+    span:set(&quot;payment_provider&quot;, &quot;stripe&quot;)
+end)
+```
+
+Output goes to `print` (ok) or `warn` (failed) and is formatted for
+Studio readability:
+
+```
+[checkout.process] OK 142.30ms
+  cart_total_cents = 4200
+  payment_provider = &quot;stripe&quot;
+  request_id = &quot;abc&quot;
+  user_id = 5
+```"><link data-rh="true" rel="canonical" href="https://morgann1.github.io/wally-packages/api/WideLogger"><link data-rh="true" rel="alternate" href="https://morgann1.github.io/wally-packages/api/WideLogger" hreflang="en"><link data-rh="true" rel="alternate" href="https://morgann1.github.io/wally-packages/api/WideLogger" hreflang="x-default"><link rel="stylesheet" href="/wally-packages/assets/css/styles.5cbed574.css">
+<script src="/wally-packages/assets/js/runtime~main.d3618119.js" defer="defer"></script>
+<script src="/wally-packages/assets/js/main.de47ab4f.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<script>!function(){function t(t){document.documentElement.setAttribute("data-theme",t)}var e=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();null!==e?t(e):window.matchMedia("(prefers-color-scheme: dark)").matches?t("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,t("light"))}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/wally-packages/"><b class="navbar__title text--truncate">wally-packages</b></a><a class="navbar__item navbar__link" href="/wally-packages/docs/intro">Docs</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/wally-packages/api/">API</a></div><div class="navbar__items navbar__items--right"><a href="https://github.com/morgann1/wally-packages" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_nPIU"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="Switch between dark and light mode (currently light mode)" aria-label="Switch between dark and light mode (currently light mode)" aria-live="polite" aria-pressed="false"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search"><span aria-label="expand searchbar" role="button" class="search-icon" tabindex="0"></span><input id="search_input_react" type="search" placeholder="Loading..." aria-label="Search" class="navbar__search-input search-bar" disabled=""></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="main-wrapper mainWrapper_z2l0 docPageContainer_wNNk"><div class="docPage_Dpn1"><div class="docSidebarContainer_o_re"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/wally-packages/api/bindToInstanceDestroyed">Modules</a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/wally-packages/api/Cryo">Cryo</a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/wally-packages/api/IsLocalDev">Plugin</a></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/wally-packages/api/Interposer">​Interposer</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/wally-packages/api/OwnedToolbar">​Owned​Toolbar</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/wally-packages/api/SensationSounds">​Sensation​Sounds</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" href="/wally-packages/api/WideLogger">​Wide​Logger</a></li></ul></nav></div></div><main class="docMainContainer_HJE1"><div class="container padding-vert--lg"><div class="row"><div class="col docItemCol_MU3C"><div class="docItemContainer_Wv98"><article><div class="member_J0w1 markdown"><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_oUs_"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><header><h1 class="docTitle_mZRt" style="text-decoration:none"><span style="display:inline-block">Wide</span><span style="display:inline-block">Logger</span></h1><div class="luaClassTags_EipM"></div><div>
+<p>
+  A logger built around "wide events" (<a href="https://loggingsucks.com/">https://loggingsucks.com/</a>): one
+  structured event per operation, enriched with context as the operation
+  runs, emitted exactly once when the span finishes.
+</p>
+<p>
+  Instead of scattering <code>print</code> calls across a code path, you open a span
+  at the start of an operation, attach high-cardinality context fields
+  (user ids, request ids, business state) along the way, and let the
+  logger emit a single readable record at the end.
+</p>
+<pre class="language-lua"><code class="language-lua"><span class="token keyword">local</span> Log <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span>to<span class="token punctuation">.</span>WideLogger<span class="token punctuation">)</span>
+
+Log<span class="token punctuation">.</span><span class="token function">withSpan</span><span class="token punctuation">(</span><span class="token string">"checkout.process"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> request_id <span class="token operator">=</span> id <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span>span<span class="token punctuation">)</span>
+    span<span class="token punctuation">:</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"user_id"</span><span class="token punctuation">,</span> user<span class="token punctuation">.</span>Id<span class="token punctuation">)</span>
+    span<span class="token punctuation">:</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"cart_total_cents"</span><span class="token punctuation">,</span> cart<span class="token punctuation">.</span>totalCents<span class="token punctuation">)</span>
+    <span class="token comment">-- ... do work; if this errors the span auto-fails ...</span>
+    span<span class="token punctuation">:</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token string">"payment_provider"</span><span class="token punctuation">,</span> <span class="token string">"stripe"</span><span class="token punctuation">)</span>
+<span class="token keyword">end</span><span class="token punctuation">)</span>
+</code></pre>
+<p>
+  Output goes to <code>print</code> (ok) or <code>warn</code> (failed) and is formatted for
+  Studio readability:
+</p>
+<pre><code>[checkout.process] OK 142.30ms
+  cart_total_cents = 4200
+  payment_provider = "stripe"
+  request_id = "abc"
+  user_id = 5
+</code></pre>
+</div></header><h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="span"><code style="text-decoration:none">span</code><a href="#span" class="hash-link" aria-label="Direct link to span" title="Direct link to span">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/wide-logger/init.luau#L180"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>WideLogger<!-- -->.</code><code class="green_DgR4">span</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>
+  Open a new span. Set fields on it as the operation progresses, then
+  call <code>:finish()</code> to emit the wide event.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="withSpan"><code style="text-decoration:none">withSpan</code><a href="#withSpan" class="hash-link" aria-label="Direct link to withSpan" title="Direct link to withSpan">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/wide-logger/init.luau#L205"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>WideLogger<!-- -->.</code><code class="green_DgR4">withSpan</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>
+  Open a span, run <code>fn(span)</code>, and finish the span automatically. If
+  <code>fn</code> errors, the span is marked failed and the error is rethrown
+  after the event is emitted. Returns whatever <code>fn</code> returned on success.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="set"><code style="text-decoration:none">set</code><a href="#set" class="hash-link" aria-label="Direct link to set" title="Direct link to set">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/wide-logger/init.luau#L63"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>WideLogger<!-- -->:</code><code class="green_DgR4">set</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Attach a single field to the span. Returns the span for chaining.</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="merge"><code style="text-decoration:none">merge</code><a href="#merge" class="hash-link" aria-label="Direct link to merge" title="Direct link to merge">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/wide-logger/init.luau#L77"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>WideLogger<!-- -->:</code><code class="green_DgR4">merge</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>
+  Attach a table of fields to the span at once. Existing keys are
+  overwritten. Returns the span for chaining.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="fail"><code style="text-decoration:none">fail</code><a href="#fail" class="hash-link" aria-label="Direct link to fail" title="Direct link to fail">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/wide-logger/init.luau#L93"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>WideLogger<!-- -->:</code><code class="green_DgR4">fail</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>
+  Mark the span as failed and attach the given error. The span will be
+  emitted via <code>warn</code> when finished. Returns the span for chaining.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="finish"><code style="text-decoration:none">finish</code><a href="#finish" class="hash-link" aria-label="Direct link to finish" title="Direct link to finish">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/wide-logger/init.luau#L156"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>WideLogger<!-- -->:</code><code class="green_DgR4">finish</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>
+  Emit the wide event. Subsequent calls are no-ops. After this, calls to
+  <code>set</code>/<code>merge</code>/<code>fail</code> are also no-ops.
+</p>
+</div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
+    &quot;functions&quot;: [
+        {
+            &quot;name&quot;: &quot;set&quot;,
+            &quot;desc&quot;: &quot;Attach a single field to the span. Returns the span for chaining.&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 63,
+                &quot;path&quot;: &quot;modules/wide-logger/init.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;merge&quot;,
+            &quot;desc&quot;: &quot;Attach a table of fields to the span at once. Existing keys are\noverwritten. Returns the span for chaining.&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 77,
+                &quot;path&quot;: &quot;modules/wide-logger/init.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;fail&quot;,
+            &quot;desc&quot;: &quot;Mark the span as failed and attach the given error. The span will be\nemitted via `warn` when finished. Returns the span for chaining.&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 93,
+                &quot;path&quot;: &quot;modules/wide-logger/init.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;finish&quot;,
+            &quot;desc&quot;: &quot;Emit the wide event. Subsequent calls are no-ops. After this, calls to\n`set`/`merge`/`fail` are also no-ops.&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;method&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 156,
+                &quot;path&quot;: &quot;modules/wide-logger/init.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;span&quot;,
+            &quot;desc&quot;: &quot;Open a new span. Set fields on it as the operation progresses, then\ncall `:finish()` to emit the wide event.&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 180,
+                &quot;path&quot;: &quot;modules/wide-logger/init.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;withSpan&quot;,
+            &quot;desc&quot;: &quot;Open a span, run `fn(span)`, and finish the span automatically. If\n`fn` errors, the span is marked failed and the error is rethrown\nafter the event is emitted. Returns whatever `fn` returned on success.&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 205,
+                &quot;path&quot;: &quot;modules/wide-logger/init.luau&quot;
+            }
+        }
+    ],
+    &quot;properties&quot;: [],
+    &quot;types&quot;: [],
+    &quot;name&quot;: &quot;WideLogger&quot;,
+    &quot;desc&quot;: &quot;A logger built around \&quot;wide events\&quot; (https://loggingsucks.com/): one\nstructured event per operation, enriched with context as the operation\nruns, emitted exactly once when the span finishes.\n\nInstead of scattering `print` calls across a code path, you open a span\nat the start of an operation, attach high-cardinality context fields\n(user ids, request ids, business state) along the way, and let the\nlogger emit a single readable record at the end.\n\n```lua\nlocal Log = require(path.to.WideLogger)\n\nLog.withSpan(\&quot;checkout.process\&quot;, { request_id = id }, function(span)\n    span:set(\&quot;user_id\&quot;, user.Id)\n    span:set(\&quot;cart_total_cents\&quot;, cart.totalCents)\n    -- ... do work; if this errors the span auto-fails ...\n    span:set(\&quot;payment_provider\&quot;, \&quot;stripe\&quot;)\nend)\n```\n\nOutput goes to `print` (ok) or `warn` (failed) and is formatted for\nStudio readability:\n\n```\n[checkout.process] OK 142.30ms\n  cart_total_cents = 4200\n  payment_provider = \&quot;stripe\&quot;\n  request_id = \&quot;abc\&quot;\n  user_id = 5\n```&quot;,
+    &quot;source&quot;: {
+        &quot;line&quot;: 36,
+        &quot;path&quot;: &quot;modules/wide-logger/init.luau&quot;
+    }
+}</pre></details></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#fail" class="table-of-contents__link toc-highlight">:fail</a></li><li><a href="#finish" class="table-of-contents__link toc-highlight">:finish</a></li><li><a href="#merge" class="table-of-contents__link toc-highlight">:merge</a></li><li><a href="#set" class="table-of-contents__link toc-highlight">:set</a></li><li><a href="#span" class="table-of-contents__link toc-highlight">.span</a></li><li><a href="#withSpan" class="table-of-contents__link toc-highlight">.withSpan</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 morgann1. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
+</body>
+</html>
