@@ -1,0 +1,9 @@
+[package]
+name = "morgann1/wide-logger"
+description = "Logger based on loggingsucks.com"
+version = "0.1.0"
+license = "MIT"
+authors = ["morgann1"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"

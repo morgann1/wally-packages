@@ -58,7 +58,13 @@
                 "simple-logger": {
                     "simple-logger": {
                         "$path": "modules/simple-logger"
-                    }, 
+                    },
+                    "$className": "Folder"
+                },
+                "wide-logger": {
+                    "wide-logger": {
+                        "$path": "modules/wide-logger"
+                    },
                     "$className": "Folder"
                 }
             }, 
