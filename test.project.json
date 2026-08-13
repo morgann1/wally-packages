@@ -1,26 +1,332 @@
 {
-    "name": "wally-packages-tests",
+    "name": "wally-packages-tests", 
     "tree": {
-        "$className": "DataModel",
-        "ReplicatedStorage": {
-            "$className": "ReplicatedStorage",
-            "Packages": {
-                "$path": "Packages"
-            },
-            "DevPackages": {
-                "$path": "DevPackages"
-            },
-            "RobloxPackages": {
-                "$path": "roblox.project.json"
-            },
-            "Tests": {
-                "$path": "tests/roblox"
-            }
-        },
+        "$className": "DataModel", 
         "ServerScriptService": {
-            "$className": "ServerScriptService",
             "RunTests": {
                 "$path": "tests/runTests.server.luau"
+            }, 
+            "$className": "ServerScriptService"
+        }, 
+        "ReplicatedStorage": {
+            "Modules": {
+                "character-promise-utils": {
+                    "character-promise-utils": {
+                        "$path": "modules/character-promise-utils"
+                    }, 
+                    "Promise": {
+                        "$path": "Packages/Promise.lua"
+                    }, 
+                    "disconnectAndClear": {
+                        "$path": "modules/disconnect-and-clear"
+                    }, 
+                    "$className": "Folder", 
+                    "_Index": {
+                        "$path": "Packages/_Index"
+                    }
+                }, 
+                "ias-wrapper": {
+                    "ias-wrapper": {
+                        "$path": "modules/ias-wrapper"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "safe-player-added": {
+                    "safe-player-added": {
+                        "$path": "modules/safe-player-added"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "bind-to-instance-destroyed": {
+                    "bind-to-instance-destroyed": {
+                        "$path": "modules/bind-to-instance-destroyed"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "zzlib": {
+                    "zzlib": {
+                        "$path": "modules/zzlib"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "wide-logger": {
+                    "wide-logger": {
+                        "$path": "modules/wide-logger"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "cryo": {
+                    "cryo": {
+                        "$path": "modules/cryo"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "type-validation": {
+                    "type-validation": {
+                        "$path": "modules/type-validation"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "$className": "Folder", 
+                "disconnect-and-clear": {
+                    "disconnect-and-clear": {
+                        "$path": "modules/disconnect-and-clear"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "simple-logger": {
+                    "simple-logger": {
+                        "$path": "modules/simple-logger"
+                    }, 
+                    "$className": "Folder"
+                }
+            }, 
+            "DevPackages": {
+                "$path": "DevPackages"
+            }, 
+            "Tests": {
+                "roblox": {
+                    "$path": "tests/roblox"
+                }, 
+                "plugin": {
+                    "$path": "tests/plugin"
+                }, 
+                "$className": "Folder", 
+                "jest.config": {
+                    "$path": "tests/jest.config.luau"
+                }, 
+                "modules": {
+                    "$path": "tests/modules"
+                }
+            }, 
+            "PluginLib": {
+                "icon-ramp": {
+                    "icon-ramp": {
+                        "$path": "plugin/icon-ramp"
+                    }, 
+                    "$className": "Folder", 
+                    "ty": {
+                        "$path": "plugin/ty"
+                    }, 
+                    "Maybe": {
+                        "$path": "plugin/maybe"
+                    }
+                }, 
+                "owned-toolbar": {
+                    "IconRamp": {
+                        "$path": "plugin/icon-ramp"
+                    }, 
+                    "ty": {
+                        "$path": "plugin/ty"
+                    }, 
+                    "IsLocalDev": {
+                        "$path": "plugin/is-local-dev"
+                    }, 
+                    "Maybe": {
+                        "$path": "plugin/maybe"
+                    }, 
+                    "React": {
+                        "$path": "Packages/React.lua"
+                    }, 
+                    "$className": "Folder", 
+                    "_Index": {
+                        "$path": "Packages/_Index"
+                    }, 
+                    "owned-toolbar": {
+                        "$path": "plugin/owned-toolbar"
+                    }
+                }, 
+                "finally-task": {
+                    "$className": "Folder", 
+                    "finally-task": {
+                        "$path": "plugin/finally-task"
+                    }, 
+                    "doCleanup": {
+                        "$path": "plugin/do-cleanup"
+                    }
+                }, 
+                "sorting-by": {
+                    "sorting-by": {
+                        "$path": "plugin/sorting-by"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "interposer": {
+                    "Maybe": {
+                        "$path": "plugin/maybe"
+                    }, 
+                    "ty": {
+                        "$path": "plugin/ty"
+                    }, 
+                    "IsLocalDev": {
+                        "$path": "plugin/is-local-dev"
+                    }, 
+                    "ElttobLog": {
+                        "$path": "plugin/elttob-log"
+                    }, 
+                    "interposer": {
+                        "$path": "plugin/interposer"
+                    }, 
+                    "$className": "Folder", 
+                    "Event": {
+                        "$path": "plugin/event"
+                    }, 
+                    "PushPull": {
+                        "$path": "plugin/push-pull"
+                    }
+                }, 
+                "shared-toolbar": {
+                    "_Index": {
+                        "$path": "Packages/_Index"
+                    }, 
+                    "doCleanup": {
+                        "$path": "plugin/do-cleanup"
+                    }, 
+                    "OwnedToolbar": {
+                        "$path": "plugin/owned-toolbar"
+                    }, 
+                    "PushPull": {
+                        "$path": "plugin/push-pull"
+                    }, 
+                    "Leader": {
+                        "$path": "plugin/leader"
+                    }, 
+                    "IconRamp": {
+                        "$path": "plugin/icon-ramp"
+                    }, 
+                    "ElttobLog": {
+                        "$path": "plugin/elttob-log"
+                    }, 
+                    "shared-toolbar": {
+                        "$path": "plugin/shared-toolbar"
+                    }, 
+                    "FinallyTask": {
+                        "$path": "plugin/finally-task"
+                    }, 
+                    "Event": {
+                        "$path": "plugin/event"
+                    }, 
+                    "Maybe": {
+                        "$path": "plugin/maybe"
+                    }, 
+                    "ty": {
+                        "$path": "plugin/ty"
+                    }, 
+                    "IsLocalDev": {
+                        "$path": "plugin/is-local-dev"
+                    }, 
+                    "SortingBy": {
+                        "$path": "plugin/sorting-by"
+                    }, 
+                    "React": {
+                        "$path": "Packages/React.lua"
+                    }, 
+                    "DoCleanup": {
+                        "$path": "plugin/do-cleanup"
+                    }, 
+                    "Interposer": {
+                        "$path": "plugin/interposer"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "do-cleanup": {
+                    "do-cleanup": {
+                        "$path": "plugin/do-cleanup"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "sensation-sounds": {
+                    "sensation-sounds": {
+                        "$path": "plugin/sensation-sounds"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "event": {
+                    "event": {
+                        "$path": "plugin/event"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "ty": {
+                    "$className": "Folder", 
+                    "ty": {
+                        "$path": "plugin/ty"
+                    }, 
+                    "Maybe": {
+                        "$path": "plugin/maybe"
+                    }
+                }, 
+                "leader": {
+                    "doCleanup": {
+                        "$path": "plugin/do-cleanup"
+                    }, 
+                    "Interposer": {
+                        "$path": "plugin/interposer"
+                    }, 
+                    "leader": {
+                        "$path": "plugin/leader"
+                    }, 
+                    "ElttobLog": {
+                        "$path": "plugin/elttob-log"
+                    }, 
+                    "ty": {
+                        "$path": "plugin/ty"
+                    }, 
+                    "IsLocalDev": {
+                        "$path": "plugin/is-local-dev"
+                    }, 
+                    "Maybe": {
+                        "$path": "plugin/maybe"
+                    }, 
+                    "FinallyTask": {
+                        "$path": "plugin/finally-task"
+                    }, 
+                    "$className": "Folder", 
+                    "Event": {
+                        "$path": "plugin/event"
+                    }, 
+                    "PushPull": {
+                        "$path": "plugin/push-pull"
+                    }
+                }, 
+                "maybe": {
+                    "maybe": {
+                        "$path": "plugin/maybe"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "elttob-log": {
+                    "elttob-log": {
+                        "$path": "plugin/elttob-log"
+                    }, 
+                    "$className": "Folder", 
+                    "IsLocalDev": {
+                        "$path": "plugin/is-local-dev"
+                    }
+                }, 
+                "$className": "Folder", 
+                "is-local-dev": {
+                    "is-local-dev": {
+                        "$path": "plugin/is-local-dev"
+                    }, 
+                    "$className": "Folder"
+                }, 
+                "push-pull": {
+                    "$className": "Folder", 
+                    "Maybe": {
+                        "$path": "plugin/maybe"
+                    }, 
+                    "push-pull": {
+                        "$path": "plugin/push-pull"
+                    }
+                }
+            }, 
+            "$className": "ReplicatedStorage", 
+            "Packages": {
+                "$path": "Packages"
+            }, 
+            "RobloxPackages": {
+                "$path": "roblox.project.json"
             }
         }
     }

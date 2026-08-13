@@ -7,9 +7,15 @@
                     "character-promise-utils": {
                         "$path": "modules/character-promise-utils"
                     }, 
-                    "$className": "Folder", 
+                    "Promise": {
+                        "$path": "Packages/Promise.lua"
+                    }, 
                     "disconnectAndClear": {
                         "$path": "modules/disconnect-and-clear"
+                    }, 
+                    "$className": "Folder", 
+                    "_Index": {
+                        "$path": "Packages/_Index"
                     }
                 }, 
                 "ias-wrapper": {
@@ -72,7 +78,19 @@
                 "$path": "DevPackages"
             }, 
             "Tests": {
-                "$path": "tests/roblox"
+                "roblox": {
+                    "$path": "tests/roblox"
+                }, 
+                "plugin": {
+                    "$path": "tests/plugin"
+                }, 
+                "$className": "Folder", 
+                "jest.config": {
+                    "$path": "tests/jest.config.luau"
+                }, 
+                "modules": {
+                    "$path": "tests/modules"
+                }
             }, 
             "PluginLib": {
                 "icon-ramp": {

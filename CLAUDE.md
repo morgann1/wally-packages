@@ -42,9 +42,10 @@ thing is used, not what the next line does.
    minutes per call and looks like a hang; `print()` is instant. The same
    goes for `process.run` with captured stdio on commands with large output
    (`wally package --list`): pass `{ stdio = "none" }` or `"inherit"`.
-2. **Hand-editing generated files.** `default.project.json` is written by
-   `.lute/sync-projects.luau`, the `roblox/` tree and `roblox.project.json`
-   by `.lute/vendor-roblox-packages.luau`, and the README module table by
+2. **Hand-editing generated files.** `default.project.json` and
+   `test.project.json` are written by `.lute/sync-projects.luau`, the
+   `roblox/` tree and `roblox.project.json` by
+   `.lute/vendor-roblox-packages.luau`, and the README module table by
    `.lute/update-readme.luau`. Edit the generator, then regenerate.
 3. **Publishing.** `wally publish` is permanent: no unpublish, versions are
    immutable. Never publish unless explicitly asked. The `roblox/` packages
@@ -83,11 +84,15 @@ thing is used, not what the next line does.
 - **Local CI**: `lute run .lute/ci.luau` runs the full lint/typecheck
   pipeline; `lute run .lute/build.luau` builds the place file.
 - **Tests**: `lute run .lute/test.luau` builds a place from
-  `test.project.json` and runs the Jest specs (`tests/roblox/*.spec.luau`)
-  in Studio via run-in-roblox. Specs live outside `roblox/` because that
-  tree is wiped on regeneration, and they test the conversion (requires
-  resolve, ancestor re-casing, external substitutions hold), not upstream
-  behavior — Roblox already tests its own libraries.
+  `test.project.json` and runs the Jest specs (`tests/{roblox,modules,plugin}/
+  *.spec.luau`) in Studio via run-in-roblox. `tests/roblox` specs live
+  outside `roblox/` because that tree is wiped on regeneration, and they
+  test the conversion (requires resolve, ancestor re-casing, external
+  substitutions hold), not upstream behavior — Roblox already tests its
+  own libraries. `tests/modules` and `tests/plugin` test our packages'
+  behavior; specs that need plugin-security APIs (StudioService) or
+  client-only globals guard with `test.skip` so the suite still passes in
+  other run contexts.
 - **Publish** (only on request): `lute run .lute/publish.luau [--plugin]` for
   the main trees; `roblox/` packages go individually in the order listed in
   `roblox/README.md`, dependencies before dependents.

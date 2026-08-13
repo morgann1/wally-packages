@@ -6,6 +6,8 @@
 -- so the trampoline's `script.Parent._Index[...]` lookup resolves.
 -- Both modules/ and plugin/ are merged into one project file because
 -- luau-lsp only consumes a single Rojo file.
+-- test.project.json is generated too: the same ReplicatedStorage tree
+-- plus the test runner, so the test place sees identical instance paths.
 -- Run with: `lute run .lute/sync-projects.luau`
 
 local fs = require("@std/fs")
@@ -200,9 +202,16 @@ end
 if isDir("DevPackages") then
 	replicatedStorage.DevPackages = { ["$path"] = "DevPackages" }
 end
-if isDir("tests/roblox") then
-	replicatedStorage.Tests = { ["$path"] = "tests/roblox" }
+local testsTree: any = { ["$className"] = "Folder" }
+if isFile("tests/jest.config.luau") then
+	testsTree["jest.config"] = { ["$path"] = "tests/jest.config.luau" }
 end
+for _, subdir in { "roblox", "modules", "plugin" } do
+	if isDir(`tests/{subdir}`) then
+		testsTree[subdir] = { ["$path"] = `tests/{subdir}` }
+	end
+end
+replicatedStorage.Tests = testsTree
 
 local project = {
 	name = "wally-packages",
@@ -214,3 +223,18 @@ local project = {
 
 fs.writeStringToFile("default.project.json", json.serialize(project, true) .. "\n")
 print("wrote default.project.json")
+
+local testProject = {
+	name = "wally-packages-tests",
+	tree = {
+		["$className"] = "DataModel",
+		ReplicatedStorage = replicatedStorage,
+		ServerScriptService = {
+			["$className"] = "ServerScriptService",
+			RunTests = { ["$path"] = "tests/runTests.server.luau" },
+		},
+	},
+}
+
+fs.writeStringToFile("test.project.json", json.serialize(testProject, true) .. "\n")
+print("wrote test.project.json")
