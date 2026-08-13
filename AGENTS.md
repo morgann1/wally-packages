@@ -10,8 +10,3 @@
   - *Liskov Substitution* — subtypes honor the contracts of their base types.
   - *Interface Segregation* — callers depend only on the surface they use.
   - *Dependency Inversion* — depend on abstractions, not concrete implementations.
-
-## Style guides
-
-- [llm-docs/process/luau-style.md](llm-docs/process/luau-style.md) — Luau (Roblox plugin).
-- [llm-docs/process/react-patterns.md](llm-docs/process/react-patterns.md) — React (Roblox plugin).
