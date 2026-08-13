@@ -1,0 +1,201 @@
+{
+    "name": "RobloxPackages",
+    "tree": {
+        "$className": "Folder",
+        "builder-icons": {
+            "$className": "Folder",
+            "builder-icons": {
+                "$path": "roblox/builder-icons"
+            }
+        },
+        "dash": {
+            "$className": "Folder",
+            "dash": {
+                "$path": "roblox/dash"
+            }
+        },
+        "foundation": {
+            "$className": "Folder",
+            "foundation": {
+                "$path": "roblox/foundation"
+            },
+            "BuilderIcons": {
+                "$path": "roblox/builder-icons"
+            },
+            "Dash": {
+                "$path": "roblox/dash"
+            },
+            "FoundationCloudAssets": {
+                "$path": "roblox/foundation-cloud-assets"
+            },
+            "FoundationImages": {
+                "$path": "roblox/foundation-images"
+            },
+            "Lumberyak": {
+                "$path": "roblox/lumberyak"
+            },
+            "Motion": {
+                "$path": "roblox/motion"
+            },
+            "Otter": {
+                "$path": "roblox/otter"
+            },
+            "RbxDesignFoundations": {
+                "$path": "roblox/rbx-design-foundations"
+            },
+            "React": {
+                "$path": "Packages/RobloxReact.lua"
+            },
+            "ReactIs": {
+                "$path": "Packages/ReactIs.lua"
+            },
+            "ReactOtter": {
+                "$path": "roblox/react-otter"
+            },
+            "ReactRoblox": {
+                "$path": "Packages/ReactRoblox.lua"
+            },
+            "ReactUtils": {
+                "$path": "roblox/react-utils"
+            },
+            "Roact": {
+                "$path": "Packages/RoactCompat.lua"
+            },
+            "SafeFlags": {
+                "$path": "Packages/SafeFlags.lua"
+            },
+            "Signal": {
+                "$path": "roblox/signal"
+            },
+            "UsageTracker": {
+                "$path": "roblox/usage-tracker"
+            },
+            "_Index": {
+                "$path": "Packages/_Index"
+            }
+        },
+        "foundation-cloud-assets": {
+            "$className": "Folder",
+            "foundation-cloud-assets": {
+                "$path": "roblox/foundation-cloud-assets"
+            }
+        },
+        "foundation-images": {
+            "$className": "Folder",
+            "foundation-images": {
+                "$path": "roblox/foundation-images"
+            },
+            "BuilderIcons": {
+                "$path": "roblox/builder-icons"
+            },
+            "SafeFlags": {
+                "$path": "Packages/SafeFlags.lua"
+            },
+            "_Index": {
+                "$path": "Packages/_Index"
+            }
+        },
+        "motion": {
+            "$className": "Folder",
+            "motion": {
+                "$path": "roblox/motion"
+            },
+            "React": {
+                "$path": "Packages/RobloxReact.lua"
+            },
+            "ReactOtter": {
+                "$path": "roblox/react-otter"
+            },
+            "_Index": {
+                "$path": "Packages/_Index"
+            }
+        },
+        "otter": {
+            "$className": "Folder",
+            "otter": {
+                "$path": "roblox/otter"
+            },
+            "Collections": {
+                "$path": "Packages/Collections.lua"
+            },
+            "Signal": {
+                "$path": "roblox/signal"
+            },
+            "_Index": {
+                "$path": "Packages/_Index"
+            }
+        },
+        "rbx-design-foundations": {
+            "$className": "Folder",
+            "rbx-design-foundations": {
+                "$path": "roblox/rbx-design-foundations"
+            }
+        },
+        "react-otter": {
+            "$className": "Folder",
+            "react-otter": {
+                "$path": "roblox/react-otter"
+            },
+            "Otter": {
+                "$path": "roblox/otter"
+            },
+            "React": {
+                "$path": "Packages/RobloxReact.lua"
+            },
+            "_Index": {
+                "$path": "Packages/_Index"
+            }
+        },
+        "react-utils": {
+            "$className": "Folder",
+            "react-utils": {
+                "$path": "roblox/react-utils"
+            },
+            "LuauPolyfill": {
+                "$path": "Packages/LuauPolyfill.lua"
+            },
+            "React": {
+                "$path": "Packages/RobloxReact.lua"
+            },
+            "ReactRoblox": {
+                "$path": "Packages/ReactRoblox.lua"
+            },
+            "SafeFlags": {
+                "$path": "Packages/SafeFlags.lua"
+            },
+            "_Index": {
+                "$path": "Packages/_Index"
+            }
+        },
+        "signal": {
+            "$className": "Folder",
+            "signal": {
+                "$path": "roblox/signal"
+            }
+        },
+        "usage-tracker": {
+            "$className": "Folder",
+            "usage-tracker": {
+                "$path": "roblox/usage-tracker"
+            },
+            "Cryo": {
+                "$path": "modules/cryo"
+            },
+            "ReactIs": {
+                "$path": "Packages/ReactIs.lua"
+            },
+            "_Index": {
+                "$path": "Packages/_Index"
+            }
+        },
+        "lumberyak": {
+            "$className": "Folder",
+            "lumberyak": {
+                "$path": "roblox/lumberyak"
+            },
+            "Cryo": {
+                "$path": "modules/cryo"
+            }
+        }
+    }
+}

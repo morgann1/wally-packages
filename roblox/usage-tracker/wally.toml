@@ -1,0 +1,11 @@
+[package]
+name = "morgann1/usage-tracker"
+description = "Roblox UsageTracker 0.1.1, vendored from Studio 0.716.0.7160873 via roblox-packages"
+version = "0.1.1"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"
+
+[dependencies]
+Cryo = "morgann1/cryo@1.1.0"
+ReactIs = "roblox/react-is@17.3.11"

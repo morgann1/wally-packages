@@ -68,10 +68,13 @@
                     "$className": "Folder"
                 }
             }, 
-            "$className": "ReplicatedStorage", 
+            "$className": "ReplicatedStorage",
             "Packages": {
                 "$path": "Packages"
-            }, 
+            },
+            "RobloxPackages": {
+                "$path": "roblox.project.json"
+            },
             "PluginLib": {
                 "icon-ramp": {
                     "icon-ramp": {

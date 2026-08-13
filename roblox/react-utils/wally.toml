@@ -1,0 +1,13 @@
+[package]
+name = "morgann1/react-utils"
+description = "Roblox ReactUtils 1.9.1, vendored from Studio 0.716.0.7160873 via roblox-packages"
+version = "1.9.1"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"
+
+[dependencies]
+LuauPolyfill = "roblox/luau-polyfill@1.2.5"
+React = "roblox/react@17.3.11"
+ReactRoblox = "roblox/react-roblox@17.3.11"
+SafeFlags = "roblox/safe-flags@0.1.2"

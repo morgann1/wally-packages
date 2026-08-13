@@ -12,6 +12,7 @@ packages/*/Packages
 *.rbxl
 *.rbxl.lock
 sourcemap.json
-.claude
+.claude/*
+!.claude/skills/
 .ci/
 ref/

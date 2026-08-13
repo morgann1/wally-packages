@@ -1,0 +1,11 @@
+[package]
+name = "morgann1/react-otter"
+description = "Roblox ReactOtter 1.3.7, vendored from Studio 0.716.0.7160873 via roblox-packages"
+version = "1.3.7"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"
+
+[dependencies]
+Otter = "morgann1/otter@1.3.7"
+React = "roblox/react@17.3.11"

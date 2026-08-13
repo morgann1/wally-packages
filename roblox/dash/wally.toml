@@ -1,0 +1,7 @@
+[package]
+name = "morgann1/dash"
+description = "Roblox Dash 3.3.1, vendored from Studio 0.716.0.7160873 via roblox-packages"
+version = "3.3.1"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"

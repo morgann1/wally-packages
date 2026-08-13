@@ -1,1 +1,3 @@
 std = "roblox"
+# Vendored Roblox sources are not held to this repo's lint standards.
+exclude = ["roblox/**", "Packages/**"]

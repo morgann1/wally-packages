@@ -7,3 +7,13 @@ private = true
 
 [dependencies]
 React = "jsdotlua/react@17.2.1"
+
+# External deps of the vendored roblox/ packages; their generated linkers are
+# wired into default.project.json so luau-lsp resolves the vendored requires.
+Collections = "roblox/luau-polyfill-collections@1.2.5"
+LuauPolyfill = "roblox/luau-polyfill@1.2.5"
+ReactIs = "roblox/react-is@17.3.11"
+ReactRoblox = "roblox/react-roblox@17.3.11"
+RoactCompat = "roblox/roact-compat@17.3.11"
+RobloxReact = "roblox/react@17.3.11"
+SafeFlags = "roblox/safe-flags@0.1.2"

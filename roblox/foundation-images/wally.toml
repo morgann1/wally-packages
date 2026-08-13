@@ -1,0 +1,11 @@
+[package]
+name = "morgann1/foundation-images"
+description = "Roblox FoundationImages 1.35.0, vendored from Studio 0.716.0.7160873 via roblox-packages"
+version = "1.35.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"
+
+[dependencies]
+BuilderIcons = "morgann1/builder-icons@0.1.32"
+SafeFlags = "roblox/safe-flags@0.1.2"

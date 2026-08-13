@@ -1,0 +1,7 @@
+[package]
+name = "morgann1/signal"
+description = "Roblox Signal 1.0.0, vendored from Studio 0.716.0.7160873 via roblox-packages"
+version = "1.0.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"
