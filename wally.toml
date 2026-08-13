@@ -8,6 +8,10 @@ private = true
 [dependencies]
 React = "jsdotlua/react@17.2.1"
 
+# External dep of modules/character-promise-utils; the generated linker is
+# mounted into that package's container so `script.Parent.Promise` resolves.
+Promise = "evaera/promise@4.0.0"
+
 # External deps of the vendored roblox/ packages; their generated linkers are
 # wired into default.project.json so luau-lsp resolves the vendored requires.
 Collections = "roblox/luau-polyfill-collections@1.2.5"
