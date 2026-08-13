@@ -9,7 +9,7 @@
 -- Run with: `lute run .lute/sync-projects.luau`
 
 local fs = require("@std/fs")
-local io = require("@std/io")
+
 local json = require("@std/json")
 local toml = require("./batteries/toml")
 
@@ -190,6 +190,11 @@ end
 if isDir(PACKAGES_DIR) then
 	replicatedStorage.Packages = { ["$path"] = PACKAGES_DIR }
 end
+-- The vendored roblox/ tree carries its own generated project file (see
+-- .lute/vendor-roblox-packages.luau); mount it rather than mirroring it here.
+if fs.exists("roblox.project.json") then
+	replicatedStorage.RobloxPackages = { ["$path"] = "roblox.project.json" }
+end
 
 local project = {
 	name = "wally-packages",
@@ -200,4 +205,4 @@ local project = {
 }
 
 fs.writeStringToFile("default.project.json", json.serialize(project, true) .. "\n")
-io.write("wrote default.project.json\n")
+print("wrote default.project.json")
