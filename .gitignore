@@ -7,6 +7,8 @@ packages/*/Packages
 /out
 /build
 /Packages
+/DevPackages
+/tests/build
 /test/Packages
 /test/modules
 *.rbxl

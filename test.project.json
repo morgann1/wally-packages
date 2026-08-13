@@ -1,0 +1,27 @@
+{
+    "name": "wally-packages-tests",
+    "tree": {
+        "$className": "DataModel",
+        "ReplicatedStorage": {
+            "$className": "ReplicatedStorage",
+            "Packages": {
+                "$path": "Packages"
+            },
+            "DevPackages": {
+                "$path": "DevPackages"
+            },
+            "RobloxPackages": {
+                "$path": "roblox.project.json"
+            },
+            "Tests": {
+                "$path": "tests/roblox"
+            }
+        },
+        "ServerScriptService": {
+            "$className": "ServerScriptService",
+            "RunTests": {
+                "$path": "tests/runTests.server.luau"
+            }
+        }
+    }
+}

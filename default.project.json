@@ -68,6 +68,12 @@
                     "$className": "Folder"
                 }
             }, 
+            "DevPackages": {
+                "$path": "DevPackages"
+            }, 
+            "Tests": {
+                "$path": "tests/roblox"
+            }, 
             "PluginLib": {
                 "icon-ramp": {
                     "icon-ramp": {

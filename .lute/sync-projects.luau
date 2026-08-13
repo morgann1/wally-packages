@@ -195,6 +195,14 @@ end
 if fs.exists("roblox.project.json") then
 	replicatedStorage.RobloxPackages = { ["$path"] = "roblox.project.json" }
 end
+-- Mount the test surfaces so luau-lsp resolves spec requires; the test
+-- place itself is built from test.project.json with the same shape.
+if isDir("DevPackages") then
+	replicatedStorage.DevPackages = { ["$path"] = "DevPackages" }
+end
+if isDir("tests/roblox") then
+	replicatedStorage.Tests = { ["$path"] = "tests/roblox" }
+end
 
 local project = {
 	name = "wally-packages",

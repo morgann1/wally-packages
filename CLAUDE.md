@@ -82,6 +82,12 @@ thing is used, not what the next line does.
 - **README module table**: `lute run .lute/update-readme.luau`.
 - **Local CI**: `lute run .lute/ci.luau` runs the full lint/typecheck
   pipeline; `lute run .lute/build.luau` builds the place file.
+- **Tests**: `lute run .lute/test.luau` builds a place from
+  `test.project.json` and runs the Jest specs (`tests/roblox/*.spec.luau`)
+  in Studio via run-in-roblox. Specs live outside `roblox/` because that
+  tree is wiped on regeneration, and they test the conversion (requires
+  resolve, ancestor re-casing, external substitutions hold), not upstream
+  behavior — Roblox already tests its own libraries.
 - **Publish** (only on request): `lute run .lute/publish.luau [--plugin]` for
   the main trees; `roblox/` packages go individually in the order listed in
   `roblox/README.md`, dependencies before dependents.
