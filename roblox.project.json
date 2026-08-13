@@ -20,58 +20,55 @@
                 "$path": "roblox/foundation"
             },
             "BuilderIcons": {
-                "$path": "roblox/builder-icons"
+                "$path": "roblox/_linkers/builder-icons.luau"
             },
             "Dash": {
-                "$path": "roblox/dash"
+                "$path": "roblox/_linkers/dash.luau"
             },
             "FoundationCloudAssets": {
-                "$path": "roblox/foundation-cloud-assets"
+                "$path": "roblox/_linkers/foundation-cloud-assets.luau"
             },
             "FoundationImages": {
-                "$path": "roblox/foundation-images"
+                "$path": "roblox/_linkers/foundation-images.luau"
             },
             "Lumberyak": {
-                "$path": "roblox/lumberyak"
+                "$path": "roblox/_linkers/lumberyak.luau"
             },
             "Motion": {
-                "$path": "roblox/motion"
+                "$path": "roblox/_linkers/motion.luau"
             },
             "Otter": {
-                "$path": "roblox/otter"
+                "$path": "roblox/_linkers/otter.luau"
             },
             "RbxDesignFoundations": {
-                "$path": "roblox/rbx-design-foundations"
+                "$path": "roblox/_linkers/rbx-design-foundations.luau"
             },
             "React": {
-                "$path": "Packages/RobloxReact.lua"
+                "$path": "roblox/_linkers/RobloxReact.luau"
             },
             "ReactIs": {
-                "$path": "Packages/ReactIs.lua"
+                "$path": "roblox/_linkers/ReactIs.luau"
             },
             "ReactOtter": {
-                "$path": "roblox/react-otter"
+                "$path": "roblox/_linkers/react-otter.luau"
             },
             "ReactRoblox": {
-                "$path": "Packages/ReactRoblox.lua"
+                "$path": "roblox/_linkers/ReactRoblox.luau"
             },
             "ReactUtils": {
-                "$path": "roblox/react-utils"
+                "$path": "roblox/_linkers/react-utils.luau"
             },
             "Roact": {
-                "$path": "Packages/RoactCompat.lua"
+                "$path": "roblox/_linkers/RoactCompat.luau"
             },
             "SafeFlags": {
-                "$path": "Packages/SafeFlags.lua"
+                "$path": "roblox/_linkers/SafeFlags.luau"
             },
             "Signal": {
-                "$path": "roblox/signal"
+                "$path": "roblox/_linkers/signal.luau"
             },
             "UsageTracker": {
-                "$path": "roblox/usage-tracker"
-            },
-            "_Index": {
-                "$path": "Packages/_Index"
+                "$path": "roblox/_linkers/usage-tracker.luau"
             }
         },
         "foundation-cloud-assets": {
@@ -86,13 +83,10 @@
                 "$path": "roblox/foundation-images"
             },
             "BuilderIcons": {
-                "$path": "roblox/builder-icons"
+                "$path": "roblox/_linkers/builder-icons.luau"
             },
             "SafeFlags": {
-                "$path": "Packages/SafeFlags.lua"
-            },
-            "_Index": {
-                "$path": "Packages/_Index"
+                "$path": "roblox/_linkers/SafeFlags.luau"
             }
         },
         "motion": {
@@ -101,13 +95,10 @@
                 "$path": "roblox/motion"
             },
             "React": {
-                "$path": "Packages/RobloxReact.lua"
+                "$path": "roblox/_linkers/RobloxReact.luau"
             },
             "ReactOtter": {
-                "$path": "roblox/react-otter"
-            },
-            "_Index": {
-                "$path": "Packages/_Index"
+                "$path": "roblox/_linkers/react-otter.luau"
             }
         },
         "otter": {
@@ -116,13 +107,10 @@
                 "$path": "roblox/otter"
             },
             "Collections": {
-                "$path": "Packages/Collections.lua"
+                "$path": "roblox/_linkers/Collections.luau"
             },
             "Signal": {
-                "$path": "roblox/signal"
-            },
-            "_Index": {
-                "$path": "Packages/_Index"
+                "$path": "roblox/_linkers/signal.luau"
             }
         },
         "rbx-design-foundations": {
@@ -137,13 +125,10 @@
                 "$path": "roblox/react-otter"
             },
             "Otter": {
-                "$path": "roblox/otter"
+                "$path": "roblox/_linkers/otter.luau"
             },
             "React": {
-                "$path": "Packages/RobloxReact.lua"
-            },
-            "_Index": {
-                "$path": "Packages/_Index"
+                "$path": "roblox/_linkers/RobloxReact.luau"
             }
         },
         "react-utils": {
@@ -152,19 +137,16 @@
                 "$path": "roblox/react-utils"
             },
             "LuauPolyfill": {
-                "$path": "Packages/LuauPolyfill.lua"
+                "$path": "roblox/_linkers/LuauPolyfill.luau"
             },
             "React": {
-                "$path": "Packages/RobloxReact.lua"
+                "$path": "roblox/_linkers/RobloxReact.luau"
             },
             "ReactRoblox": {
-                "$path": "Packages/ReactRoblox.lua"
+                "$path": "roblox/_linkers/ReactRoblox.luau"
             },
             "SafeFlags": {
-                "$path": "Packages/SafeFlags.lua"
-            },
-            "_Index": {
-                "$path": "Packages/_Index"
+                "$path": "roblox/_linkers/SafeFlags.luau"
             }
         },
         "signal": {
@@ -182,10 +164,7 @@
                 "$path": "modules/cryo"
             },
             "ReactIs": {
-                "$path": "Packages/ReactIs.lua"
-            },
-            "_Index": {
-                "$path": "Packages/_Index"
+                "$path": "roblox/_linkers/ReactIs.luau"
             }
         },
         "lumberyak": {

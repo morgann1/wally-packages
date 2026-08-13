@@ -250,11 +250,11 @@ end
 -- runtime once installed as usage-tracker).
 local ancestorRenames: { [string]: string } = {}
 local ancestorPatches = 0
-local function copyRenamingToLuau(src: string, dest: string)
+local function copyRenamingToLuau(src: string, dest: string, selfOriginal: string, selfWallyName: string)
 	fs.createDirectory(dest)
 	for _, entry in fs.listDirectory(src) do
 		if entry.type == "dir" then
-			copyRenamingToLuau(`{src}/{entry.name}`, `{dest}/{entry.name}`)
+			copyRenamingToLuau(`{src}/{entry.name}`, `{dest}/{entry.name}`, selfOriginal, selfWallyName)
 		elseif string.match(entry.name, "%.luau?$") ~= nil then
 			local content = fs.readFileToString(`{src}/{entry.name}`)
 			for original, wallyName in ancestorRenames do
@@ -264,6 +264,16 @@ local function copyRenamingToLuau(src: string, dest: string)
 					content = patched
 					ancestorPatches += count
 				end
+			end
+			-- A package's SELF-reference through the packages folder
+			-- (Packages.Foundation.Enums...) must use the wally content
+			-- name: unlike dependencies, there is no alias linker for
+			-- yourself. Dependency accesses (Packages.Dash) stay alias-named.
+			if selfOriginal ~= selfWallyName then
+				local patched, count =
+					string.gsub(content, `Packages%.{selfOriginal}%f[^%w_]`, `Packages["{selfWallyName}"]`)
+				content = patched
+				ancestorPatches += count
 			end
 			fs.writeStringToFile(`{dest}/{(string.gsub(entry.name, "%.lua$", ".luau"))}`, content)
 		else
@@ -361,7 +371,7 @@ for _, key in sortedKeys(vendored) do
 	if string.find(sourceText(info), [=[%.lua["']]=]) ~= nil then
 		print(`WARNING: {name} source mentions '.lua' in a string; check before trusting the rename`)
 	end
-	copyRenamingToLuau(`{info.dir}/{info.source}`, dest)
+	copyRenamingToLuau(`{info.dir}/{info.source}`, dest, info.source, name)
 	local lines = {
 		"[package]",
 		`name = "morgann1/{name}"`,
@@ -395,25 +405,36 @@ for line in string.gmatch(fs.readFileToString("wally.toml"), "[^\r\n]+") do
 	end
 end
 
--- Rojo $path for a dependency node, and whether it goes through a linker
--- (linker folders also need _Index as a sibling).
-local function editorPath(alias: string, targetKey: string): (string, boolean)
+-- Rojo $path for a dependency node. Every dependency mounts through a
+-- generated linker file in roblox/_linkers rather than directly: a directly
+-- mounted package would be named after the consumer's alias (breaking its
+-- re-cased FindFirstAncestor lookups) and cut off from its own dependency
+-- siblings, and a per-folder copy of Packages/_Index would duplicate module
+-- instances (two Reacts, broken hooks). Vendored linkers navigate to the
+-- package's own kebab folder; external linkers point at the single shared
+-- ReplicatedStorage.Packages tree, exactly like wally's [place] linkers.
+local vendoredLinkers: { [string]: boolean } = {}
+local externalLinkers: { [string]: boolean } = {}
+local function editorPath(alias: string, targetKey: string): string
 	local key = remap[targetKey]
 	local requirement = external[key]
 	if requirement == nil then
-		return `roblox/{kebab(packages[key].name)}`, false
+		local targetName = kebab(packages[key].name)
+		vendoredLinkers[targetName] = true
+		return `roblox/_linkers/{targetName}.luau`
 	end
 	local scopeName = assert(string.match(requirement, "^([^@]+)"), "Luau")
 	local localName = string.match(scopeName, "^morgann1/(.+)$")
 	if localName ~= nil then
-		return localPackages[localName].dir, false
+		return localPackages[localName].dir
 	end
 	local rootAlias = rootAliases[scopeName]
 	if rootAlias == nil then
 		print(`WARNING: {scopeName} has no alias in the root wally.toml; add one and run wally install`)
-		return `Packages/{alias}.lua`, true
+		rootAlias = alias
 	end
-	return `Packages/{rootAlias}.lua`, true
+	externalLinkers[rootAlias] = true
+	return `roblox/_linkers/{rootAlias}.luau`
 end
 
 local folderChunks: { string } = {}
@@ -423,14 +444,9 @@ for _, key in sortedKeys(vendored) do
 		'            "$className": "Folder"',
 		`            "{name}": \{\n                "$path": "roblox/{name}"\n            }`,
 	}
-	local needsIndex = false
 	for _, alias in sortedKeys(used[key]) do
-		local path, isLinker = editorPath(alias, used[key][alias])
-		needsIndex = needsIndex or isLinker
+		local path = editorPath(alias, used[key][alias])
 		table.insert(nodes, `            "{alias}": \{\n                "$path": "{path}"\n            }`)
-	end
-	if needsIndex then
-		table.insert(nodes, '            "_Index": {\n                "$path": "Packages/_Index"\n            }')
 	end
 	table.insert(folderChunks, `        "{name}": \{\n{table.concat(nodes, ",\n")}\n        }`)
 end
@@ -440,6 +456,22 @@ fs.writeStringToFile(
 		.. table.concat(folderChunks, ",\n")
 		.. "\n    }\n}\n"
 )
+
+if next(vendoredLinkers) ~= nil or next(externalLinkers) ~= nil then
+	fs.createDirectory(`{DEST_ROOT}/_linkers`)
+	for _, targetName in sortedKeys(vendoredLinkers) do
+		fs.writeStringToFile(
+			`{DEST_ROOT}/_linkers/{targetName}.luau`,
+			`return require(script.Parent.Parent["{targetName}"]["{targetName}"])\n`
+		)
+	end
+	for _, rootAlias in sortedKeys(externalLinkers) do
+		fs.writeStringToFile(
+			`{DEST_ROOT}/_linkers/{rootAlias}.luau`,
+			`return require(game:GetService("ReplicatedStorage").Packages.{rootAlias})\n`
+		)
+	end
+end
 
 -- Validate every manifest. Streams are discarded: `--list` output for large
 -- packages overflows the capture pipe and deadlocks the child process.

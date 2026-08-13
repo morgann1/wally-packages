@@ -13,9 +13,11 @@ Extracted from Roblox Studio `0.716.0.7160873` with
 linkers are expressed as Wally dependencies whose aliases match the
 `require(script.Parent.<Alias>)` names the source uses. Sources are copied
 as-is apart from two mechanical transforms: `.lua` renamed to `.luau`, and
-`FindFirstAncestor("<PascalCase>")` package names re-cased to the kebab
-instance names the wally-installed layout has (449 sites; rotriever's
-PascalCase directories made those lookups return nil under Wally).
+rotriever's PascalCase package names re-cased to the kebab instance names the
+wally-installed layout has (450 sites: `FindFirstAncestor("Foundation")`
+lookups plus one `Packages.Foundation` self-reference; both return nil under
+Wally otherwise). `tests/roblox/` holds Jest specs that require every package
+and mount Foundation, run with `lute run .lute/test.luau`.
 
 Everything Roblox already publishes on Wally is depended on instead of
 vendored: the React 17.3 family (`roblox/react`, `react-is`, `react-roblox`,

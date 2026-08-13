@@ -57,9 +57,14 @@ unchanged and only the dependency metadata is translated.
    `Packages/<Alias>.lua` linker exists — the script prints a WARNING naming
    any that are missing; add the alias and re-run the script.
 
-7. `git diff` the regenerated tree; commit only when asked.
+7. Run the Jest suite: `lute run .lute/test.luau` (builds a place and runs
+   it in Studio via run-in-roblox). The specs in `tests/roblox/` require
+   every vendored package and mount Foundation, which is the real proof the
+   conversion holds; regeneration is not done until this is green.
 
-8. Publishing (only on request): `wally publish --project-path roblox/<pkg>`
+8. `git diff` the regenerated tree; commit only when asked.
+
+9. Publishing (only on request): `wally publish --project-path roblox/<pkg>`
    in the printed order, dependencies before dependents. Licensing is the
    user's call — these are Roblox-authored sources without OSS licenses.
 
@@ -87,3 +92,13 @@ unchanged and only the dependency metadata is translated.
   like `FindFirstAncestor("Foundation")` are rewritten to the kebab name
   during copy. Only names of vendored packages are rewritten — internal
   folders (`Sheet`, `Providers`) and engine guards (`CorePackages`) are not.
+  A package's self-reference through its packages folder
+  (`Packages.Foundation.Enums...`) is re-cased too — there is no alias
+  linker for yourself — but dependency accesses (`Packages.Dash`) stay
+  alias-named.
+- **roblox/_linkers/ is generated indirection.** In the editor/test tree,
+  every dependency mounts through a linker file so each package instance
+  lives once under its own kebab folder (alias-named direct mounts break
+  re-cased ancestor lookups) and externals resolve through the single shared
+  `ReplicatedStorage.Packages` (per-folder `_Index` copies duplicate module
+  instances — two Reacts, broken hooks).

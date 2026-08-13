@@ -14,7 +14,7 @@ local iconMigrationUtils = require(Foundation.Utility.iconMigrationUtils)
 local useTokens = require(Foundation.Providers.Style.useTokens)
 local isMigrated = iconMigrationUtils.isMigrated
 local isBuilderIconOrMigrated = iconMigrationUtils.isBuilderOrMigratedIcon
-local StateLayerAffordance = require(Packages.Foundation.Enums.StateLayerAffordance)
+local StateLayerAffordance = require(Packages["foundation"].Enums.StateLayerAffordance)
 
 local AccessoryType = require(Foundation.Enums.AccessoryType)
 type AccessoryType = AccessoryType.AccessoryType
