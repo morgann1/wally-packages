@@ -1,16 +1,16 @@
 --!strict
--- Regenerate the module table in README.md from modules/*/wally.toml.
+-- Regenerate the package tables in README.md from modules/*/wally.toml
+-- and plugin/*/wally.toml. Only the marked regions are rewritten; the
+-- prose around them is hand-written and left alone.
 -- Run with: `lute run .lute/update-readme.luau`
 
 local fs = require("@std/fs")
-local io = require("@std/io")
 local process = require("@std/process")
 
 local REPO_URL = "https://github.com/morgann1/wally-packages"
-local MODULES_DIR = "modules"
 local README_PATH = "README.md"
 
-type Module = {
+type Package = {
 	alias: string,
 	package: string,
 	version: string,
@@ -49,10 +49,12 @@ local function findReturnIdentifier(initPath: string): string?
 	return nil
 end
 
-local function displayName(moduleDir: string, slug: string): string
-	local returned = findReturnIdentifier(`{moduleDir}/init.luau`)
-	-- Lowercase-leading identifier = function export; use it verbatim.
-	if returned and returned:sub(1, 1):match("%l") then
+local function displayName(packageDir: string, slug: string): string
+	local returned = findReturnIdentifier(`{packageDir}/init.luau`)
+	-- A lowercase-leading identifier that spells the slug is a function
+	-- export named after the package (doCleanup, sortingBy); use it
+	-- verbatim. Generic factory names (create) don't qualify.
+	if returned and returned:sub(1, 1):match("%l") and returned:lower() == slug:gsub("-", ""):lower() then
 		return returned
 	end
 	-- Otherwise prefer the PascalCase alias derived from the dir name.
@@ -84,46 +86,80 @@ local function readPackage(tomlPath: string): { [string]: string }
 	return result
 end
 
-local modules: { Module } = {}
-for _, entry in fs.listDirectory(MODULES_DIR) do
-	local moduleDir = `{MODULES_DIR}/{entry.name}`
-	local tomlPath = `{moduleDir}/wally.toml`
-	if not isDir(moduleDir) or not isFile(tomlPath) then
-		continue
+local function collectPackages(rootDir: string): { Package }
+	local packages: { Package } = {}
+	for _, entry in fs.listDirectory(rootDir) do
+		local packageDir = `{rootDir}/{entry.name}`
+		local tomlPath = `{packageDir}/wally.toml`
+		if not isDir(packageDir) or not isFile(tomlPath) then
+			continue
+		end
+		local pkg = readPackage(tomlPath)
+		if not pkg.name or not pkg.version then
+			continue
+		end
+		table.insert(packages, {
+			alias = displayName(packageDir, entry.name),
+			package = pkg.name,
+			version = pkg.version,
+			description = pkg.description or "",
+			slug = entry.name,
+		})
 	end
-	local pkg = readPackage(tomlPath)
-	if not pkg.name or not pkg.version then
-		continue
-	end
-	table.insert(modules, {
-		alias = displayName(moduleDir, entry.name),
-		package = pkg.name,
-		version = pkg.version,
-		description = pkg.description or "",
-		slug = entry.name,
-	})
+	table.sort(packages, function(a, b)
+		return a.alias:lower() < b.alias:lower()
+	end)
+	return packages
 end
 
-if #modules == 0 then
-	io.write("No modules found.\n")
-	process.exit(1)
+local function renderTable(rootDir: string, packages: { Package }): string
+	local lines = {
+		"| Package | Dependency | Description |",
+		"| ------- | ---------- | ----------- |",
+	}
+	for _, m in packages do
+		local link = `[{m.alias}]({REPO_URL}/tree/main/{rootDir}/{m.slug})`
+		local dep = `\`{m.alias} = "{m.package}@{m.version}"\``
+		-- Upstream ports carry their source URL as the description.
+		local description = m.description
+		if description:sub(1, 4) == "http" then
+			description = `Port of the [upstream source]({description}).`
+		end
+		table.insert(lines, `| {link} | {dep} | {description} |`)
+	end
+	return table.concat(lines, "\n")
 end
 
-table.sort(modules, function(a, b)
-	return a.alias:lower() < b.alias:lower()
-end)
+-- Splice `content` between `<!-- {name}:start -->` and `<!-- {name}:end -->`.
+local function spliceRegion(readme: string, name: string, content: string): string
+	local startMarker = `<!-- {name}:start -->`
+	local endMarker = `<!-- {name}:end -->`
+	local startAt = readme:find(startMarker, 1, true)
+	local endAt = readme:find(endMarker, 1, true)
+	if startAt == nil or endAt == nil then
+		print(`error: {README_PATH} is missing the {startMarker} / {endMarker} markers`)
+		process.exit(1)
+	end
+	local head = readme:sub(1, (startAt :: number) + #startMarker - 1)
+	local tail = readme:sub(endAt :: number)
+	return `{head}\n{content}\n{tail}`
+end
 
-local lines = {
-	"# wally-packages",
-	"",
-	"| Module | Dependency | Description |",
-	"| ------ | ---------- | ----------- |",
+local REGIONS: { { name: string, rootDir: string } } = {
+	{ name = "modules-table", rootDir = "modules" },
+	{ name = "plugin-table", rootDir = "plugin" },
 }
-for _, m in modules do
-	local link = `[{m.alias}]({REPO_URL}/tree/main/{MODULES_DIR}/{m.slug})`
-	local dep = `\`{m.alias} = "{m.package}@{m.version}"\``
-	table.insert(lines, `| {link} | {dep} | {m.description} |`)
+
+local readme = fs.readFileToString(README_PATH)
+for _, region in REGIONS do
+	local packages = collectPackages(region.rootDir)
+	if #packages == 0 then
+		print(`No packages found in {region.rootDir}/.`)
+		process.exit(1)
+	end
+	readme = spliceRegion(readme, region.name, renderTable(region.rootDir, packages))
+	print(`{region.rootDir}: {#packages} packages`)
 end
 
-fs.writeStringToFile(README_PATH, table.concat(lines, "\n") .. "\n")
-io.write(`Wrote {#modules} modules to {README_PATH}\n`)
+fs.writeStringToFile(README_PATH, readme)
+print(`wrote {README_PATH}`)
