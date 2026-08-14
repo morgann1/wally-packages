@@ -63,7 +63,8 @@ unchanged and only the dependency metadata is translated.
    conversion holds; regeneration is not done until this is green.
 
 8. Regenerate the docs pages: `lute run .lute/sync-foundation-docs.luau`
-   rebuilds `docs/foundation/` from the tree's `*.code.md` files.
+   rebuilds `docs/foundation/` from the tree's `*.code.md` files, then
+   `lute run .lute/build-llms-txt.luau` refreshes the llms.txt surface.
 
 9. `git diff` the regenerated tree; commit only when asked.
 

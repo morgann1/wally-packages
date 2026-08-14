@@ -1,0 +1,4193 @@
+# API reference: modules (game runtime)
+
+## bindToInstanceDestroyed
+
+A reliable way to execute cleanup code when an instance is destroyed.
+
+Under Deferred signal mode, a script parented to an object cannot listen
+to that object's `Destroying` event — the connection is severed before
+the script runs. As a workaround, this module clones a listener script
+into `PlayerScripts`, which outlives the destroyed instance and runs the
+provided callback when it fires.
+
+### bindToInstanceDestroyed(instance: Instance, callback: () -> ())
+
+Registers a callback that runs once `instance` is destroyed.
+
+- instance: The instance to watch.
+- callback: Invoked exactly once after `instance` is destroyed.
+
+## CharacterPromiseUtils
+
+Utility for Roblox character objects that involve promises.
+
+### CharacterPromiseUtils.promiseCharacter(player: Player) -> Promise<Model>
+
+Returns a promise that will resolve once a character exists.
+
+## Cryo
+
+A collection of methods for working with immutable data in a functional
+way. Operations return new tables rather than mutating their inputs.
+
+The library is split into two namespaces:
+
+- `Cryo.Dictionary` — operations on string-keyed tables.
+- `Cryo.List` — operations on array-like tables.
+
+`Cryo.None` is a sentinel that, when passed as a value to dictionary
+merges, removes the corresponding key from the result.
+
+## Dictionary
+
+Defines utilities for working with 'dictionary-like' tables.
+
+Dictionaries can be indexed by any value, but don't have the ordering
+expectations that lists have.
+
+### Dictionary.filter()
+
+Returns a Dictionary of only entries for which the `predicate` function returns true.
+
+### Dictionary.join()
+
+Combine a number of dictionary-like tables into a new table.
+
+Keys specified in later tables will overwrite keys in previous tables.
+
+Use `Cryo.None` as a value to remove a key. This is necessary because
+Lua does not distinguish between a value not being present in a table and a
+value being `nil`.
+
+### Dictionary.keys()
+
+Returns a list of the keys from the given dictionary.
+
+### Dictionary.map()
+
+Returns a new Dictionary with keys and values passed through a mapper function.
+
+Returning a second value in the mapper function will reassign the key.
+
+### Dictionary.omit()
+
+Returns a Dictionary which excludes the given `keys`.
+
+### Dictionary.values()
+
+Returns a list of the values of the given dictionary.
+
+## disconnectAndClear
+
+Disconnects every `RBXScriptConnection` in the provided array, then
+empties the array. Useful for batch cleanup of stored connections.
+
+### disconnectAndClear(connections: { RBXScriptConnection })
+
+- connections: Array of connections to disconnect and clear.
+
+## input
+
+Lightweight wrapper over Roblox's `InputAction` / `InputContext` /
+`InputBinding` instances. Lets you declare input contexts as nested
+tables of actions, register them once, then enable or disable whole
+contexts on demand.
+
+The model is: **bindings** (key combinations) live on **actions**
+(named, typed inputs like "jump" or "move"), which live on
+**contexts** (collections of actions enabled together, e.g. "gameplay"
+vs "menu"). A context is enabled when its enable count is positive;
+[input.enable] / [input.disable] increment and decrement that count.
+
+See:
+[alicesaidhi/383b04a42cad53acb27e017f50fd8086](https://gist.github.com/alicesaidhi/383b04a42cad53acb27e017f50fd8086).
+
+### input.enable(v: Context, n: number?)
+
+Increments the enable count of a context by `n` (default 1). The
+context's underlying `InputContext.Enabled` becomes true once the
+count is positive.
+
+- n: Increment amount; defaults to 1.
+
+### input.disable(v: Context, n: number?)
+
+Decrements the enable count of a context by `n` (default 1). The
+underlying `InputContext.Enabled` becomes false once the count drops
+to zero or below.
+
+- n: Decrement amount; defaults to 1.
+
+### input.context(name: string, v: Context) -> Context
+
+Reconciles a context (and any nested contexts/actions it contains)
+into actual `InputContext` instances. Returns the same table you
+passed in for chaining/storing.
+
+- name: Name applied to the underlying `InputContext`.
+
+### input.action(v: Action) -> ActionTypes
+
+Reconciles an action descriptor into an `InputAction` instance and
+returns it augmented with the `ActionFunctions` API (`is_pressed`,
+`is_released`, `is_changed`, `get_state`, plus `pressed`, `released`,
+and `state_changed` signals).
+
+The return type is narrowed by the `type` field on the descriptor:
+`"bool"` → `ActionBool`, `"1d"` → `Action1D`, etc.
+
+- v: An action descriptor with a `type` discriminator.
+
+### input.binding(v: Binding) -> Binding
+
+Identity helper that returns its argument typed as a [Binding]. Useful
+for declaring bindings inline with type inference.
+
+### input.clear_state()
+
+Clears the per-frame transient state (`is_pressed`, `is_released`,
+`is_changed` flags) for every action. Call this once per frame before
+polling so each press/release/state-change is observed exactly once.
+
+### input.capture_input() -> { bind: Enum.KeyCode, modifier1: Enum.KeyCode, modifier2: Enum.KeyCode }
+
+Yields until the user produces input, then returns a table containing
+the primary `KeyCode` along with up to two modifier keys held during
+the press. Mouse buttons and touch are translated to their `KeyCode`
+equivalents.
+
+## List
+
+Defines utilities for working with 'list-like' tables.
+
+### List.filter()
+
+Create a copy of a list with only values for which `callback` returns true.
+Calls the callback with (value, index).
+
+### List.filterMap()
+
+Create a copy of a list doing a combination filter and map.
+
+If callback returns nil for any item, it is considered filtered from the
+list. Any other value is considered the result of the 'map' operation.
+
+### List.find()
+
+Returns the index of the first value found or nil if not found.
+
+### List.findWhere()
+
+Returns the index of the first value for which predicate(value, index) is truthy, or nil if not found.
+
+### List.foldLeft()
+
+Performs a left-fold of the list with the given initial value and callback.
+
+### List.foldRight()
+
+Performs a right-fold of the list with the given initial value and callback.
+
+### List.getRange()
+
+Returns a new list containing only the elements within the given range.
+
+### List.join()
+
+Joins any number of lists together into a new list.
+Entries equal to `Cryo.None` are skipped.
+
+### List.map()
+
+Create a copy of a list where each value is transformed by `callback`.
+
+### List.removeIndex()
+
+Remove the element at the given index.
+
+### List.removeRange()
+
+Remove the range from the list starting from the index.
+
+### List.removeValue()
+
+Creates a new list that has no occurrences of the given value.
+
+### List.replaceIndex()
+
+Returns a new list with the new value replaced at the given index.
+
+### List.reverse()
+
+Returns a new list with the reversed order of the given list.
+
+### List.sort()
+
+Returns a new list, ordered with the given sort callback.
+If no callback is given, the default table.sort will be used.
+
+### List.toSet()
+
+Create a dictionary where each value in the given list corresponds to a key
+in the dictionary with a value of true.
+
+## safePlayerAdded
+
+Runs a callback for every player currently in the game **and** every
+player who joins afterwards. Avoids the race condition where players
+added before your script ran are missed by `Players.PlayerAdded`.
+
+### safePlayerAdded(callback: (Player) -> ()) -> RBXScriptConnection
+
+- callback: Invoked for each existing and future player.
+- returns: The `PlayerAdded` connection. Disconnect to stop receiving future callbacks.
+
+## SimpleLogger
+
+A minimal logging utility that auto-prefixes messages with the calling
+module's name. `info` and `warn` always print; `debug` only prints when
+running inside Studio.
+
+Each method has the signature `(...any) -> ()` and forwards its
+arguments to the underlying `print` or `warn`.
+
+```lua
+local Log = require(path.to.SimpleLogger)
+Log.info("starting up")  -- [MyModule] INFO: starting up
+```
+
+### SimpleLogger.debug: (...any) -> ()
+
+Studio-only debug logging — silent in published experiences.
+
+### SimpleLogger.info: (...any) -> ()
+
+Informational logging via `print`.
+
+### SimpleLogger.warn: (...any) -> ()
+
+Warning logging via `warn`.
+
+## TypeValidation
+
+Runtime type validators for common Roblox value types. Each validator
+returns `true` when its input matches the expected shape and `false`
+otherwise, making it suitable for assertion-style precondition checks.
+
+Exposed validators:
+
+- `validateCFrame`
+- `validateInstance`
+- `validateNumber`
+- `validateSimpleTable`
+- `validateVector3`
+
+### TypeValidation.validateCFrame(value: unknown) -> boolean
+
+Validates a `CFrame` whose position and look vector are both NaN-free.
+
+### TypeValidation.validateInstance(value: unknown, expectedClass: string) -> boolean
+
+Validates that the value is a real `Instance` of the expected class
+(per `IsA`, so subclasses pass). Guards against 'imposter' tables sent
+through remotes with keys mimicking instance properties.
+
+- expectedClass: Class name to check with `IsA`.
+
+### TypeValidation.validateNumber(value: unknown) -> boolean
+
+Validates a number that is not NaN. Note infinity passes; add a range
+check at the call site when bounds matter.
+
+### TypeValidation.validateSimpleTable(value: unknown, keyType: string, validator: (unknown) -> boolean) -> boolean
+
+Validates a homogeneous table: every key must have the given `typeof`
+and every value must pass the validator. Compose with the other
+validators, e.g. `validateSimpleTable(value, "number", validateVector3)`.
+
+- keyType: Required `typeof` of every key, e.g. `"string"`.
+- validator: Validates each value.
+
+### TypeValidation.validateVector3(value: unknown) -> boolean
+
+Validates a `Vector3` with no NaN components (a Vector3 compares
+unequal to itself when any component is NaN).
+
+## WideLogger
+
+A logger built around "wide events" (https://loggingsucks.com/): one
+structured event per operation, enriched with context as the operation
+runs, emitted exactly once when the span finishes.
+
+Instead of scattering `print` calls across a code path, you open a span
+at the start of an operation, attach high-cardinality context fields
+(user ids, request ids, business state) along the way, and let the
+logger emit a single readable record at the end.
+
+```lua
+local Log = require(path.to.WideLogger)
+
+Log.withSpan("checkout.process", { request_id = id }, function(span)
+    span:set("user_id", user.Id)
+    span:set("cart_total_cents", cart.totalCents)
+    -- ... do work; if this errors the span auto-fails ...
+    span:set("payment_provider", "stripe")
+end)
+```
+
+Output goes to `print` (ok) or `warn` (failed) and is formatted for
+Studio readability:
+
+```
+[checkout.process] OK 142.30ms
+  cart_total_cents = 4200
+  payment_provider = "stripe"
+  request_id = "abc"
+  user_id = 5
+```
+
+### WideLogger:set()
+
+Attach a single field to the span. Returns the span for chaining.
+
+### WideLogger:merge()
+
+Attach a table of fields to the span at once. Existing keys are
+overwritten. Returns the span for chaining.
+
+### WideLogger:fail()
+
+Mark the span as failed and attach the given error. The span will be
+emitted via `warn` when finished. Returns the span for chaining.
+
+### WideLogger:finish()
+
+Emit the wide event. Subsequent calls are no-ops. After this, calls to
+`set`/`merge`/`fail` are also no-ops.
+
+### WideLogger.span()
+
+Open a new span. Set fields on it as the operation progresses, then
+call `:finish()` to emit the wide event.
+
+### WideLogger.withSpan()
+
+Open a span, run `fn(span)`, and finish the span automatically. If
+`fn` errors, the span is marked failed and the error is rethrown
+after the event is emitted. Returns whatever `fn` returned on success.
+
+## zzlib
+
+Pure-Lua zlib/gzip/zip decompression, ported from
+[zzlib](https://github.com/zerkman/zzlib). Inputs are byte strings;
+outputs are decompressed byte strings.
+
+### zzlib.gunzip(str: string) -> string
+
+Decompresses a gzip-formatted byte string and returns the raw bytes.
+
+- str: Gzip-compressed input.
+- returns: Decompressed output.
+
+### zzlib.inflate(str: string) -> string
+
+Decompresses a zlib-formatted byte string and returns the raw bytes.
+
+- str: Zlib-compressed input.
+- returns: Decompressed output.
+
+### zzlib.files(buf: string)
+
+Returns a stateless iterator over every entry in a ZIP archive.
+
+Each iteration yields `(name, offset, size, packed, crc)` for one file
+header. Use [zzlib.unzip] to extract a specific entry.
+
+- buf: The full ZIP archive bytes.
+
+### zzlib.unzip(buf: string, arg1: string | number, arg2: number?) -> string
+
+Extracts a single file from a ZIP archive.
+
+When `arg1` is a string, it's treated as the filename to extract;
+the function searches the archive and returns the decompressed bytes,
+or errors if the file isn't present. When `arg1` is a number, it's
+treated as a raw offset into `buf` and `arg2` is the expected CRC.
+
+- buf: The full ZIP archive bytes.
+- arg1: Filename to extract, or raw offset.
+- arg2: Expected CRC when `arg1` is a numeric offset.
+- returns: Decompressed file contents.
+
+# API reference: plugin (Studio plugin libraries)
+
+## doCleanup
+
+Cleans up the tasks passed in as the arguments, in the style of Fusion's
+scopes: collect connections, instances and callbacks into an array as you
+create them, then hand the array to `doCleanup` when tearing down.
+
+### doCleanup(...: unknown)
+
+Cleans up every task passed as an argument. A task can be any of:
+
+- an `Instance` - will be destroyed
+- an `RBXScriptConnection` - will be disconnected
+- a function - will be run
+- a table with a `destroy` or `Destroy` method - will be called
+- an array - each item is cleaned up in reverse order, so tasks run
+  opposite to their construction order, then removed from the array
+
+Unrecognised values are ignored.
+
+- ...: Tasks to clean up.
+
+## ElttobLog
+
+A tagged logger that only emits output in a local development
+environment, detected via [IsLocalDev]. Unbracketed and bracketed GUIDs
+are replaced with short emoji-based identifiers in log messages so they
+stay readable in the Output window.
+
+The module exports a factory: pass it your local dev environment name
+once, and it returns a `create(tag, enabled)` function for opening
+scoped loggers.
+
+```lua
+local makeLog = require(path.to.Log)("MyPlugin")
+local log = makeLog("Network", true)
+log.info("hello")  -- only prints in local dev
+```
+
+### ElttobLog.create(devEnvName: string) -> (tag: string, enabled: boolean) -> { info: (...any) -> (), warn: (...any) -> () }
+
+Returns a `(tag, enabled) -> { info, warn }` constructor bound to
+`devEnvName`. Loggers built from it only emit output when running
+inside a matching local dev environment **and** `enabled` is true.
+
+- devEnvName: Identifier passed to [IsLocalDev] and used as the log prefix.
+
+## Event
+
+A minimal signal, split into its two capabilities so producers and
+consumers can be handed different halves:
+
+```lua
+local onThing, fireThing = Event()
+local disconnect = onThing(function(value)
+	print("got", value)
+end)
+fireThing(123)
+disconnect()
+```
+
+### type Connect = (callback: (Args...) -> ()) -> () -> ()
+
+Registers a listener and returns a function that disconnects it.
+
+### Event() -> Connect<Args...>, (Args...) -> ()
+
+Creates an event and returns its `connect` and `fire` halves. Listeners
+run on their own threads via `task.spawn`, so a yielding or erroring
+listener never blocks the firer or the other listeners.
+
+- returns: Registers a listener; returns its disconnect.
+- returns: Fires the event to every current listener.
+
+## FinallyTask
+
+Runs a callback on a new thread and guarantees its cleanup scope is torn
+down exactly once, whether the callback errors, is cancelled from
+outside, or the returned destructor is called.
+
+### FinallyTask(taskExec: (callback, scope, Args...) -> thread, callback: (scope: { unknown }, Args...) -> (), ...: Args...) -> () -> ()
+
+Spawns `callback` via `taskExec` (typically `task.spawn` or
+`task.defer`), passing it a fresh cleanup scope followed by the extra
+arguments. The callback registers its cleanup tasks into that scope; if
+it errors, the scope is passed to `doCleanup` before the error
+propagates.
+
+```lua
+local stop = FinallyTask(task.spawn, function(scope)
+	table.insert(scope, workspace.ChildAdded:Connect(print))
+	while true do task.wait(1) end
+end)
+-- later: cancels the thread and runs the scope's cleanup
+stop()
+```
+
+- taskExec: Scheduler used to start the callback, e.g. `task.spawn`.
+- callback: Work to run; receives the cleanup scope first.
+- ...: Extra arguments forwarded to the callback.
+- returns: Destructor: cancels the thread (if still running) and cleans up the scope. Safe to call more than once.
+
+## IconRamp
+
+Picks the right raster icon for a display size from a "ramp": an array
+of the same icon exported at multiple sizes, each with per-theme
+variants.
+
+### IconRamp.Types: { IconVariant: Def, Icon: Def, IconRamp: Def }
+
+`ty` runtime definitions matching the exported types, for validating
+ramps loaded from untrusted data. `IconRamp` drops invalid entries
+rather than rejecting the whole array.
+
+### type IconVariant = "light" | "dark" | "mono"
+
+Theme variant an icon asset is drawn for.
+
+### type Icon = { size: number, variants: { [IconVariant]: string } }
+
+One exported size of an icon; `variants` maps each theme to its asset id.
+
+### type IconRamp = { Icon }
+
+All exported sizes of one icon.
+
+### IconRamp.selectNearestSize(ramp: IconRamp, targetSize: number) -> Icon?
+
+Returns the smallest icon in the ramp that is at least `targetSize`
+pixels, so icons are only ever downscaled, never blurred upward. Falls
+back to the largest icon when the ramp has nothing big enough; returns
+`nil` only for an empty ramp. `ramp` itself is left unsorted.
+
+- targetSize: Size the icon will be displayed at, in pixels.
+
+## Interposer
+
+Cross-plugin RPC layer for Roblox Studio. A `BindableEvent` parented
+to `StudioService` acts as the public medium that every cooperating
+plugin shares. Each plugin calls [Interposer.logon] to join the
+medium, discover other peers, and register typed protocols.
+
+Slight deviation from the upstream: the dev-env name (used by
+[IsLocalDev] and the [ElttobLog] logger prefix) is a parameter rather
+than the hardcoded `"Suite"`, so plugins can stand up their own
+Interposer instances without colliding on log output.
+
+### Interposer.logon(devEnvName: string, mediumName: string, scope: { unknown }) -> InterposerApi
+
+Joins the shared Interposer medium and returns an [InterposerApi] for
+tracking peers and registering protocols.
+
+- devEnvName: Identifier passed to [IsLocalDev] and used as the log prefix; lets plugins stand up isolated dev/prod instances.
+- mediumName: Name of the `BindableEvent` parented under `StudioService` that peers communicate through. Plugins sharing a name see each other; plugins on different names form isolated channels.
+- scope: Cleanup scope; teardown functions and connections are appended here.
+
+## IsLocalDev
+
+Detects whether code is running inside a local development environment
+by inspecting the call stack for a known marker name (typically the
+folder/script name your local dev rig wraps things in).
+
+### IsLocalDev(devEnvName: string) -> boolean
+
+Returns `true` when `devEnvName` appears anywhere in the current stack
+traceback. The check is a literal substring match, not a pattern.
+
+- devEnvName: Identifier of the local dev environment to look for.
+
+## Leader
+
+Elects a single leader among plugin instances running in the same Studio
+session, over an [Interposer] peer network. Used when several copies of
+a plugin coexist (local dev rig plus installed copy) and exactly one
+should own a shared resource such as a toolbar.
+
+Election: each peer first asks the others `whoIsLeader`; a peer that
+claims itself is believed. If nobody knows, only the peer with the
+lexicographically lowest id self-elects (ids are GUIDs, so every peer
+agrees), which avoids the co-arrival race where all peers elect
+themselves in the same tick. A leader that shuts down hands leadership
+to another peer on the way out.
+
+### type LeaderApi
+
+- leader: () -> Peer? -- Current leader, or `nil` while undecided.
+- selfIsLeader: () -> boolean? -- Whether this peer leads; `nil` while undecided.
+- onLeaderChanged: Connect<Peer?> -- Fires whenever a different leader takes over.
+
+### Leader.track(scope: { unknown }, interposer: InterposerApi) -> LeaderApi
+
+Joins the election and starts tracking leadership. The search runs on a
+background task registered into `scope`; cleaning up the scope stops
+tracking and, if this peer is the leader, hands leadership over first.
+
+- scope: Cleanup scope (see doCleanup) owning the tracker's connections and task.
+- interposer: A logged-on Interposer session to elect over.
+
+## Maybe
+
+An optional value that carries a reason when absent. Check `.some` to
+narrow: `if result.some then use(result.value) else warn(result.reason)`.
+Preferred over `nil` returns when the caller should know *why* there was
+no value.
+
+### type Some = { some: true, value: Value }
+
+### type None = { some: false, reason: Reason }
+
+### type Maybe = Some<Value> | None<Reason>
+
+### Maybe.some(value: Value) -> Some<Value>
+
+Wraps a present value.
+
+### Maybe.none(reason: Reason) -> None<Reason>
+
+Marks a value as absent, with the reason why.
+
+- reason: Usually a human-readable string.
+
+## OwnedToolbar
+
+Wraps `plugin:CreateToolbar` with a registry that lets you create or
+reuse buttons by id and keeps each button's icon in sync with the
+current Studio theme. Plain values in, no Fusion state objects.
+
+Pair with [useToolbarButton] from React if you want declarative
+button lifecycle inside a component tree.
+
+### OwnedToolbar.create(plugin: Plugin, devEnvName: string, toolbarTitle: string) -> OwnedToolbarApi
+
+Creates a new plugin toolbar and returns an [OwnedToolbarApi] for
+registering buttons. Pass the plugin instance and the dev-env name
+used by [IsLocalDev] (a "Dev" marker button is added when matching).
+
+### OwnedToolbar.useToolbarButton(toolbar: OwnedToolbarApi, props: ToolbarButtonProps) -> PluginToolbarButton?
+
+React hook that ensures `toolbar` has a button matching `props` for
+the lifetime of the calling component. Reuses an existing button by
+id, applies `active` / `clickableWhenViewportHidden` updates, and
+wires `props.onClick` through the button's `Click` signal.
+
+Returns the live `PluginToolbarButton` instance, or `nil` until the
+first effect commit.
+
+## PushPull
+
+Single-consumer producer/consumer queues, returned as a `push`/`pull`
+function pair. Two flavours: `yield` blocks the puller until a value
+arrives, `maybe` returns immediately with a [Maybe].
+
+### PushPull.yield() -> (Values...) -> (), () -> Values...
+
+Creates a queue whose `pull` yields the calling coroutine until a value
+is pushed. Values are delivered first-in first-out and each is consumed
+once. Useful as a wake-up channel inside long-running loops.
+
+- returns: push: enqueues a value and wakes a waiting puller.
+- returns: pull: dequeues the next value, yielding while the queue is empty.
+
+### PushPull.maybe() -> (Value) -> (), () -> Maybe<Value>
+
+Creates a non-blocking queue: `pull` returns `Maybe.some(value)` when a
+value is buffered and `Maybe.none` when the queue is empty, never
+yielding.
+
+- returns: push: enqueues a value.
+- returns: pull: dequeues the next value, or a `None` when empty.
+
+## SensationSounds
+
+A set of named UI sound effects for Studio plugins, modeled after
+Studio Elttob's Sensation library. The module exports a factory:
+pass it a table of sound asset ids keyed by purpose and it returns
+the same table after preloading every entry off the main thread.
+
+```lua
+local SensationSounds = require(path.to.SensationSounds)
+local sounds = SensationSounds({
+	generic = "rbxassetid://1234",
+	success = "rbxassetid://5678",
+})
+-- sounds.generic is "rbxassetid://1234"
+-- sounds.attention is nil — slot wasn't provided
+```
+
+### type SoundKey = "generic" | "attention" | "subtle" | "success" | "fail" | "ask"
+
+The closed set of sound slots Sensation recognizes.
+
+### type Sounds = { [SoundKey]: string? }
+
+A partial map of [SoundKey] to `rbxassetid://...`. Missing keys
+mean the slot has no sound configured.
+
+### SensationSounds(sounds: Sounds) -> Sounds
+
+Preloads each provided sound asset id off the main thread and
+returns the same table for chaining.
+
+## SharedToolbar
+
+Cross-plugin shared toolbar built on top of [Interposer] and
+[Leader]. Every cooperating plugin calls [SharedToolbar.connect] with
+the same `toolbarId`; the leader builds a single `PluginToolbar`
+that mirrors every peer's buttons, and click/state events are
+forwarded back to the originating peer.
+
+Slight deviation from upstream: drops Fusion entirely. State lives in
+plain values that get re-applied to the underlying [OwnedToolbar]
+when they change, and lifetime is tracked through `{ unknown }`
+scopes cleaned up via [DoCleanup].
+
+### SharedToolbar.connect(scope: { unknown }, plugin: Plugin, devEnvName: string, interposer: Interposer.InterposerApi, leader: Leader.LeaderApi, protocolNamespace: string, toolbarId: string, toolbarTitle: string, thisStableId: string, ourPrivateButtons: { [string]: ButtonSpec }, ourSharedButtons: { [string]: ButtonSpec }) -> SharedToolbarApi
+
+Joins (or starts) the shared toolbar identified by `toolbarId`. The
+caller's `ourPrivateButtons` are buttons only this peer knows about;
+`ourSharedButtons` are advertised to every other peer via the
+Interposer protocol and clicks are routed back here.
+
+- scope: Cleanup scope for connections, threads, and child scopes.
+- plugin: Used by the underlying [OwnedToolbar].
+- devEnvName: Identifier for [IsLocalDev]/[ElttobLog].
+- interposer: Already-connected Interposer.
+- leader: Already-connected Leader.
+- protocolNamespace: Stable namespace for the underlying Interposer protocol id (e.g. `"@my-suite/SharedToolbar"`). Plugins sharing both `protocolNamespace` and `toolbarId` see each other.
+- toolbarId: Stable identifier for this toolbar; every peer must agree on it.
+- toolbarTitle: Human-readable name shown in Studio.
+- thisStableId: Stable identifier for this peer; usually the plugin's package name.
+
+## sortingBy
+
+Builds `table.sort` comparators from a key-extraction function, so
+multi-level sorts read declaratively instead of as nested ifs.
+
+### sortingBy(extract: (T) -> { number | string }) -> (T, T) -> boolean
+
+Returns a comparator that orders two values by comparing their extracted
+keys pairwise: the first unequal key decides. Every call of `extract`
+must return the same number of keys, and mixing types at the same
+position will error inside `table.sort`.
+
+```lua
+table.sort(items, sortingBy(function(item)
+	return { item.category, item.price }
+end))
+```
+
+- extract: Maps a value to its sort keys, most significant first.
+- returns: Comparator for `table.sort`.
+
+## ty
+
+Runtime type definitions that mirror Luau types, built by chaining
+combinators off base defs:
+
+```lua
+local IconVariant = ty.Just("light"):Or(ty.Just("dark")):Or(ty.Just("mono"))
+local Icon = ty.Struct({ exhaustive = true }, {
+	size = ty.Number,
+	variants = IconVariant:MapOf(ty.String),
+})
+if Icon:Matches(value) then ... end
+local icon = Icon:CastOrError(value)
+```
+
+Every def answers `Matches` (boolean) and `Cast` (a [Maybe] carrying the
+converted value or a nested reason string). Combinators are available
+both as functions on `ty` and as methods on any def, where the def
+becomes the first argument.
+
+### ty.Unknown: Def
+
+Matches anything; casts pass values through unchanged. Its opposite is
+`ty.Never`, which matches nothing.
+
+### ty.Number: Def
+
+`typeof`-based defs for the primitive types: `ty.Number`, `ty.Boolean`,
+`ty.String`, `ty.Thread`, `ty.Table` and `ty.Function`.
+
+### ty.True: Def
+
+Literal defs for the three singleton values: `ty.True`, `ty.False` and
+`ty.Nil`.
+
+### type Def
+
+- ExpectsType: string -- Human-readable name of the type, used in errors.
+- NotOfTypeError: string -- Base error message for failed casts.
+- Matches: (self: Def, x: unknown) -> boolean -- Whether `x` fits, without converting.
+- Cast: (self: Def, x: unknown) -> Maybe<unknown> -- Converts `x`, or a `None` explaining the mismatch.
+
+### ty.And(first: Def, last: Def) -> Def
+
+Intersection: matches values that satisfy both defs. Casting pipes the
+first def's output into the last, so converting defs compose.
+
+### ty.Array(values: Def) -> Def
+
+Matches contiguous numeric arrays whose every element fits `values`.
+Casting rebuilds the array with each element cast; wrap the element def
+in `IgnoreInvalid` to drop failing elements instead of rejecting the
+whole array.
+
+- values: Def each element must satisfy.
+
+### ty.CastOrError(def: Def, x: unknown) -> unknown
+
+Casts `x` through the def and returns the converted value directly,
+erroring with the cast's reason chain instead of returning a [Maybe].
+The assertion-style entry point at trust boundaries.
+
+- returns: The cast value.
+
+### ty.IgnoreInvalid(innerDef: Def) -> Def
+
+Makes a def infallible: values that fit the inner def cast normally,
+anything else casts to `nil` instead of failing. Inside `Array`, this
+drops invalid elements from the result.
+
+### ty.IntoDefault(innerDef: Def, defaultValue: any) -> Def
+
+Casts `nil` to `defaultValue`; any other value goes through the inner
+def. Use for optional fields that should come out filled in.
+
+- defaultValue: Substituted when the input is `nil`.
+
+### ty.IntoNumber(innerDef: Def, base: number?) -> Def
+
+Casts through the inner def, then converts the result with `tonumber`.
+Fails when the conversion returns `nil`.
+
+- base: Numeric base for the conversion, as in `tonumber`.
+- returns: Casts to a number.
+
+### ty.IntoString(innerDef: Def) -> Def
+
+Casts through the inner def, then converts the result with `tostring`.
+
+- returns: Casts to a string.
+
+### ty.IntoTagged(innerDef: Def, tag: unknown) -> Def
+
+Casts through the inner def, then stamps the result with a `__tag`
+field for discriminated unions. Table results are cloned before
+tagging; other values are wrapped as `{ value = result, __tag = tag }`.
+
+- tag: Discriminant stored under `__tag`.
+
+### ty.Just(literal: unknown, type: string?) -> Def
+
+Matches exactly one value, compared with `rawequal`. Chain with `Or`
+for string-literal unions: `ty.Just("light"):Or(ty.Just("dark"))`.
+
+- literal: The only accepted value.
+- type: Display name; defaults to `tostring(literal)`.
+
+### ty.MapOf(keys: Def, values: Def) -> Def
+
+Matches dictionaries where every key fits `keys` and every value fits
+`values`. Casting rebuilds the table with both keys and values cast.
+As a method, the def becomes the key type: `IconVariant:MapOf(ty.String)`.
+
+### ty.Nicknamed(innerDef: Def, newName: string) -> Def
+
+Renames a def's `ExpectsType` so error messages read as your domain
+name instead of the expanded structural type.
+
+### ty.Optional(innerDef: Def) -> Def
+
+Also accepts `nil`, which matches and casts to `nil`. The runtime
+equivalent of Luau's `T?`.
+
+### ty.Or(first: Def, last: Def) -> Def
+
+Union: matches values fitting either def. Casting tries `first` and
+falls back to `last`, so put the more specific (or more converting) def
+first.
+
+### ty.Predicate(predicate: (unknown) -> boolean) -> Def
+
+Builds a def from a boolean function; casting passes matching values
+through unchanged. The escape hatch for checks the other combinators
+can't express.
+
+### ty.Retype(def: Def) -> Def
+
+Returns the def unchanged; exists purely so call sites can reassert the
+def's static Luau type. No runtime effect, like `Untyped`.
+
+### ty.Struct(options: { exhaustive: boolean }, object: { [string]: Def }) -> Def
+
+Matches string-keyed tables field-by-field. Casting rebuilds the table
+from the declared fields, so a missing field fails unless its def is
+`Optional` or `IntoDefault`. With `exhaustive = true`, keys outside the
+declaration reject the cast; otherwise they are silently dropped.
+
+- object: Field name to the def its value must satisfy.
+
+### ty.Tuple(options: { exhaustive: boolean }, tuple: { Def }) -> Def
+
+The numeric-keyed counterpart of `Struct`: each position has its own
+def. Same missing-field and `exhaustive` semantics.
+
+- tuple: Def per position.
+
+### ty.Typeof(typeString: string) -> Def
+
+Matches values whose `typeof()` equals the given string. Works for
+Roblox datatypes too: `ty.Typeof("Vector2")`, `ty.Typeof("Instance")`.
+
+### ty.Untyped(def: Def) -> Def
+
+Returns the def unchanged; exists purely to erase the def's static Luau
+type at call sites. No runtime effect, like `Retype`.
+
+# Guides
+
+## foundation / Actions / Badge
+
+## Overview
+
+`Badge` is a stylized, presentational user interface element. This simple component is used to display notification counts on icons or additional info such as "NEW" or "Sale" on tiles.
+
+There are six badge variants defined in `BadgeVariant`: `Neutral`, `Contrast`, `Alert`, `Warning`, `Success` and `OverMedia`.
+
+Text and icon content type can be added any of the badges
+
+- If icon is nil then it will be a text-only badge
+- If text is nil then it will be an icon-only badge
+- If text and icon are nil it will be a (small, empty state) blank badge
+- Otherwise, it will be an icon and text badge
+
+---
+
+## Usage
+
+`Badge`s will grow to fit their text. Badge text does _not_ wrap to multiple lines.
+
+`Badge` text has `RichText` enabled by default to support custom colorization of the `text` prop.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Badge = Foundation.Badge
+local BadgeVariant = Foundation.Enums.BadgeVariant
+
+return React.createElement(Badge, {
+	icon = "icons/menu/clothing/limited_on",
+	text = "#100",
+	variant = BadgeVariant.Neutral,
+})
+```
+
+## foundation / Actions / Button
+
+## Overview
+
+`Button` is a stylized interactive, clickable user interface element.
+
+There are 6 basic button types defined in `ButtonVariant`
+
+- Emphasis
+- SubEmphasis
+- Standard
+- Subtle
+- Alert
+- Text
+- Link
+
+Text and icon content type can be added any of the buttons
+
+- If icon is nil then it will be a text only button
+- If text is nil then it will be a icon only button
+- If text and icon are nil it will be a blank button
+- Otherwise, it will be a icon and text button
+
+By default, icons are placed at the start of the button and text at the end. For the following exempt icons, however, we force placement at the end of a button:
+
+- [`BuilderIcons.ArrowUpRightFromSquare`](https://icons.foundation.roblox.com/?s=arrow-up-right-from-square)
+
+---
+
+## Usage
+
+A `Button` should be used with a standard size defined in `InputSize` (`Large`/`Medium`/`Small`/`XSmall`).
+
+Each standard size will apply the corresponding font style, padding, border radius and button height.
+
+`Button`s will grow to fit their text until they reach their parents boundaries, in which case they will not exceed that width. Button text does _not_ wrap to multiple lines.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Button = Foundation.Button
+local ButtonVariant = Foundation.Enums.ButtonVariant
+local InputSize = Foundation.Enums.InputSize
+
+return React.createElement(Button, {
+	icon = "icons/common/robux",
+	text = "Purchase Item",
+	variant = ButtonVariant.Emphasis,
+	onActivated = function()
+		print("Button Clicked!")
+	end,
+	isDisabled = false,
+	size = InputSize.Small,
+})
+```
+
+## foundation / Actions / Chip
+
+## Overview
+
+`Chip` is a stylized interactive, clickable user interface element.
+
+`Chip` has text and leading and trailing accessories. They can be icons or `AvatarGroup`s
+
+---
+
+## Usage
+
+`Chip`s will grow to fit their text until they reach their parents' boundaries, in which case they will not exceed that width. Chip text does _not_ wrap to multiple lines.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Chip = Foundation.Chip
+...
+return React.createElement(Chip, {
+	leading = "icons/common/filter",
+	text = "Filter",
+	onActivated = function()
+		print("Chip Clicked!")
+	end,
+})
+...
+```
+
+`Chip` with an `AvatarGroup` looks like this.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Chip = Foundation.Chip
+
+...
+return React.createElement(Chip, {
+    text = "Filter",
+    onActivated = function()
+        print(`Chip activated`)
+    end,
+    leading = {
+        type = "AvatarGroup" :: "AvatarGroup",
+        props = {
+            avatars = {
+                24813339,
+                24813338,
+            },
+            type = AvatarGroupType.Stacked,
+            max = 3,
+        },
+    },
+})
+```
+
+!!! warning "AvatarGroup"
+
+    If you `Chip` with `AvatarGroup` group is placed on a not default (Surface_0) background, then you need to use `BackgroundStyleContext`.
+
+## foundation / Actions / IconButton
+
+## Overview
+
+The `IconButton` component allows you to render an interactive icon at one of the standard `InputSize`s.
+
+To browse icons available for use through this component, visit `Images`.
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local IconButton = Foundation.IconButton
+
+local InputSize = require(Foundation.Enums.InputSize)
+local ButtonVariant = require(Foundation.Enums.ButtonVariant)
+
+return React.createElement(IconButton, {
+  size = InputSize.Medium,
+  icon = "icons/common/search_small",
+  variant = ButtonVariant.Standard,
+})
+```
+
+## foundation / Actions / KeyLabel
+
+## Overview
+
+`KeyLabel` is a user interface element that displays an image of a key or button, and can handle long press inputs.
+
+if `holdBehavior` is not provided then KeyLabel will be a static element that displays a key or button image.
+
+if `holdBehavior` is provided then KeyLabel will call `onBeginHold` and display a circular progress bar when the given `keyCode` is pressed, and will trigger `onEndHold` when the key is released or `holdTime` duration is reached. `onEndHold` will receive one argument, `didActivate`, which indicates whether the button was held for the full `holdTime` duration.
+
+---
+
+## Usage
+
+Here is an example of how to create a `KeyLabel` component with a `holdTime` of 1 second.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local KeyLabel = Foundation.KeyLabel
+
+return React.createElement(KeyLabel, {
+    keyCode = Enum.KeyCode.A,
+    holdBehavior = {
+        holdTime = 1,
+        onBeginHold = function()
+            print("began holding A!")
+        end,
+        onEndHold = function(didActivate)
+            if didActivate then
+                -- do something
+            else
+                -- do nothing
+            end
+        end
+    }
+})
+```
+
+## foundation / Actions / Pill
+
+## Overview
+
+!!! warning "Deprecated"
+
+    Component has been renamed to [Chip](../Actions/Chip.md), use it instead.`Pill` will be dropped in the next major version.
+
+## foundation / Display / Avatar
+
+## Overview
+
+The `Avatar` component displays a user's profile picture or a default icon if no image is available with an optional userPresence indicator.
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Avatar = Foundation.Avatar
+local UserPresence = Foundation.Enums.UserPresence
+local InputSize = Foundation.Enums.InputSize
+...
+return React.createElement(Avatar, {
+	userId = "24813339",
+	userPresence = UserPresence.InExperience,
+	size = InputSize.Large,
+})
+...
+```
+
+## foundation / Display / Coachmark
+
+## Overview
+
+Coachmark is a component for displaying a popover with a title, optional text, optional media, optional step indicator, optional close affordance, and action buttons when clicking an anchor element. It's designed for guided user experiences and feature tours.
+
+Actions should be provided as an array, with entries conforming to the ActionProps type (shared with other components):
+
+```lua
+type ActionProps = {
+    onActivated: () -> (),
+    variant: ButtonVariant?,
+    text: string,
+}
+```
+
+---
+
+## Usage
+
+Wrap the element you want to trigger the coachmark on with the Coachmark component. By default, the coachmark will appear to the
+right of the anchor element.
+
+Click the anchor element to toggle the coachmark open and closed.
+
+### Basic Coachmark
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Coachmark = Foundation.Coachmark
+local View = Foundation.View
+local PopoverSide = Foundation.Enums.PopoverSide
+local PopoverAlign = Foundation.Enums.PopoverAlign
+local ButtonVariant = Foundation.Enums.ButtonVariant
+...
+
+React.createElement(
+	Coachmark,
+	{
+		title = "Welcome to the new feature!",
+		text = "This is a coachmark that helps guide users through new features. Click to toggle it open and closed.",
+		side = PopoverSide.Top,
+		align = PopoverAlign.Start,
+		steps = {
+			current = 1,
+			total = 4,
+		},
+		actions = {
+			{
+				text = "Got it!",
+				onActivated = function()
+					print("Primary button clicked")
+				end,
+				variant = ButtonVariant.Emphasis,
+			},
+			{
+				text = "Skip",
+				onActivated = function()
+					print("Secondary button clicked")
+				end,
+				variant = ButtonVariant.SoftEmphasis,
+			},
+		},
+		media = React.createElement(View, {
+			tag = "bg-primary-500",
+			Size = UDim2.new(1, 0, 0, 100)
+		}),
+	},
+	-- Anchor element that will trigger coachmark on click
+	React.createElement(View, nil)
+)
+...
+```
+
+### Coachmark with Step Indicator
+
+Add a `steps` property to display progress information above the title. This is useful for multi-step guided experiences.
+
+```lua
+React.createElement(
+	Coachmark,
+	{
+		title = "Step 2: Configure your settings",
+		text = "Adjust your preferences to customize your experience.",
+		steps = {
+			current = 2,
+			total = 5,
+		},
+		actions = {
+			{
+				text = "Next",
+				onActivated = function()
+					print("Next step")
+				end,
+				variant = ButtonVariant.Emphasis,
+			},
+			{
+				text = "Back",
+				onActivated = function()
+					print("Previous step")
+				end,
+				variant = ButtonVariant.SoftEmphasis,
+			},
+		},
+	},
+	-- Anchor element
+	React.createElement(View, nil)
+)
+```
+
+### Coachmark with Close Affordance
+
+Add an `onClose` callback to display a close button in the header. The header text and step indicator will automatically constrain their width to prevent collision with the close button.
+
+```lua
+React.createElement(
+	Coachmark,
+	{
+		title = "Welcome to the new feature!",
+		text = "This coachmark includes a close button for easy dismissal.",
+		steps = {
+			current = 3,
+			total = 4,
+		},
+		onClose = function()
+			print("Close affordance clicked")
+		end,
+		actions = {
+			{
+				text = "Got it!",
+				onActivated = function()
+					print("Primary button clicked")
+				end,
+				variant = ButtonVariant.Emphasis,
+			},
+		},
+	},
+	-- Anchor element
+	React.createElement(View, nil)
+)
+```
+
+## foundation / Display / Empty
+
+## Overview
+
+The `Empty` component can be used to display error states, or to fill a page when there is no relevant content.
+
+---
+
+## Usage
+
+The text, icon, and button contents are all overridable but have sensible defaults for easy usage.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Empty = Foundation.Empty
+
+return React.createElement(Empty, {
+    icon = "icons/common/search",
+})
+```
+
+## foundation / Display / FeedbackAlert
+
+## Overview
+
+`FeedbackAlert` is a contextual notification component designed to provide inline feedback to users within a specific area of the interface. It displays an alert box with an icon, title, optional subtitle, optional description, optional link, optional action buttons, and an optional close button.
+
+There are four severity levels defined in `AlertSeverity`: `Info`, `Warning`, `Success`, and `Error`. Each severity level automatically displays an appropriate icon and colors the alert border/background accordingly.
+
+---
+
+## Usage
+
+`FeedbackAlert` is typically used within forms, sections, or containers to provide contextual feedback related to user actions or system state.
+
+The component supports up to 3 action buttons. Any additional buttons beyond this limit will be ignored with a warning.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local FeedbackAlert = Foundation.FeedbackAlert
+local AlertSeverity = Foundation.Enums.AlertSeverity
+local ButtonVariant = Foundation.Enums.ButtonVariant
+
+return React.createElement(FeedbackAlert, {
+	severity = AlertSeverity.Warning,
+	title = "Unsaved Changes",
+	subtitle = "Draft",
+	description = "You have unsaved changes that will be lost if you navigate away.",
+	link = {
+		text = "Learn more",
+		onActivated = function()
+			print("Opening help...")
+		end,
+	},
+	actions = {
+		{
+			text = "Save",
+			variant = ButtonVariant.Standard,
+			onActivated = function()
+				print("Saving changes...")
+			end,
+		},
+		{
+			text = "Discard",
+			variant = ButtonVariant.Utility,
+			onActivated = function()
+				print("Discarding changes...")
+			end,
+		},
+	},
+	onClose = function()
+		print("Alert dismissed")
+	end,
+})
+```
+
+## foundation / Display / Icon
+
+## Overview
+
+The `Icon` component allows you to render an icon at one of the standard `IconSize`s.
+
+To use the new Builder Icons, find the icon from [icons.foundation.roblox.com](https://icons.foundation.roblox.com). You can also access the icons through the Icon enum from the Builder Icons package.
+
+Use the provided `IconSize` enum to set the size of the icon. The available sizes are `XSmall` (12pt), `Small` (16pt), `Medium` (20pt), and `Large` (24pt). If you have a very specific reason not to use these sizes, you can also set the size to a custom value by passing a size token like `tokens.Size.Size_1200`.
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Icon = Foundation.Icon
+local Enums = Foundation.Enums
+
+return React.createElement(Icon, {
+    name = Enums.IconName.House,
+    size = Enums.IconSize.Medium,
+})
+```
+
+## Legacy Icons
+
+To browse legacy icons available for use through this component, visit `Images`. When possible use the new Builder Icons, as they are true vector graphics.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Icon = Foundation.Icon
+local IconSize = Foundation.Enums.IconSize
+
+return React.createElement(Icon, {
+    name = "icons/common/search_small",
+    size = IconSize.Medium,
+})
+```
+
+## foundation / Display / Image
+
+## Overview
+
+Image displays `Images` or any other image asset. It's used in place of `ImageLabel` and `ImageButton` engine components.
+
+---
+
+## Usage
+
+`Image` takes an `Image` property that is either an image path from `Images` or a Roblox asset ID.
+
+In normal cases, you can replace `ImageLabel` and `ImageButton` with `Image` directly. Note that some properties have been put into tables to improve structure and compatibility with style tokens.
+
+`Image` also supports state updates with the `onStateChanged` callback, which gives updates on hover, press, select, and more.
+
+!!! danger "Performance Notice"
+
+    `onStateChanged` callback function should **never** be declared locally in a render function. For functional components, declare them in a `useCallback` hook and focus on reducing dependencies as much as possible. For class components declare them in the `Init` function.
+
+    To reduce the number of re-renders, use `Bindings` as much as possible when driving prop changes.
+
+See how to style `Image` quickly with the `Style Tags`.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Image = Foundation.Image
+
+local onStateChanged = React.useCallback(function(state)
+    print("Image state changed", state)
+end, {})
+
+return React.createElement(Image, {
+    Image = "icons/graphic/blocktheft_2xl",
+    onStateChanged = onStateChanged,
+    tag = "padding-small grow size-2800",
+})
+```
+
+### Asset Loading Status
+
+The `onLoaded` callback is called when the image asset is finished fetching. The status argument can be one of Success, Failure, or TimedOut. It is called immediately if the asset is already finished fetching. If the onLoaded function reference changes between renders (e.g. not wrapped in useCallback), the callback will re-fire for the current image. Wrap onLoaded in React.useCallback to avoid redundant calls.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Image = Foundation.Image
+
+local onLoaded = React.useCallback(function(assetStatus: Enum.AssetFetchStatus)
+    print("Image loaded", assetStatus)
+end, {})
+
+return React.createElement(Image, {
+    Image = "icons/graphic/blocktheft_2xl",
+    onLoaded = onLoaded,
+})
+```
+
+## foundation / Display / InputField
+
+## Overview
+
+InputField is a flexible input wrapper component that supports label, hint text,
+and various input states such as error, disabled, and required.
+
+---
+
+## Usage
+
+`InputField` has a default width of 400px unless `width` is specified. The height is static and will depend on whether a label and helper text are provided.
+
+The `isRequired` property should only be used on the inputs that fall in the minority. For example, if most inputs are required, only put `isRequired = false,` on the optional inputs, and `isRequired` as `nil` for the required inputs.
+
+The `input` property take a function rendering a component which receives a ref as the only prop.
+The ref should be passed to a component and should have `focus: () -> ()` and `hover: (state: boolean) -> ()` method implemented through `React.useImperativeHandle`. See `InternalTextInput` as an example
+
+```lua
+local Foundation = require(Packages.Foundation)
+local InputField = Foundation.InputField
+local InputComponent = AnyLibrary.InputComponent
+
+return React.createElement(InputField, {
+     label = "Label",
+     hint = "True",
+     isRequired = true,
+     input = function(ref) React.createElement(InputComponent, { ..., ref = ref }) end
+})
+```
+
+## foundation / Display / InputLabel
+
+## Overview
+
+`InputLabel` displays label text on components like [Checkbox](../Inputs/Checkbox.md)es and [RadioGroup](../Inputs/RadioGroup.md).Items. It can be used in place of `Text` and has default sizing and styling support.
+
+---
+
+## Usage
+
+`InputLabel` supports an optional `RichText` prop.
+
+`InputLabel` also supports `onActivated` and `onHover` callbacks, which are used alongside an input button like a `RadioGroupItem`.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local InputLabel = Foundation.InputLabel
+local InputSize = Foundation.Enums.InputSize
+
+return React.createElement(InputLabel, {
+    Text = "I'm an <b>InputLabel</b>.",
+    RichText = true,
+    size = InputSize.Medium,
+})
+```
+
+## foundation / Display / Knob
+
+## Overview
+
+`Knob` is a small, circular control element used as the interactive handle in compound inputs.
+
+It is a sub-component that appears inside other controls such as [Slider](../Display/Slider.md), `RangeSlider`, and [Toggle](../Inputs/Toggle.md). You typically do not use `Knob` directly; instead, it is composed by these higher-level components and inherits their states (size, inverse, disabled) through context and props.
+
+---
+
+## Usage
+
+While `Knob` can be rendered on its own for custom compositions, prefer using the higher-level components that include it.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Knob = Foundation.Knob
+local InputSize = Foundation.Enums.InputSize
+
+return React.createElement(Knob, {
+    size = InputSize.Large,
+    hasShadow = false,
+})
+```
+
+## foundation / Display / Loading
+
+## Overview
+
+`Loading` is a spinning icon used to indicate that something is loading.
+
+---
+
+## Usage
+
+`Loading` has a default `IconSize` of `Large`, and accepts all common props. The rotation rate is set to a multiple of the clock time and is not configurable.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Loading = Foundation.Loading
+local IconSize = Foundation.Enums.IconSize
+
+React.createElement(Loading, {
+	size = IconSize.Medium,
+})
+```
+
+## foundation / Display / Progress
+
+## Overview
+
+Progress components provide visual feedback about the completion status of tasks or processes. They support both determinate (with a specific value) and indeterminate (loading) states, and are available in two shapes: `Bar` and `Circle`.
+
+The `Bar` shape only officially supports only one size, `Medium`, as well as an additional `width` property.
+
+!!! info "Progress vs. Loading"
+
+    [Loading](../Display/Loading.md) is the more expressive version of `Progress`. Use when appropriate.
+
+---
+
+## Usage
+
+### Determinate
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Progress = Foundation.Progress
+local ProgressShape = Foundation.ProgressShape
+local ProgressSize = Foundation.ProgressSize
+
+-- Determinate Progress Bar
+React.createElement(Progress, {
+    value = 65,
+    shape = ProgressShape.Bar,
+    size = ProgressSize.Medium,
+})
+
+-- Determinate Circular Progress
+React.createElement(Progress, {
+    value = 75,
+    shape = ProgressShape.Circle,
+    size = ProgressSize.Large,
+})
+```
+
+### Indeterminate
+
+```lua
+-- Indeterminate Progress Bar (loading state)
+React.createElement(Progress, {
+    shape = ProgressShape.Bar,
+    size = ProgressSize.Medium,
+})
+
+-- Indeterminate Circular Progress (loading state)
+React.createElement(Progress, {
+    shape = ProgressShape.Circle,
+    size = ProgressSize.Large,
+})
+```
+
+### Progress Label
+
+```lua
+-- Progress Circle with progress label shown
+return React.createElement(Progress, {
+    value = 75,
+    shape = ProgressShape.Circle,
+    size = ProgressSize.Large,
+})
+```
+
+## foundation / Display / Skeleton
+
+## Overview
+
+`Skeleton` is a panel that displays scrolling shimmer animation (or a pulsate animation if `ReducedMotion` is `true`). It is an alternative loading indicator to [Loading](../Display/Loading.md).
+
+Pages can feel like they're loading faster by using `Skeleton`. Things feel like they are happening immediately, and information can be incrementally displayed on the screen.
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Skeleton = Foundation.Skeleton
+
+React.createElement(Skeleton, {
+	Size = UDim2.fromOffset(100, 100),
+})
+```
+
+## foundation / Display / Slider
+
+## Overview
+
+`Slider` is a draggable bar that can be used for form fields, media timelines, or anything else where you need to slide a bar around.
+
+---
+
+## Usage
+
+Slider is designed such that the consumer controls the current bar fill percentage.
+
+To create a basic form field the main props to supply are `value` and `onValueChanged`. This is enough to allow the user to drag the bar around, and the `value` binding can then be read when submitting the form.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Slider = Foundation.Slider
+local SliderVariant = Foundation.Enums.SliderVariant
+local Visibility = Foundation.Enums.Visibility
+local InputSize = Foundation.Enums.InputSize
+
+local function FormSlider()
+	local value, setValue = React.useBinding(0.5)
+
+	return React.createElement(Slider, {
+		value = value,
+		onValueChanged = setValue,
+
+		size = InputSize.Medium,
+		knobVisibility = Visibility.Always,
+		variant = SliderVariant.Emphasis,
+	})
+end
+```
+
+A more complex example would be a media timeline that progresses independently and allows the user to scrub along it to skip to where they want in the media's playback.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Slider = Foundation.Slider
+local SliderVariant = Foundation.Enums.SliderVariant
+local Visibility = Foundation.Enums.Visibility
+local InputSize = Foundation.Enums.InputSize
+
+local function MediaTimeline()
+	local value, setValue = React.useBinding(0.25)
+	local isPlaying, setIsPlaying = React.useState(false)
+	local wasPlaying = React.useRef(false)
+
+	local onDragStarted = React.useCallback(function()
+		if isPlaying then
+			wasPlaying.current = true
+		end
+		setIsPlaying(false)
+	end, { isPlaying } :: { unknown })
+
+	local onDragEnded = React.useCallback(function()
+		if wasPlaying.current then
+			setIsPlaying(true)
+		end
+		wasPlaying.current = false
+	end, {})
+
+	local onTogglePlayback = React.useCallback(function()
+		setIsPlaying(function(prev)
+			return not prev
+		end)
+	end, {})
+
+	-- This is illustrative logic to move the timeline playback along. In
+	-- practice the source of playback would be coming from audio/video
+	React.useEffect(function(): (() -> ())?
+		if isPlaying then
+			local isRunning = true
+
+			task.spawn(function()
+				while isRunning do
+					setValue(value:getValue() + 1 / 600)
+					task.wait(1 / 16)
+				end
+			end)
+
+			return function()
+				isRunning = false
+			end
+		end
+
+		return nil
+	end, { isPlaying })
+
+	return React.createElement(View, {
+		tag = "size-full-0 auto-y col gap-small",
+	}, {
+		Slider = React.createElement(Slider, {
+			value = value,
+			size = InputSize.XSmall,
+			knobVisibility = Visibility.Auto,
+			variant = SliderVariant.Standard,
+			onValueChanged = setValue,
+			onDragStarted = onDragStarted,
+			onDragEnded = onDragEnded,
+			LayoutOrder = 1,
+		}),
+
+		Playback = React.createElement(Button, {
+			text = if isPlaying then "Pause" else "Play",
+			onActivated = onTogglePlayback,
+			LayoutOrder = 2,
+		}),
+	})
+end
+```
+
+For discrete values, you can use the `step` prop to snap the slider to specific increments. This is useful for volume controls, transparency setting, or any setting that should have distinct steps rather than continuous values.
+
+If `step` is `nil` or `0` then it will be a continuous values.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Slider = Foundation.Slider
+local SliderVariant = Foundation.Enums.SliderVariant
+local Visibility = Foundation.Enums.Visibility
+local InputSize = Foundation.Enums.InputSize
+
+local function VolumeControl()
+	-- Start at volume level 5 (50%)
+	local volume, setVolume = React.useBinding(5)
+
+	local onVolumeChanged = React.useCallback(function(newVolume: number)
+		setVolume(newVolume)
+		print("Volume set to:", newVolume)
+		-- Apply volume to audio system here
+	end, {})
+
+	return React.createElement(Slider, {
+		value = volume,
+		onValueChanged = onVolumeChanged,
+
+		-- Volume levels from 0 (mute) to 10 (max)
+		range = NumberRange.new(0, 10),
+		-- Snap to whole number volume levels
+		step = 1,
+
+		size = InputSize.Medium,
+		knobVisibility = Visibility.Auto,
+		variant = SliderVariant.Standard,
+	})
+end
+```
+
+## foundation / Display / Snackbar
+
+## Overview
+
+[Snackbar](../Display/Snackbar.md) is an interactive user interface element incorporating multiple components such as:
+
+- Text (Title)
+- Icon (Optional)
+- Action (Optional)
+- Close Affordance (Optional)
+
+If any of the optional fields are not provided then the corresponding components will not display.
+
+---
+
+## Usage
+
+[Snackbar](../Display/Snackbar.md) will automatically change its layout and resize accordingly based on the props provided.
+
+The action should be provided as an object conforming to the SnackbarAction type:
+
+```lua
+type SnackbarAction = {
+	onActivated: () -> nil,
+	text: string,
+}
+```
+
+If the icon is provided as a string, it will be treated as the icon name with default style and variant. You can also provide an `Icon` object:
+
+```lua
+type Icon = {
+	name: string,
+	variant: IconVariant?,
+}
+```
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Snackbar = Foundation.Snackbar
+
+return React.createElement(Snackbar, {
+	title = "this is a snackbar!",
+	icon = "simplified-diamond",
+	action = {
+		text = "Action",
+		onActivated = function()
+			print("Action clicked")
+		end,
+	},
+	onClose = function()
+		print("Closed")
+	end,
+})
+```
+
+## foundation / Display / StatusIndicator
+
+## Overview
+
+`StatusIndicator` is a compact, circular indicator used to display status information with optional numeric values. This component is smaller and more compact than [Badge](../Actions/Badge.md), making it ideal for showing notification counts, statuses, or simple numeric indicators.
+
+There are six status indicator variants defined in `StatusIndicatorVariant`: `Success`, `Alert`, `Warning`, `Emphasis`, `Neutral`, and `Standard`.
+
+The `StatusIndicator` can display in two states:
+
+- If `value` is not provided, it will show as an empty indicator (no text)
+- If `value` is provided, it will show the number
+- If `value` exceeds the optional `max`, it will show the max value followed by a "+" (e.g., "99+")
+
+!!! warning
+
+    Only the `Standard` and `Emphasis` variants are supported when using a `value`
+
+---
+
+## Usage
+
+`StatusIndicator` takes an optional numeric value and displays it in a compact circular container. The component automatically converts the number to a string for display.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local StatusIndicator = Foundation.StatusIndicator
+local StatusIndicatorVariant = Foundation.Enums.StatusIndicatorVariant
+
+-- Empty indicator (no value shown)
+React.createElement(StatusIndicator, {
+	variant = StatusIndicatorVariant.Success,
+})
+
+-- With a numeric value
+React.createElement(StatusIndicator, {
+	value = 5,
+	variant = StatusIndicatorVariant.Emphasis,
+})
+
+-- With a max value (shows "99+" when value exceeds 99)
+React.createElement(StatusIndicator, {
+	value = 150,
+	max = 99,
+	variant = StatusIndicatorVariant.Emphasis,
+})
+```
+
+## foundation / Display / SystemBanner
+
+## Overview
+
+`SystemBanner` is a prominent notification component designed to communicate important system-level information to users. It displays a colored banner with an icon, title, optional description, optional action buttons, and an optional close button.
+
+There are two variants defined in `AlertVariant`: `Standard` and `Emphasis`.
+
+There are four severity levels defined in `AlertSeverity`: `Info`, `Warning`, `Success`, and `Error`. Each severity level automatically displays an appropriate icon for the level.
+
+---
+
+## Usage
+
+`SystemBanner` is typically used at the top of a screen or section to display important system notifications, alerts, or status messages that require user attention.
+
+The component supports up to 3 action buttons. Any additional buttons beyond this limit will be ignored with a warning.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local SystemBanner = Foundation.SystemBanner
+local AlertVariant = Foundation.Enums.AlertVariant
+local AlertSeverity = Foundation.Enums.AlertSeverity
+local ButtonVariant = Foundation.Enums.ButtonVariant
+
+return React.createElement(SystemBanner, {
+	severity = AlertSeverity.Error,
+	title = "Connection Lost",
+	description = "Unable to connect to the server. Please check your internet connection.",
+	actions = {
+		{
+			text = "Retry",
+			variant = ButtonVariant.Standard,
+			onActivated = function()
+				print("Retrying connection...")
+			end,
+		},
+		{
+			text = "Help",
+			variant = ButtonVariant.Utility,
+			onActivated = function()
+				print("Opening help...")
+			end,
+		},
+	},
+	onClose = function()
+		print("Banner dismissed")
+	end,
+})
+```
+
+## foundation / Display / Tabs
+
+## Overview
+
+The `Tabs` component provides a way to organize content into multiple sections that can be displayed one at a time. It
+consists of a row of tab items, where clicking on a tab displays its associated content.
+
+Key features:
+
+- Horizontal scrolling with overflow indicators when tabs don't fit in the available space
+- Support for both text and icon in tab items
+- Customizable size and fill behavior
+- Support for disabled tabs
+
+## Usage
+
+There are two ways to use the `Tabs` component:
+
+- Uncontrolled. You pass the `defaultTabId` to set the initial active tab, and you pass content for each tab with the `tabs` prop.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Tabs = Foundation.Tabs
+local InputSize = Foundation.Enums.InputSize
+local FillBehavior = Foundation.Enums.FillBehavior
+
+local function MyComponent()
+	return React.createElement(Tabs, {
+		defaultActiveTabId = "1",
+		-- you can still react to the changes of the active tab.
+		onActivated = setActiveTabId,
+		tabs = {
+			{
+				id = "1",
+				text = "Tab 1",
+				content = React.createElement(Text, {
+					Text = "Content for Tab 1",
+				}),
+			},
+			{
+				id = "2",
+				text = "Tab 2",
+				content = React.createElement(Text, {
+					Text = "Content for Tab 2",
+				}),
+			},
+			{
+				id = "3",
+				text = "Tab with Icon",
+				icon = "star",
+				content = React.createElement(Text, {
+					Text = "Content for Tab 3",
+				}),
+			},
+			{
+				id = "4",
+				text = "Disabled Tab",
+				isDisabled = true,
+				content = React.createElement(Text, {
+					Text = "Content for Tab 4",
+				}),
+			},
+		},
+		size = InputSize.Medium,
+		fillBehavior = FillBehavior.Fill,
+	})
+end
+
+```
+
+- Controlled. You pass the `activeTabId` to control the active tab, and you also control how to render the content.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Tabs = Foundation.Tabs
+local InputSize = Foundation.Enums.InputSize
+local FillBehavior = Foundation.Enums.FillBehavior
+
+local function MyComponent()
+	local activeTabId, setActiveTabId = React.useState(tabs[1].id)
+
+	return React.createElement(
+		View,
+		{
+			tag = "col auto-y size-full-0",
+		},
+		React.createElement(Tabs, {
+			activeTabId = activeTabId,
+			onActivated = setActiveTabId,
+			tabs = {
+				{
+					id = "1",
+					text = "Tab 1",
+				},
+				{
+					id = "2",
+					text = "Tab 2",
+				},
+				{
+					id = "3",
+					text = "Tab with Icon",
+					icon = "star",
+				},
+				{
+					id = "4",
+					text = "Disabled Tab",
+					isDisabled = true,
+				},
+			},
+			size = InputSize.Medium,
+			fillBehavior = FillBehavior.Fill,
+		}),
+		React.createElement(
+			View,
+			{
+				Visible = activeTabId == tabs[1].id,
+				tag = "auto-y size-full-0",
+			},
+			React.createElement(Text, {
+				Text = "Content for Tab 1",
+			})
+		),
+		React.createElement(
+			View,
+			{
+				Visible = activeTabId == tabs[2].id,
+				tag = "auto-y size-full-0",
+			},
+			React.createElement(Text, {
+				Text = "Content for Tab 2",
+			})
+		),
+		React.createElement(
+			View,
+			{
+				Visible = activeTabId == tabs[3].id,
+				tag = "auto-y size-full-0",
+			},
+			React.createElement(Text, {
+				Text = "Content for Tab 3",
+			})
+		)
+	)
+end
+```
+
+## foundation / Display / Text
+
+## Overview
+
+Text displays... text! It's used in place of `TextLabel` and `TextButton` engine components.
+
+---
+
+## Usage
+
+In normal cases, you can replace `TextLabel` and `TextButton` with `Text` directly. Note that some properties have been put into tables to improve structure and compatibility with style tokens.
+
+`Text` also supports state updates with the `onStateChanged` callback, which gives updates on hover, press, select, and more. In most cases, a [Button](../Actions/Button.md) with the `TextButton` variant should be used instead of `Text` for interactive elements.
+
+!!! danger "Performance Notice"
+
+    `onStateChanged` callback function should **never** be declared locally in a render function. For functional components, declare them in a `useCallback` hook and focus on reducing dependencies as much as possible. For class components declare them in the `Init` function.
+
+    To reduce the number of re-renders, use `Bindings` as much as possible when driving prop changes.
+
+See how to style `Text` quickly with the `Style Tags`.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Text = Foundation.Text
+
+local function Component()
+	local onStateChanged = React.useCallback(function(state)
+		print("Text state changed", state)
+	end, {})
+
+	return React.createElement(Text, {
+		Text = "Hello world!",
+		onStateChanged = onStateChanged,
+		tag = "padding-small grow size-2800",
+	})
+end
+```
+
+!!! warning "Line Height and Padding"
+
+    When using `fontStyle.LineHeight` and the Builder Sans font, padding will be set automatically to ensure that line height behaves the same as Figma. If you also set padding, it will override the automatic padding. A longer term engine solution is being looked into.
+
+## foundation / Display / Toast
+
+## Overview
+
+`Toast` is an interactive user interface element incorporating multiple optional components such as:
+
+- Image
+- Text (Body and Header)
+- Actions (Up to two)
+
+If any of the fields are not provided then the corresponding components will not display.
+
+---
+
+## Usage
+
+`Toast` will automatically change its layout and resize accordingly based on the props provided. Body text will wrap, header text will not.
+
+Actions should be provided as an array, with entries conforming to the ActionProps type (shared with other components):
+
+```lua
+type ActionProps = {
+    onActivated : (() -> ()),
+    variant : ButtonVariant?,
+    text : string,
+}
+```
+
+If buttonVariant is not provided, it will default to `ButtonVariant`.Standard
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Toast = Foundation.Toast
+local ButtonVariant = Foundation.Enums.ButtonVariant
+local ThumbnailType = Foundation.Enums.ThumbnailType
+local getRbxThumb = Foundation.Utility.getRbxThumb
+
+return React.createElement(Toast, {
+    title = "Toast Notification",
+    text = "This is a toast.",
+    icon = getRbxThumb(ThumbnailType.AvatarHeadShot, 6181525679),
+    actions = {
+        {
+            onActivated = function() print("action 1") end,
+            variant = ButtonVariant.Subtle,
+            -- This button will be Secondary.
+            text = "Action 1",
+        },
+        {
+            onActivated = function() print("action 2") end,
+            variant = ButtonVariant.Standard,
+            -- This button is overriding PrimaryBrand with Primary
+            text = "Action 2",
+        }
+    }
+})
+```
+
+## foundation / Display / Tooltip
+
+## Overview
+
+Tooltip is a component for displaying a popover with a title, optional text and optional shortcut when hovering over an anchor element.
+
+---
+
+## Usage
+
+Wrap the element you want to trigger the tooltip on with the Tooltip component. By default, the tooltip will appear to the
+right of the anchor element.
+
+If possible, a shortcut should be created as a constant outside the render function to avoid useless re-renders.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Tooltip = Foundation.Tooltip
+local View = Foundation.View
+local PopoverSide = Foundation.Enums.PopoverSide
+local PopoverAlign = Foundation.Enums.PopoverAlign
+...
+
+local shortcut = { Enum.KeyCode.F2, Enum.KeyCode.One }
+
+React.createElement(
+	Tooltip,
+	{
+		title = props.controls.text,
+		text = "Generally we should avoid tooltips with long titles and descriptions. Consider using other affordances for sharing contextual information when content expands beyond a few lines.",
+		shortcut = shortcut,
+		side = PopoverSide.Top,
+		align = PopoverAlign.Start,
+	},
+	-- Anchor element that will trigget tooltip on hover
+	React.createElement(View, nil)
+)
+...
+```
+
+## foundation / Inputs / Accordion
+
+## Overview
+
+An `Accordion` component provides a series of collapsible inputs or content. It displays a list of `AccordionItem`s whose content can be customized.
+
+---
+
+## Usage
+
+### Default Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local BuilderIcons = require(Packages.BuilderIcons)
+
+local Accordion = Foundation.Accordion
+local AccordionItem = Foundation.Accordion.Item
+local InputSize = Foundation.Enums.InputSize
+type InputSize = InputSize.InputSize
+type IconVariant = BuilderIcons.IconVariant
+
+return React.createElement(Accordion, {
+    width = UDim.new(0, 100),
+    size = InputSize.Large, -- defaults to InputSize.Medium
+}, {
+    AccordionItem = React.createElement(AccordionItem, {
+        text = "My First Item",
+        divider = true,
+        leadingIcon = {
+            name = "hat-fedora",
+            variant = IconVariant.Filled,
+        },
+        id = 1
+    }, {
+        accordionItemContent = React.createElement("TextLabel", {}),
+    }),
+    AccordionItem2 = React.createElement(AccordionItem, {
+        text = "My Second Item",
+        divider = false, -- defaults to true
+        leadingIcon = "robux",
+        id = 2
+    }, {
+        accordionItemContent = React.createElement("TextButton", {}),
+    }),
+})
+```
+
+### Basic Controlled Usage
+
+If you want to allow only one `AccordionItem` to expand at a time, or have some similarly custom behavior, you can use state in the container, and pass `onActivated` to your `Accordion`.
+
+```lua
+local expandedItem, setExpandedItem = React.useState(1)
+
+return React.createElement(Accordion, {
+    width = UDim.new(0, 400),
+    onActivated = function(item, isExpanded)
+        return function()
+            if isExpanded then
+                setExpandedItem(-1)
+            else
+                setExpandedItem(item) -- if activated item is collapsed, expand only this item
+            end
+        end
+    end,
+}, {
+    AccordionItem1 = React.createElement(AccordionItem, {
+        text = "Controlled Item 1",
+        LayoutOrder = 1,
+        isExpanded = expandedItem == 1,
+        id = 1,
+    }, {
+        accordionItemContent = React.createElement("TextButton", {}),
+    }),
+    AccordionItem2 = React.createElement(AccordionItem, {
+        text = "Controlled Item 2",
+        LayoutOrder = 2,
+        isExpanded = expandedItem == 2,
+        id = 2,
+    }, {
+        accordionItemContent = React.createElement("TextButton", {}),
+    })
+})
+```
+
+The same behavior can be achieved by passing `onActivated` to each individual `AccordionItem`, if you prefer:
+
+```lua
+local expandedItem, setExpandedItem = React.useState(1)
+return React.createElement(Accordion, {
+    width = UDim.new(0, 400),
+}, {
+    AccordionItem1 = React.createElement(AccordionItem, {
+        text = "Controlled Item 1",
+        LayoutOrder = 1,
+        isExpanded = expandedItem == 1,
+        onActivated = function()
+            if expandedItem == 1 then
+                setExpandedItem(-1)
+            else
+                setExpandedItem(1)
+            end
+        end,
+        id = 1,
+    }, {
+        accordionItemContent = React.createElement("TextButton", {}),
+    }),
+    AccordionItem2 = React.createElement(AccordionItem, {
+        text = "Controlled Item 2",
+        LayoutOrder = 2,
+        isExpanded = expandedItem == 2,
+        onActivated = function()
+            if expandedItem == 2 then
+                setExpandedItem(-1)
+            else
+                setExpandedItem(2)
+            end
+        end,
+        id = 2,
+    }, {
+        accordionItemContent = React.createElement("TextButton", {}),
+    }),
+})
+```
+
+For more examples of Accordion usage, checkout the [story!](https://github.com/Roblox/foundation/blob/main/modules/foundation/src/Components/Accordion/Accordion.story.lua)
+
+## foundation / Inputs / Checkbox
+
+## Overview
+
+Checkboxes are controls for turning a boolean value on or off. The given text is displayed to the right of the checkbox.
+
+---
+
+## Usage
+
+Checkboxes will automatically size to fit their text, and have a minimum height of the size of the checkbox itself.
+Checkbox size depends on the size property. Possible values are defined in `InputSize`.
+`Medium` is the default.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Checkbox = Foundation.Checkbox
+local InputSize = Foundation.Enums.InputSize
+
+React.createElement(Checkbox, {
+	label = "Checkbox Option",
+	isChecked = false,
+	isDisabled = false,
+	onActivated = function() return end,
+	size = InputSize.Medium,
+	LayoutOrder = 1,
+})
+```
+
+## foundation / Inputs / ColorPicker
+
+## Overview
+
+!!! note "Work In Progress Component"
+
+    `ColorPicker` is currently WIP and requires the `FoundationColorPickerComponent` feature flag to be enabled. The API may change in future releases.
+
+    `ColorPicker` is an interactive color selection component that allows users to pick colors using multiple input methods. It combines a saturation/value picker, hue slider, optional alpha slider, and text inputs that support RGB, RGBA, HSV, and Hex color formats.
+
+---
+
+## Enabling ColorPicker
+
+Since ColorPicker is WIP, you need to enable the feature flag before using it:
+
+```lua
+-- Enable the feature flag (this would typically be done at the application level)
+game:SetFastFlag("FoundationColorPickerComponent", true)
+
+-- Then you can use ColorPicker normally
+local Foundation = require(Packages.Foundation)
+local ColorPicker = Foundation.ColorPicker
+```
+
+If you attempt to use ColorPicker without the flag enabled, it will return `nil`.
+
+---
+
+## Usage
+
+ColorPicker is designed to be controlled by the consumer. The main props to supply are `onColorChanged` and optionally `onAlphaChanged` to handle color selection events.
+
+### Basic Color Picker
+
+```lua
+local Foundation = require(Packages.Foundation)
+local ColorPicker = Foundation.ColorPicker
+
+local function BasicColorPicker()
+	local selectedColor, setSelectedColor = React.useState(Color3.new(1, 0, 0))
+
+	return React.createElement(ColorPicker, {
+		initialColor = selectedColor,
+		onColorChanged = function(newColor)
+			setSelectedColor(newColor)
+			print("Color changed to:", newColor)
+		end,
+	})
+end
+```
+
+### Color Picker with Alpha Support
+
+```lua
+local Foundation = require(Packages.Foundation)
+local ColorPicker = Foundation.ColorPicker
+
+local function ColorPickerWithAlpha()
+	local selectedColor, setSelectedColor = React.useState(Color3.new(0, 0.5, 1))
+	local selectedAlpha, setSelectedAlpha = React.useState(0.8)
+
+	return React.createElement(ColorPicker, {
+		initialColor = selectedColor,
+		initialAlpha = selectedAlpha,
+		onColorChanged = function(newColor)
+			setSelectedColor(newColor)
+		end,
+		onAlphaChanged = function(newAlpha)
+			setSelectedAlpha(newAlpha)
+		end,
+	})
+end
+```
+
+### Color Picker without Alpha
+
+For use cases where you only need RGB color selection without transparency:
+
+```lua
+local Foundation = require(Packages.Foundation)
+local ColorPicker = Foundation.ColorPicker
+
+local function SimpleColorPicker()
+	local selectedColor, setSelectedColor = React.useState(Color3.new(0.5, 0.5, 0.5))
+
+	return React.createElement(ColorPicker, {
+		initialColor = selectedColor,
+		onColorChanged = function(newColor)
+			setSelectedColor(newColor)
+		end,
+	})
+end
+```
+
+---
+
+## Features
+
+- **Visual Color Selection**: Saturation/Value picker for intuitive color selection
+- **Hue Control**: Dedicated hue slider for precise hue adjustment
+- **Alpha Control**: Optional alpha slider for transparency selection
+- **Multiple Input Formats**: Text inputs supporting RGB, RGBA, HSV, and Hex formats
+- **Format Switching**: Dropdown to switch between different color input modes
+- **Real-time Updates**: All controls stay synchronized as you interact with any part
+
+---
+
+---
+
+## Color Input Modes
+
+The text input section supports four different color formats:
+
+- **RGB**: Red, Green, Blue values (0-255)
+- **RGBA**: RGB + Alpha values (0-255 for RGB, 0-1 for Alpha)
+- **HSV**: Hue (0-360), Saturation (0-100%), Value (0-100%)
+- **Hex**: Hexadecimal color codes (#RRGGBB)
+
+Users can switch between modes using the dropdown and the picker will automatically convert and sync values across all input methods.
+
+## foundation / Inputs / DateTimePicker
+
+## Overview
+
+`DateTimePicker` is a stylized interactive, clickable calendar element.
+
+There are 3 variant types defined in `DateTimePickerVariant`
+
+- Single
+- SingleWithTime
+- Dual
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local DateTimePicker = Foundation.DateTimePicker
+
+local isInvalidInput, setIsInvalidInput = React.useState(false)
+
+local onChanged(dateTime: DateTime?, dateTime2: DateTime?)
+    if dateTime and dateTime2 then
+        -- Do something with the valid DateTime object
+    else
+        setIsInvalidInput(true)
+    end
+end
+
+React.createElement(DateTimePicker, {
+    hasError = isInvalidInput,
+    isDisabled = false,
+    isRequired = true,
+    onChanged = onChanged,
+    selectableDateRange = {
+        startDate = DateTime.now(),
+        endDate = DateTime.fromUnixTimestamp(DateTime.now().UnixTimestamp + (2 * 24 * 60 * 60)), -- 2 days from the current date
+    },
+    variant = DateTimePickerEnum.Single,
+})
+```
+
+Using the `onChanged` callback will let you grab the user's input as a `DateTime` object if their input could be translated into a valid `DateTime` object. If using `Dual` then the first arg is the "start" and the second arg will be the "end" date.
+
+## foundation / Inputs / Dropdown
+
+## Overview
+
+A `Dropdown` is a way to have a list of options that only allows one choice selected at a time. Any of these may optionally be disabled. This component displays the selected option as a
+label while the list of options are hidden, and we show the list of options vertically when this component is selected. Selecting a menu option will dismiss the list.
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Dropdown = Foundation.Dropdown
+
+return React.createElement(Dropdown.Root, {
+    label = "I am a dropdown",
+    onItemChanged = function(id, label) end,
+    items = {
+        {
+			id = "A",
+			text = "Item A",
+		},
+		{
+			id = "B",
+			text = "Item B",
+			isDisabled = true,
+		},
+		{
+			id = "C",
+			text = "Item C",
+			icon = "icons/common/safety",
+		},
+    }
+})
+```
+
+## foundation / Inputs / InternalTextInput
+
+## Overview
+
+`InternalTextInput` is a single line input with optional leading and trailing elements
+
+---
+
+## Usage
+
+`InternalTextInput` takes full width of the parent component, the height is static.
+You can provide any element as `leadingElement` or `trailingElement`. The input will take the rest space without any paddings by default.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local InternalTextInput = Foundation.InternalTextInput
+
+local function Component()
+	local text, setText = React.useBinding(0)
+	return React.createElement(InternalTextInput, {
+		text = text,
+		onChanged = function() end,
+		placeholder = "Placeholder",
+		leadingElement = React.createElement(Icon, { name = "icons/common/search_small", size = IconSize.Small }),
+		trailingElement = React.createElement(IconButton, {
+			onActivated = buttonPress,
+			isDisabled = controls.isDisabled,
+			size = IconSize.Small,
+			icon = controls.trailingComponentIcon,
+		}),
+		LayoutOrder = 1,
+	})
+end
+```
+
+## foundation / Inputs / List
+
+## Overview
+
+`List` can be used to display information or inputs in structured rows. The component is flexible by providing space for an icon, avatar, or graphical media in the `leading` prop and any component in the `trailing` slot.
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local BuilderIcons = require(Packages.BuilderIcons)
+
+local InputSize = Foundation.Enums.InputSize
+local List = Foundation.List
+
+return React.createElement(List.Root, {
+	size = InputSize.Medium,
+}, {
+	Item1 = React.createElement(List.Item, {
+		title = "Item Title",
+		description = "Item description",
+		leading = BuilderIcons.Icon.Robux,
+	}),
+	Item2 = React.createElement(List.Item, {
+		title = "Another Item",
+		description = "More detail",
+		LayoutOrder = 2,
+	}),
+})
+```
+
+## foundation / Inputs / Menu
+
+## Overview
+
+A `Menu` component is a popover-based menu that combines a `Popover` with an `InternalMenu` to provide a contextual menu experience. It displays a list of menu items in a popover that can be anchored to any element.
+
+## Usage
+
+### Simple Menu
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Menu = Foundation.Menu
+local Button = Foundation.Button
+local InputSize = Foundation.Enums.InputSize
+
+local menuItems = {
+	{ id = "new", icon = "icons/common/add_small", text = "New" },
+	{ id = "edit", icon = "icons/common/edit", text = "Edit" },
+	{ id = "delete", icon = "icons/common/delete", text = "Delete", isDisabled = true },
+}
+
+local open, setOpen = React.useState(false)
+
+return React.createElement(Menu, {
+	isOpen = open,
+	items = menuItems,
+	size = InputSize.Medium,
+	onPressedOutside = function()
+		setOpen(false)
+	end,
+	onActivated = function(id)
+		print("Menu item activated:", id)
+		setOpen(false)
+	end,
+}, {
+	Button = React.createElement(Button, {
+		text = "Open Menu",
+		onActivated = function()
+			setOpen(not open)
+		end,
+	}),
+})
+```
+
+`onActivated` can be provided on the component level as in the example above, or you can provide it in the items themselves.
+
+If you don't control the element you need a menu for, but have a reference to it, you can use the `anchorRef` property.
+
+### Menu with Groups
+
+Menus can have groups with dividers between them. Pass an array of group objects to the `items` property.
+Each group can have an optional `title` and a required `items` array.
+
+```lua
+local menuItems = {
+	{
+		title = "Actions",
+		items = {
+			{ id = "rename", icon = "pencil-square", text = "Rename" },
+			{ id = "copy", icon = "icons/actions/edit/copy", text = "Copy" },
+		},
+	},
+	{
+		items = {
+			{ id = "sort-asc", icon = "arrow-small-up", text = "Sort ascending" },
+			{ id = "sort-desc", icon = "arrow-small-down", text = "Sort descending" },
+		},
+	},
+	{
+		items = {
+			{ id = "delete", icon = "trash-can", text = "Delete" },
+		},
+	},
+}
+
+local open, setOpen = React.useState(false)
+
+return React.createElement(Menu, {
+	isOpen = open,
+	items = menuItems,
+	onPressedOutside = function()
+		setOpen(false)
+	end,
+	onActivated = function(id)
+		print("Menu item activated:", id)
+		setOpen(false)
+	end,
+}, {
+	Button = React.createElement(Button, {
+		text = "Open Menu",
+		onActivated = function()
+			setOpen(not open)
+		end,
+	}),
+})
+```
+
+### Menu with Submenus
+
+Any menu item can open a nested submenu by providing an `items` field. Submenus open to the right
+when the trigger item is clicked. Nesting can be arbitrarily deep.
+
+When a leaf item is activated, all ancestor submenus close automatically along with the root menu.
+
+```lua
+local menuItems = {
+	{
+		id = "rename",
+		icon = "pencil-square",
+		text = "Rename",
+	},
+	{
+		id = "insert",
+		icon = "plus-large",
+		text = "Insert",
+		items = {
+			{
+				id = "insert-row",
+				icon = "plus-small",
+				text = "Row",
+				items = {
+					{ id = "insert-row-above", icon = "arrow-large-up", text = "Above" },
+					{ id = "insert-row-below", icon = "arrow-large-down", text = "Below" },
+				},
+			},
+			{
+				id = "insert-col",
+				icon = "plus-small",
+				text = "Column",
+				items = {
+					{ id = "insert-col-left", icon = "arrow-large-left", text = "Left" },
+					{ id = "insert-col-right", icon = "arrow-large-right", text = "Right" },
+				},
+			},
+		},
+	},
+	{
+		id = "delete",
+		icon = "trash-can",
+		text = "Delete",
+	},
+}
+
+local open, setOpen = React.useState(false)
+
+return React.createElement(Menu, {
+	isOpen = open,
+	items = menuItems,
+	onPressedOutside = function()
+		setOpen(false)
+	end,
+	onActivated = function(id)
+		print("Menu item activated:", id)
+		setOpen(false)
+	end,
+}, {
+	Button = React.createElement(Button, {
+		text = "Open Menu",
+		onActivated = function()
+			setOpen(not open)
+		end,
+	}),
+})
+```
+
+## foundation / Inputs / NumberInput
+
+## Overview
+
+`NumberInput` is a single line number input with optional label, helper text.
+
+---
+
+## Usage
+
+`NumberInput` has a default width of 400px unless `width` is specified. The height is static and will depend on whether a label and helper text are provided.
+
+The `isRequired` property should only be used on the inputs that fall in the minority. For example, if most inputs are required, only put `isRequired = false,` on the optional inputs, and `isRequired` as `nil` for the required inputs.
+
+Non-numerical values are not allowed. Entering anything that can't be parsed to a number won't update the last value - but will show an error state until focus is lost, and invalid values are cleared.
+When input is out of focus the value returned by `formatAsString` is displayed. By default, it shows the same value.
+
+Increase and decrease controls change value by the `step`.
+
+You can limit `minimum` and `maximum` values with the corresponding props.
+
+`value` is rounded automatically according to a `precision`. e.g. with the precision being 3, 0.0001 will be rounded to 0, 0.0006 to 0.001
+
+```lua
+local Foundation = require(Packages.Foundation)
+local NumberInput = Foundation.NumberInput
+
+local function Component()
+	local value, setValue = React.useState(0)
+	return React.createElement(NumberInput, {
+		isRequired = true,
+		label = "Padding",
+		onChanged = function(v)
+			setValue(v)
+		end,
+		formatAsString = function(value)
+			return value .. "px"
+		end,
+		LayoutOrder = 1,
+		value = value,
+	})
+end
+```
+
+## foundation / Inputs / OptionSelectorGroup
+
+## Overview
+
+An `OptionSelectorGroup` is a way to have a list of options that only allows one choice selected at a time. Any of the individual items may optionally be disabled. This component displays all options as either a vertical or horizontal list. Selecting a new choice deselects the previously selected choice, and you can also select and deselect the same choice by interacting with it again.
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local OptionSelectorGroup = Foundation.OptionSelectorGroup
+local Orientation = Foundation.Enums.Orientation
+
+return React.createElement(OptionSelectorGroup.Root, {
+    onValueChanged = function() end,
+    orientation = Orientation.Horizontal,
+    Selectable = true, -- Controls selection for the entire group
+}, {
+    React.createElement(OptionSelectorGroup.Item, {
+        value = "A",
+        label = "Label A",
+    }),
+    React.createElement(OptionSelectorGroup.Item, {
+        value = "B",
+        label = "Label B",
+    }),
+    React.createElement(OptionSelectorGroup.Item, {
+        value = "C",
+        label = "Label C",
+        isDisabled = true, -- Disabled items are automatically non-selectable
+    }),
+})
+```
+
+## foundation / Inputs / RadioGroup
+
+## Overview
+
+A `RadioGroup` is a way to have a list of options that only allows one choice checked at a time. Any of these may optionally be disabled. The `RadioGroup` component is composed of a list of [RadioGroup.Item](#item)s.
+
+The `Selectable` prop can be set on the `RadioGroup.Root` to control whether the entire group is selectable, and all `RadioGroup.Item`s will inherit this setting.
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local RadioGroup = Foundation.RadioGroup
+
+return React.createElement(RadioGroup.Root, {
+    onValueChanged = function() end,
+    Selectable = true, -- Controls selection for the entire group
+}, {
+    React.createElement(RadioGroup.Item, {
+        value = "A",
+        label = "Label A",
+    }),
+    React.createElement(RadioGroup.Item, {
+        value = "B",
+        label = "Label B",
+    }),
+    React.createElement(RadioGroup.Item, {
+        value = "C",
+        label = "Label C",
+        isDisabled = true, -- Disabled items are automatically non-selectable
+    }),
+})
+```
+
+## foundation / Inputs / SearchInput
+
+## Overview
+
+`SearchInput` is a single-line text input designed for search interactions. It includes a leading search icon and supports three shapes (Rounded, Pill, Box) and three visual variants (Standard, Contrast, Utility).
+
+---
+
+## Usage
+
+`SearchInput` is 400px wide (scaled alongside `Size` tokens) by default unless `width` is specified. The height is determined by the `size` prop.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local SearchInput = Foundation.SearchInput
+local InputSize = Foundation.Enums.InputSize
+local InputVariant = Foundation.Enums.InputVariant
+local SearchInputShape = Foundation.Enums.SearchInputShape
+
+local function Component()
+    local text, setText = React.useState("")
+    return React.createElement(SearchInput, {
+        text = text,
+        size = InputSize.Medium,
+        variant = InputVariant.Standard,
+        shape = SearchInputShape.Rounded,
+        onChanged = function(txt)
+            setText(txt)
+        end,
+        onFocusGained = function()
+            print("focused")
+        end,
+        onFocusLost = function(inputObject)
+            print("lost focus")
+        end,
+        LayoutOrder = 1,
+    })
+end
+```
+
+## foundation / Inputs / SegmentedControl
+
+## Overview
+
+SegmentedControl is a horizontal control that allows users to select one of several mutually exclusive options. It is typically used for navigation or filtering content.
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local SegmentedControl = Foundation.SegmentedControl
+local InputSize = Foundation.Enums.InputSize
+
+local segments = {
+	{
+		id = "1",
+		text = "Lorem Ipsum",
+	},
+	{
+		id = "2",
+		text = "Lorem Ipsum",
+	},
+}
+
+local function Component()
+	local value, setValue = React.useState(segments[1].id)
+
+	return React.createElement(View, {
+		SegmentedControl = React.createElement(SegmentedControl, {
+			size = InputSize.Medium,
+			segments = segments,
+			value = value,
+			onActivated = function(id)
+				print(`Segment Clicked: {id}`)
+				setValue(id)
+			end,
+		}),
+	})
+end
+```
+
+## foundation / Inputs / TextArea
+
+## Overview
+
+`TextArea` is a multi-line text box that has the ability to resize and scroll. It should be used when large bodies of text are expected as an input.
+
+---
+
+## Usage
+
+`TextArea` has a default width of 400px unless `width` is specified. It may expand vertically based on the number of lines to show.
+
+`TextArea` and `TextInput` have very similar behavior. In `TextArea`, you can specify the number of lines to show at once using the `numLines` prop. By default, 3 lines will be rendered.
+
+The `isRequired` property should only be used on the inputs that fall in the minority. For example, if most inputs are required, only put `isRequired = false,` on the optional inputs, and `isRequired` as `nil` for the required inputs.
+
+The `textBoxRef` property exposes additional imperative functions to the [TextBox](https://create.roblox.com/docs/reference/engine/classes/TextBox). Currently this exposes:
+
+- `focus()`, which focuses the textbox
+- `releaseFocus()`, which unfocuses the textbox
+- `getIsFocused()`, which returns whether the TextBox is currently focused
+
+```lua
+local Foundation = require(Packages.Foundation)
+local TextArea = Foundation.TextArea
+
+local function Component()
+	local text, setText = React.useState("")
+	local textBoxRef = React.useRef(nil)
+	return React.createElement(TextArea, {
+		text = text,
+        numLines = 4,
+		placeholder = "Enter biography",
+		isRequired = true,
+		label = "Biography",
+		help = "Tell us about you!",
+		textBoxRef = textBoxRef,
+		onChanged = function(txt)
+			setText(txt)
+		end,
+	})
+end
+```
+
+## foundation / Inputs / TextInput
+
+## Overview
+
+`TextInput` is a single line text input with optional label, helper text, and icons.
+
+---
+
+## Usage
+
+`TextInput` has a default width of 400px unless `width` is specified. The height is static and will depend on whether a label and helper text are provided.
+
+The `isRequired` property should only be used on the inputs that fall in the minority. For example, if most inputs are required, only put `isRequired = false,` on the optional inputs, and `isRequired` as `nil` for the required inputs.
+
+The `textBoxRef` property exposes additional imperative functions to the TextBox. Currently this exposes: <br />`focus()`, which
+focuses the textbox.
+<br />`releaseFocus()`, which unfocuses the textbox.
+<br />`getIsFocused()`, which returns whether the TextBox is currently focused.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local TextInput = Foundation.TextInput
+
+local function Component()
+	local text, setText = React.useState("")
+	local textBoxRef = React.useRef(nil)
+	return React.createElement(TextInput, {
+		text = text,
+		placeholder = "Placeholder text",
+		isRequired = true,
+		label = "Username",
+		help = "Must be alphanumeric",
+		textBoxRef = textBoxRef,
+		onChanged = function(txt)
+			setText(txt)
+		end,
+		LayoutOrder = 1,
+	})
+end
+```
+
+## foundation / Inputs / Toggle
+
+## Overview
+
+Toggles are controls for turning a boolean value on or off.
+
+---
+
+## Usage
+
+A `Toggle` should be used with a standard size defined in `InputSize`. `Medium` is the default.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Toggle = Foundation.Toggle
+local InputSize = Foundation.Enums.InputSize
+
+React.createElement(Toggle, {
+	label = "I am a toggle!",
+	isDisabled = disabled,
+	isChecked = checked,
+	onActivated = function()
+		print("Toggle switch activated")
+	end,
+	size = InputSize.Medium
+})
+```
+
+## foundation / Layout / Dialog
+
+## Overview
+
+`Dialogs` create a temporary, purposeful exchange (or dialog) between a user and our platform, helping surface important information or require user input without disrupting the larger experience.
+
+By default, Dialog renders in the center of its parent component without portaling to the root. If you need to portal the Dialog to the root (for example, to ensure it's always on top of other UI elements), you can set `disablePortal = false`.
+
+The Dialog component does not include a backdrop by default. You can add a backdrop by setting `hasBackdrop = true` if you want to visually separate the dialog from the rest of the UI.
+
+If your application has its own modal window management system, you can render Dialog directly within it instead of using the built-in portal functionality.
+
+## Sizing Behavior
+
+The Dialog component supports 3 fixed sizes:
+
+- `DialogSize.Small` (320px wide)
+- `DialogSize.Medium` (480px wide)
+- `DialogSize.Large` (640px wide)
+
+The dialog will automatically constrain itself to fit smaller viewports while maintaining appropriate spacing and proportions.
+
+The dialog's height is automatically determined by its content.
+
+## Close Behavior
+
+The `onClose` callback is called when the dialog should be closed. It receives a `reason` parameter of type `OnCloseCallbackReason` that indicates how the dialog was closed:
+
+- `OnCloseCallbackReason.BackdropClick`: User clicked the backdrop (overlay) behind the dialog
+
+This allows you to handle different close scenarios appropriately, such as showing a confirmation prompt when closing via backdrop click.
+
+## Dialog.Actions Behavior
+
+The Dialog.Actions component handles the layout and behavior of action buttons in a dialog. Actions can be arranged either horizontally or vertically based on the dialog's size and the specified orientation.
+
+### Orientation Behavior
+
+The orientation of action buttons is determined by two factors:
+
+1. The `orientation` prop (defaults to `Orientation.Horizontal`)
+2. The dialog's size
+
+The following rules apply:
+
+- For `DialogSize.Medium` and `DialogSize.Large`, actions are always arranged horizontally (row layout with wrapping)
+- For `DialogSize.Small`:
+    - If `orientation = Orientation.Horizontal`, actions are arranged horizontally
+    - If `orientation = Orientation.Vertical`, actions are arranged vertically with full width
+
+This responsive behavior ensures optimal button layout across different dialog sizes and screen widths.
+
+### Action Button Properties
+
+Each action in the `actions` array can have the following properties:
+
+- `text`: The button text
+- `variant`: Button style variant (e.g., ButtonVariant.Standard, ButtonVariant.Emphasis)
+- `icon`: Optional icon to display
+- `onActivated`: Callback function when button is clicked
+- `inputDelay`: Optional delay before the button can be clicked (in seconds)
+
+### Optional Label
+
+You can provide a descriptive label below the action buttons using the `label` prop. This is useful for providing additional context about the actions.
+
+---
+
+## Usage
+
+### Comprehensive Example
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Dialog = Foundation.Dialog
+local DialogSize = Foundation.Enums.DialogSize
+
+return React.createElement(Dialog.Root, {
+		size = DialogSize.Large,
+		onClose = function(reason)
+			print("Dialog closed! Reason:", reason)
+		end,
+	}, {
+		DialogTitle = React.createElement(Dialog.Title, {
+			text = "Dialog Title",
+		}),
+		DialogMedia = React.createElement(Dialog.HeroMedia, {
+			media = "rbxassetid://0",
+			aspectRatio = 16 / 9,
+		}),
+		DialogContent = React.createElement(Dialog.Content, {
+			LayoutOrder = 2,
+		}, {
+			DialogText = React.createElement(Dialog.Text, {
+				Text = "Dialog body text",
+			}),
+		}),
+		DialogActions = React.createElement(Dialog.Actions, {
+			LayoutOrder = 3,
+			actions = {
+				{
+					text = "No",
+					variant = ButtonVariant.Standard,
+					onActivated = function()
+						print("No clicked!")
+					end,
+				},
+				{
+					text = "Yes",
+					variant = ButtonVariant.Emphasis,
+					icon = "icons/common/robux",
+					onActivated = function()
+						print("Yes clicked!")
+					end,
+					inputDelay = 3,
+				},
+			},
+			label = "Actions Label",
+		}),
+	})
+```
+
+### Confirm Dialog Example
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Dialog = Foundation.Dialog
+local DialogSize = Foundation.Enums.DialogSize
+local ButtonVariant = Foundation.Enums.ButtonVariant
+
+local function ConfirmDialog(props)
+    return React.createElement(Dialog.Root, {
+        size = DialogSize.Small,
+		hasBackdrop = true,
+        onClose = function(reason)
+            if reason == OnCloseCallbackReason.BackdropClick then
+                -- Optionally prevent closing on backdrop click
+                return
+            end
+            props.onClose()
+        end,
+    }, {
+        DialogTitle = React.createElement(Dialog.Title, {
+            text = "Confirm Action",
+        }),
+        DialogContent = React.createElement(Dialog.Content, nil, {
+            DialogText = React.createElement(Dialog.Text, {
+                Text = "Are you sure you want to proceed with this action?",
+            }),
+        }),
+        DialogActions = React.createElement(Dialog.Actions, {
+            actions = {
+                {
+                    text = "Cancel",
+                    variant = ButtonVariant.Standard,
+                    onActivated = props.onCancel,
+                },
+                {
+                    text = "Confirm",
+                    variant = ButtonVariant.Emphasis,
+                    onActivated = props.onConfirm,
+                },
+            },
+        }),
+    })
+end
+```
+
+## foundation / Layout / Divider
+
+## Overview
+
+Dividers are layout components used to control visual separation between visual, or informational categories. The visual styles of the divider communicate different meaning or importance in a layout.
+
+---
+
+## Usage
+
+Dividers can be used in both horizontal and vertical orientations to achieve visual separation between components in a layout. The orientation is controlled by the `orientation` property, with possible values defined in `Orientation` (`Horizontal`/`Vertical`). `Horizontal` is the default.
+
+### Variants
+
+The divider's visual style and insets are controlled by the `variant` property. Possible values are defined in `DividerVariant` (`Default`/`Heavy`/`Inset`/`InsetLeft`/`InsetRight`). `Default` is the default.
+
+Note: When `orientation` is set to `Vertical`, the `variant` property is always `Default` and other variants are not supported.
+
+### Examples
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Divider = Foundation.Divider
+local DividerVariant = require(Foundation.Enums.DividerVariant)
+local Orientation = require(Foundation.Enums.Orientation)
+
+-- Horizontal divider with variant
+React.createElement(Divider, {
+	variant = DividerVariant.Heavy,
+	orientation = Orientation.Horizontal,
+})
+
+-- Vertical divider (always uses Default variant)
+React.createElement(Divider, {
+	orientation = Orientation.Vertical,
+})
+```
+
+## foundation / Layout / Grid
+
+## Overview
+
+`Grid` provides a responsive, column-based layout system built on StyleSheet-driven sizing and breakpoint-aware configuration. It automatically adapts to container width using breakpoints, similar to container queries in CSS.
+
+The Grid system consists of:
+
+- `Grid.Root`: Container that measures width and applies responsive layout
+- `Grid.Cell`: Items that declare column spans via responsive size props
+- `Grid.Debug`: Visual debugging overlay for development
+
+Grid uses container-relative breakpoints rather than global screen size, meaning each Grid instance responds to its own container width independently.
+
+## Responsive Behavior
+
+Grid automatically determines the active breakpoint based on the container width:
+
+- **XSmall (xs)**: 360px - 3 columns
+- **Small (sm)**: 600px - 6 columns
+- **Medium (md)**: 1140px - 12 columns
+- **Large (lg)**: 1520px - 12 columns
+- **XLarge (xl)**: 1920px - 12 columns
+- **XXLarge (xxl)**: >1920px - 12 columns
+
+Column counts, margins, and gutters are automatically adjusted for each breakpoint
+
+## Grid.Cell Size Behavior
+
+Grid.Cell accepts a `size` prop that should typically be a responsive map using breakpoint short names:
+
+```lua
+-- xs=3 cols, sm=6 cols, md+=12 cols
+size = { xs = 3, sm = 6, md = 6, lg = 4, xl = 4 }
+
+-- Number (useful for static layouts)
+size = 6
+```
+
+**Responsive maps are strongly recommended** as they ensure your layout adapts properly across all screen sizes. Each key uses breakpoint short names (`xs`, `sm`, `md`, `lg`, `xl`, `xxl`).
+
+When using responsive maps:
+
+- Size `0` hides the element at that breakpoint
+- Missing breakpoint keys fall back to the total column count for that breakpoint (full width)
+- Sizes are automatically clamped between 0 and the maximum columns for the breakpoint
+
+## Layout Behavior
+
+### Wrapped Layout (default)
+
+When `Wraps = true` (default), Grid uses `UIFlexAlignment.SpaceBetween` for horizontal spacing. This avoids unwanted vertical padding but means incomplete rows will have large gaps between cells. For best results, ensure rows use all available columns or add invisible spacer cells.
+
+### Non-Wrapped Layout
+
+When `Wraps = false`, Grid uses regular `UIListLayout.Padding` equal to the gutter width for consistent horizontal spacing without wrapping.
+
+---
+
+## Usage
+
+### Responsive Grid Layout (Recommended)
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Grid = Foundation.Grid
+
+-- Responsive three-column layout: 1-up on xs, 2-up on sm, 3-up on md+
+local columnSize = { xs = 3, sm = 3, md = 4, lg = 4, xl = 4 }
+
+return React.createElement(Grid.Root, {}, {
+    A = React.createElement(Grid.Cell, { size = columnSize }),
+    B = React.createElement(Grid.Cell, { size = columnSize }),
+    C = React.createElement(Grid.Cell, { size = columnSize }),
+})
+```
+
+### Card Grid with Progressive Enhancement
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Grid = Foundation.Grid
+
+-- Progressive card layout: 1-up → 2-up → 3-up as screen size increases
+local cardSize = { xs = 3, sm = 3, md = 6, lg = 4, xl = 4 }
+
+return React.createElement(Grid.Root, {}, {
+    Card1 = React.createElement(Grid.Cell, { size = cardSize }),
+    Card2 = React.createElement(Grid.Cell, { size = cardSize }),
+    Card3 = React.createElement(Grid.Cell, { size = cardSize }),
+    Card4 = React.createElement(Grid.Cell, { size = cardSize }),
+})
+```
+
+### Sidebar Layout
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Grid = Foundation.Grid
+
+-- Sidebar that stacks on small screens
+local sidebarSize = { xs = 3, sm = 6, md = 4, lg = 3, xl = 3 }
+local contentSize = { xs = 3, sm = 6, md = 8, lg = 9, xl = 9 }
+
+return React.createElement(Grid.Root, {}, {
+    Sidebar = React.createElement(Grid.Cell, { size = sidebarSize }),
+    Content = React.createElement(Grid.Cell, { size = contentSize }),
+})
+```
+
+### Using Style Tags
+
+You can apply responsive column tags directly without using Grid.Cell for more control:
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Grid = Foundation.Grid
+local View = Foundation.View
+
+return React.createElement(Grid.Root, {}, {
+    -- Responsive tags using breakpoint short names
+    Left = React.createElement(View, {
+        tag = "xs-col-3 sm-col-3 md-col-6 lg-col-6 xl-col-6"
+    }),
+    Right = React.createElement(View, {
+        tag = "xs-col-3 sm-col-3 md-col-6 lg-col-6 xl-col-6"
+    }),
+})
+```
+
+**Short-name tags are preferred** as they make responsive behavior explicit. Available tags:
+
+- `xs-col-{N}`, `sm-col-{N}`, `md-col-{N}`, `lg-col-{N}`, `xl-col-{N}`, `xxl-col-{N}`
+- Use `{breakpoint}-col-0` to hide elements at specific breakpoints
+
+### Responsive Visibility Control
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Grid = Foundation.Grid
+
+-- Show/hide elements at different breakpoints using responsive maps
+local promoSize = { xs = 0, sm = 0, md = 12, lg = 12, xl = 12 }
+local mainSize = { xs = 3, sm = 6, md = 12, lg = 12, xl = 12 }
+
+Root = React.createElement(Grid.Root, {}, {
+    MainContent = React.createElement(Grid.Cell, { size = mainSize }),
+    PromoSection = React.createElement(Grid.Cell, { size = promoSize }), -- Hidden on xs/sm
+})
+
+-- Or using tags directly:
+MainContent = React.createElement(View, {
+    tag = "xs-col-3 sm-col-6 md-col-12 lg-col-12 xl-col-12"
+})
+PromoSection = React.createElement(View, {
+    tag = "xs-col-0 sm-col-0 md-col-12 lg-col-12 xl-col-12"
+})
+```
+
+### Development Debugging
+
+`Grid.Debug` provides visual debugging overlays to help you understand and validate your grid layout during development. It renders colored overlays showing the grid structure and displays real-time information about the current breakpoint and container dimensions:
+
+- Grid columns: Visual representation of all available columns for the current breakpoint
+- Margins: Left and right outer margins
+- Gutters: Horizontal spacing between columns
+- Breakpoint info: Current breakpoint name, container width, column count, and spacing values
+
+Grid.Debug renders colored overlays using the same grid metrics that Grid.Root renders with and creates a visual grid that sits behind your actual content, helping you to see how your cells align with the underlying column structure.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Grid = Foundation.Grid
+
+return React.createElement(Grid.Debug, {
+    debugTransparency = 0.8, -- optional
+    align = Enum.ItemLineAlignment.Start, -- optional alignment
+}, {
+    -- Your grid content here
+    GridRoot = React.createElement(Grid.Root, {}, {
+        Cell1 = React.createElement(Grid.Cell, { size = { xs = 3, sm = 3, md = 4 } }),
+        Cell2 = React.createElement(Grid.Cell, { size = { xs = 3, sm = 3, md = 4 } }),
+        Cell3 = React.createElement(Grid.Cell, { size = { xs = 3, sm = 3, md = 4 } }),
+    }),
+})
+```
+
+---
+
+## Advanced Usage: getGridMetrics
+
+For custom grid implementations, Foundation exposes `getGridMetrics` as part of the public API. This utility function computes all grid math for a given container width and breakpoint, allowing you to create custom layouts that align with the grid system.
+
+### API
+
+```lua
+local getGridMetrics = Foundation.Utility.getGridMetrics
+
+local metrics = getGridMetrics(responsiveConfig, breakpoint, containerWidth, size)
+```
+
+**Parameters:**
+
+- `responsiveConfig`: Grid and breakpoint configuration (from `useResponsive().config`)
+- `breakpoint`: Active breakpoint (from `useBreakpoint()`)
+- `containerWidth`: Available width in pixels
+- `size` (optional): Column span as number or responsive map
+
+**Returns:**
+
+- `cellSize`: `UDim2` for the specified size
+- `cellWidth`: Pixel width for the specified size
+- `colWidth`: Width of a single column
+- `gridWidth`: Container width minus margins
+- `gutterWidth`: Horizontal spacing between columns
+- `margin`: Left/right margins
+- `colCount`: Effective columns for the size
+- `gutterCount`: Number of gutters in the size
+
+### Custom Layout Example
+
+```lua
+local Foundation = require(Packages.Foundation)
+local React = require(Packages.React)
+local getGridMetrics = Foundation.Utility.getGridMetrics
+local useResponsive = Foundation.Providers.Responsive.useResponsive
+local useBreakpoint = Foundation.Providers.Responsive.Hooks.useBreakpoint
+
+local function CustomTwoColumn(props)
+    local responsive = useResponsive()
+    local measureRef, setMeasureRef = React.useState(nil)
+    local breakpoint, size = useBreakpoint(measureRef)
+
+    -- Calculate metrics for 4 and 8 column spans
+    local leftMetrics = getGridMetrics(responsive.config, breakpoint, size.X, 4)
+    local rightMetrics = getGridMetrics(responsive.config, breakpoint, size.X, 8)
+
+    return React.createElement("Frame", {
+        ref = setMeasureRef,
+        Size = UDim2.new(1, 0, 0, 200),
+    }, {
+        Left = React.createElement("Frame", {
+            Size = leftMetrics.cellSize,
+            BackgroundColor3 = Color3.new(0.8, 0.8, 0.8),
+        }),
+        Right = React.createElement("Frame", {
+            Size = rightMetrics.cellSize,
+            Position = UDim2.new(0, leftMetrics.cellWidth + leftMetrics.gutterWidth, 0, 0),
+            BackgroundColor3 = Color3.new(0.6, 0.6, 0.6),
+        }),
+    })
+end
+```
+
+### Responsive Custom Layout
+
+```lua
+local function ResponsiveCustom(props)
+    local responsive = useResponsive()
+    local measureRef, setMeasureRef = React.useState(nil)
+    local breakpoint, size = useBreakpoint(measureRef)
+
+    -- Define responsive spans
+    local leftSize = { xs = 3, sm = 2, md = 3, lg = 3, xl = 3 }
+    local rightSize = { xs = 3, sm = 4, md = 9, lg = 9, xl = 9 }
+
+    local leftMetrics = getGridMetrics(responsive.config, breakpoint, size.X, leftSize)
+    local rightMetrics = getGridMetrics(responsive.config, breakpoint, size.X, rightSize)
+
+    return React.createElement("Frame", {
+        ref = setMeasureRef,
+        Size = UDim2.new(1, 0, 0, 200),
+    }, {
+        -- Custom layout implementation using computed metrics
+    })
+end
+```
+
+Use `getGridMetrics` when you need precise grid calculations for custom components that should align with Foundation's grid system but can't use the standard Grid.Root/Grid.Cell pattern.
+
+---
+
+## Known Limitations
+
+### Single Active Breakpoint
+
+The grid only applies styles for the currently active breakpoint. Unlike CSS media queries where multiple rules can be active simultaneously, Foundation's StyleSheet system activates only one breakpoint's rules at a time based on the container width.
+
+### Incomplete Row Spacing
+
+When using wrapped layouts (default), incomplete rows will have large gaps between cells due to `UIFlexAlignment.SpaceBetween` spacing. Ensure rows use all available columns or add invisible spacer cells to fill remaining column space.
+
+### Fractional Pixel Handling
+
+Cell widths use `math.floor` to avoid fractional pixels, which means the sum of cells might be a few pixels short of the theoretical total. Visual alignment is maintained through gutters and flex spacing.
+
+### Container Width Constraints
+
+Very narrow containers (width ≤ total gutter width) will collapse cells to zero width. The maximum container width is capped at `BreakpointConfig.widths[XLarge]` (1920px by default).
+
+### Conflicting Column Tags
+
+Using both the `size` prop and column style tags `md-col-6` in the `tag` prop is not supported. The style tags will conflict with the tags generated by the `size` prop, resulting in undefined behavior. Use either the `size` prop OR manual column tags, not both.
+
+## Future Improvements & Vision
+
+### Performance: Bindings for Grid Metrics
+
+Currently, `Grid`'s marign and layout spacing are configured form `gridMetrics` and driven by `absoluteSize` changes. This means that when the size of a Grid changes, the entire Grid component may re-render, which can be expensive for large or complex layouts. A future improvement would be to make `absoluteSize` a binding, and have `gridMetrics` map from it as a binding as well. This would allow only the necessary parts of the UI to update in response to size changes, improving performance and responsiveness.
+
+### Decoupling Stylesheets from React
+
+The current implementation creates a new stylesheet per Grid instance to set custom stylesheet attribute values for each container query size. This is necessary because the size of a column depends on the Grid's container size, which varies independently for each instance.
+
+Looking forward, there is a vision to decouple the stylesheet orchestration from React entirely. By moving stylesheet creation and updates outside of the React lifecycle, we could manage stylesheets more efficiently and share them across components. We could leverage an `AbsoluteSize` listener bound to each Grid instance to update the relevant attribute values when the container size changes.
+
+### Improved Engine-Level Support
+
+The longer term ideal scenario would be for the engine itself to support container queries and CSS-style `calc` expressions natively. With these features, we could define a global set of Grid style rules that would apply to all Grid instances, eliminating the need to create per-instance stylesheets in Lua. This would simplify the implementation, reduce overhead.
+
+## foundation / Layout / Popover
+
+## Overview
+
+A `Popover` is a surface that displays content relative to an anchor element. The `Popover` component is composed of three subcomponents:
+
+- [Popover.Root](#root): a surface-level container for grouping related components.
+- [Popover.Anchor](#anchor): a component that acts as the anchor element for the `Popover`.
+- [Popover.Content](#content): the wrapper for the `Popover`'s main content.
+
+---
+
+## Usage
+
+Anchor could be an element, reference to the element, or a virtual reference (useful for context menus and tooltips following the mouse)
+
+Anchor as an element:
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Popover = Foundation.Popover
+local PopoverSide = Foundation.Enums.PopoverSide
+local Button = Foundation.Button
+local Text = Foundation.Text
+
+local function Component()
+	local open, setOpen = React.useState(false)
+
+	return React.createElement(Popover.Root, {
+		isOpen = open,
+	}, {
+		Anchor = React.createElement(Popover.Anchor, nil, {
+			React.createElement(Button, {
+				text = "Toggle Popover",
+				onActivated = function()
+					setOpen(not open)
+				end,
+			}),
+		}),
+		Content = React.createElement(Popover.Content, nil, {
+			React.createElement(Text, {
+				text = "This is a popover!",
+			}),
+		}),
+	})
+end
+```
+
+See storybook for more examples.
+
+## Positioning implementation
+
+### Required Events and Refs
+
+There is a `ref` for the anchor, content, and the overlay.
+
+- The anchor `ref` is used to listen for `AbsolutePosition` and `AbsoluteSize` changes.
+- The content `ref` is used to read the `AbsoluteSize` of the content.
+- The overlay `ref` is used to listen for `AbsolutePosition` and `AbsoluteSize` changes.
+
+If the popover is not open, no `AbsolutePosition`s or `AbsoluteSize`s will be read from the `ref`s. This is to prevent unnecessary re-layouts.
+
+### Calculation
+
+Calculating the position of the popover has three steps:
+
+1. Check whether the anchor is on the screen.
+    1. If the anchor is not on the screen, the popover will not be shown and the calculation exits early.
+2. Calculate which side the popover should be placed on.
+    1. If the popover does not have space on the desired side, but the opposite side has space, it will switch sides.
+3. Calculate the position of the popover.
+    1. With the final side and alignment, calculate the position of the popover relative to the anchor. The position will be clamped to the screen.
+
+## foundation / Layout / ScrollView
+
+## Overview
+
+ScrollView is a container component that can be used to layout other components. It's used in place of the `ScrollingFrame` engine component.
+
+---
+
+## Usage
+
+In normal cases, you can replace `ScrollingFrame` with `ScrollView` directly. Note that some properties have been put into tables to improve structure and compatibility with style tokens.
+
+`ScrollView` also supports state updates like the ones available in [View](../Layout/View.md). See [View](../Layout/View.md) documentation for more information
+
+!!! danger "Layouts"
+
+    Due to engine bugs, the actual `ScrollingFrame` instance rendered from `ScrollView` is wrapped inside a [View](../Layout/View.md). Tags passed into `ScrollView` are applied to that parent view, and the `ScrollingFrame` is set to fill it's parent. If you want to use a list layout with `ScrollView`, please use the prop-driven approach, not the tag driven one.
+
+    When engine no longer sinks input to the scrollbars and supports `mouseEnter` events on them, we will be able to remove the [View](../Layout/View.md) wrapper and render a `ScrollingFrame` directly.
+
+See how to style `ScrollView` quickly with the `Style Tags`.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local ScrollView = Foundation.ScrollView
+local Visibility = Foundation.Enums.Visibility
+
+local function Component()
+	local onStateChanged = React.useCallback(function(state)
+		print("ScrollView state changed", state)
+	end, {})
+
+	return React.createElement(ScrollView, {
+		onStateChanged = onStateChanged,
+		scroll = {
+			scrollBarVisibility = Visibility.Always,
+			ScrollingDirection = Enum.ScrollingDirection.Y,
+		},
+		tag = "row align-y-center padding-small",
+	}, {
+		...,
+	})
+end
+```
+
+## foundation / Layout / Sheet
+
+## Overview
+
+A Sheet is a contextual, highly adaptable interface element sliding in from one edge of the viewport, acting as its own self containing surface to support deeper, focused interactions while maintaining context with underlying content.
+
+!!! warning "Automatic Scrolling Management"
+
+    Sheet's content is wrapped in a [ScrollView](../Layout/ScrollView.md) that manages scrolling automatically when the content exceeds the available space. This includes handling styling of dividers and properly managing swipe behavior on Bottom Sheets. Do not put your own ScrollingFrame around your Sheet content, otherwise you will break this functionality.
+
+## Screen-aware Layout
+
+The Sheet component will switch between bottom, side, and center sheet based on the screen size, orientation, and props.
+
+- Bottom Sheet: Used specifically for small screens in portrait orientation.
+- Side Sheet: Used for larger screens or small screens in landscape orientation.
+- Center Sheet: Used in place of side sheet when `preferCenterSheet` is `true`.
+
+## Snap Points
+
+Snap points define the height(s) at which a bottom sheet can rest. These do not impact side or center sheets. You can provide an array of snap points (in pixels or percentage of the screen height) via the `snapPoints` prop. The sheet will snap to the nearest point when swiped.
+
+!!! info "Pixel Snap Points"
+
+    If you use pixel values for a snap point, make use of the `useScaledValue` hook to ensure proper scaling across different screen sizes.
+
+If snap points are omitted, the bottom sheet will automatically size to fit its content.
+
+---
+
+## Usage
+
+### Comprehensive Example
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Sheet = Foundation.Sheet
+
+...
+
+local sheetOpen, setSheetOpen = React.useState(true)
+
+return React.createElement(Sheet.Root, {
+    isOpen = sheetOpen,
+    onClose = function()
+        setSheetOpen(false)
+    end,
+	snapPoints = { 0.5, 0.9 },
+}, {
+    Header = React.createElement(Sheet.Header, nil, {
+        ...
+    }),
+    Content = React.createElement(Sheet.Content, nil, {
+        ...
+    }),
+    Actions = React.createElement(Sheet.Actions, nil, {
+        ...
+    }),
+})
+```
+
+## foundation / Layout / Tile
+
+## Overview
+
+A `Tile` is a surface that displays content and actions on a single topic. The `Tile` component is composed of several subcomponents to handle various use cases:
+
+- [Tile](#root): a surface-level container for grouping related components.
+- [TileMedia](#media): a component for displaying images and additional media next to the [TileContent](#content).
+- [TileContent](#content): the wrapper for the `Tile`'s main content.
+- [TileHeader](#header): a component for the `Tile` header, to be used as part of [TileContent](#content).
+- [TileFooter](#footer): a wrapper for the `Tile` footer, to be used as part of [TileContent](#content).
+- [TileActions](#actions): an optional wrapper that groups a set of actions, to be used as a child of [TileContent](#content).
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local Tile = Foundation.Tile
+local MediaType = Foundation.Enums.MediaType
+local MediaShape = Foundation.Enums.MediaShape
+
+local Button = Foundation.Button
+local InputSize = Foundation.Enums.InputSize
+local ButtonVariant = Foundation.Enums.ButtonVariant
+
+local function Component()
+	local tokens = useTokens()
+
+	return React.createElement(Tile.Root, {
+		FillDirection = Enum.FillDirection.Vertical,
+		Size = UDim2.fromOffset(150, 275),
+		spacing = tokens.Gap.Small,
+	}, {
+		TileMedia = React.createElement(Tile.Media, {
+			id = 123456,
+			type = MediaType.Asset,
+			shape = MediaShape.Square,
+			background = tokens.Color.Shift.Shift_200,
+		}),
+		TileContent = React.createElement(Tile.Content, {
+			spacing = tokens.Gap.XSmall,
+			padding = tokens.Padding.Small,
+		}, {
+			TileHeader = React.createElement(Tile.Header, {
+				title = {
+					text = "Item",
+					fontStyle = tokens.Typography.HeadingSmall,
+					numLines = props.controls.numLines,
+				},
+				subtitle = {
+					text = "Price",
+					fontStyle = tokens.Typography.BodyLarge,
+					colorStyle = tokens.Color.Content.Muted,
+				},
+				spacing = tokens.Gap.Small,
+			}),
+			TileFooter = React.createElement(Tile.Footer, {}, {
+				-- Any custom footer
+			}),
+			TileActions = React.createElement(Tile.Actions, {
+				Visible = isHovering,
+			}, {
+				Button = React.createElement(Button, {
+					text = "Purchase",
+					size = InputSize.Small,
+					variant = ButtonVariant.Emphasis,
+					fillBehavior = FillBehavior.Fill,
+				}),
+			}),
+		}),
+	})
+end
+```
+
+## foundation / Layout / View
+
+## Overview
+
+View is a container component that can be used to layout other components. It's used in place of `Frame` and `CanvasGroup` engine components.
+
+---
+
+## Usage
+
+In normal cases, you can replace `Frame` and `CanvasGroup` with `View` directly. Note that some properties have been put into tables to improve structure and compatibility with style tokens.
+
+`View` also supports state updates with the `onStateChanged` callback, which gives updates on hover, press, select, and more.
+
+!!! danger "Performance Notice"
+
+    `onStateChanged` callback function should **never** be declared locally in a render function. For functional components, declare them in a `useCallback` hook and focus on reducing dependencies as much as possible. For class components declare them in the `Init` function.
+
+    To reduce the number of re-renders, use `Bindings` as much as possible when driving prop changes.
+
+See how to style `View` quickly with the `Style Tags`.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local View = Foundation.View
+
+local onStateChanged = React.useCallback(function(state)
+    print("View state changed", state)
+end, {})
+
+return React.createElement(View, {
+    onStateChanged = onStateChanged,
+    tag = "row align-y-center padding-small",
+}, {
+    ...
+})
+```
+
+## foundation / Media / AvatarGroup
+
+## Overview
+
+The AvatarGroup component displays a collection of user avatars in a horizontal arrangement, with options for "spread"
+to evenly distribute the avatars or "stacked" to overlap them slightly.
+
+---
+
+## Usage
+
+```lua
+local Foundation = require(Packages.Foundation)
+local AvatarGroup = Foundation.AvatarGroup
+local AvatarGroupType = Foundation.Enum.AvatarGroupType
+...
+return React.createElement(AvatarGroup, {
+	avatars = {
+		24813339,
+		24813338,
+		24813337,
+		24813336,
+	},
+	type = AvatarGroupType.Stack,
+	max = 2,
+})
+...
+```
+
+## foundation / Other / Interactable
+
+## Overview
+
+`Interactable` is the input handling component layer that will respond to Gui State changes using a callback function.
+
+It accepts all props that can be passed into an `ImageButton` or the props of the custom component that is passed in as the `component` prop.
+
+---
+
+## Usage
+
+```lua
+local YourComponent = function(props: Props)
+	-- create a binding for control state to change button text and color
+	local controlState, updateControlState = React.useBinding(ControlState.Initialize :: ControlState)
+
+	-- Creating the onStateChanged function
+	local onStateChanged = React.useCallback(function(newState: ControlState)
+		updateControlState(newState)
+		if props.onStateChanged then
+			props.onStateChanged(oldState, newState)
+		end
+	end, { props.onStateChanged })
+
+	-- Creating the onActivated function
+	local onActivated = React.useCallback(function()
+		print(props.id, " Activated")
+	end, {})
+
+	local stylePalette = useTokens()
+
+	-- create a mapping of control state to color
+	local colorMapping = React.useMemo(function()
+		return {
+			Initialize = stylePalette.Theme.BackgroundContrast.Color,
+			Default = stylePalette.Theme.BackgroundDefault.Color,
+			Hover = stylePalette.Theme.ContextualPrimaryOnHover.Color,
+			Pressed = stylePalette.Theme.BackgroundOnPress.Color,
+			Selected = stylePalette.Theme.SystemPrimaryDefault.Color,
+			SelectedPressed = stylePalette.Theme.UIMuted.Color,
+			Disabled = stylePalette.Theme.Alert.Color,
+		}
+	end, { stylePalette })
+
+	return React.createElement(Focusable[Interactable], {
+		...,
+		[React.Event.Activated] = onActivated,
+
+		onStateChanged = onStateChanged,
+		isDisabled = props.isDisabled,
+	}, {
+		ExampleComponent = React.createElement(Text, {
+			...,
+			Text = controlState:map(function(state)
+				return tostring(state)
+			end),
+			backgroundStyle = {
+				Color3 = controlState:map(function(state)
+					return colorMapping[state]
+				end),
+			},
+			...
+		}),
+	})
+end
+```
+
+### Important Notes
+
+`onStateChanged` callback function should **never** be declared locally in a render function. For functional components, declare them in a `useCallback` hook and focus on reducing dependencies as much as possible. For class components declare them in the `Init` function.
+
+To reduce the number of re-renders, use `Bindings` as much as possible when driving prop changes.
+
+## foundation / Provider / BackgroundStyleContext
+
+## Overview
+
+`BackgroundStyleContext` provides a background that can be used by elements displayed on top of semi-transparent elements
+to calculate the corresponding opaque color.
+
+---
+
+## Usage
+
+Example usage can be found in `Chip` with `AvatarGroup`. `AvatarGroup` needs a solid backplate matching the `Chip` background which is semi-transparent
+and to calculate the corresponding opaque color we need to know the exact background `Chip` is placed on top.
+By default, `bg-surface-100` is used and if you position your `Chip` on a different background you have to provide it with the Context.
+
+```lua
+local Foundation = require(Packages.Foundation)
+local View = Foundation.View
+local Chip = Foundation.Chip
+local BackgroundStyleContext = Foundation.BackgroundStyleContext
+local useTokens = Foundation.Hooks.useTokens
+
+function Component()
+    local tokens = useTokens()
+    local bg = tokens.Color.Surface.Surface_300
+
+    React.createElement(View, {
+        backgroundStyle = bg
+    }, React.createElement(BackgroundStyleContext.Provider, { value = bg },
+        React.createElement(Chip, {
+            text = "Chip on a custom background",
+            onActivated = function()
+                print(`Chip activated`)
+            end,
+            leading = {
+                type = "AvatarGroup" :: "AvatarGroup",
+                props = {
+                    avatars = {
+                        24813339,
+                        24813338,
+                    },
+                    type = AvatarGroupType.Stacked,
+                    max = 3,
+                },
+            },
+        })
+    ))
+end
+
+return React.createElement(Component)
+```
+
+## intro
+
+# Introduction
+
+`wally-packages` is a collection of Roblox Luau modules that I maintain for
+both plugin and game development. Each package is published to the
+[Wally registry](https://wally.run) under the `morgann1` scope and ships
+with its own API documentation generated from in-source comments.
+
+## Categories
+
+The packages are split into two top-level groups:
+
+- Modules: runtime libraries for Roblox experiences, such as immutable
+  data, player utilities, type validation, and decompression.
+- Plugin libraries: helpers built for Roblox Studio plugins.
+
+The API tab in the navigation bar has the full list, or jump straight to a
+package via its sidebar entry.
+
+## Installing
+
+Add the packages you need to your `wally.toml`:
+
+```toml
+[dependencies]
+Cryo = "morgann1/cryo@1.1.1"
+SimpleLogger = "morgann1/simple-logger@0.1.2"
+```
+
+Then run `wally install` to fetch them into your project.

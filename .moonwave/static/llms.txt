@@ -1,0 +1,11 @@
+# wally-packages
+
+> Luau packages for Roblox game and Studio plugin development, published to the Wally registry under the morgann1/* scope.
+
+## Docs
+
+- [Complete reference](https://morgann1.github.io/wally-packages/llms-full.txt): the full API of every package plus all guide pages, as one markdown file
+
+## Source
+
+- [GitHub repository](https://github.com/morgann1/wally-packages): sources, doc comments, and guide markdown live in-repo

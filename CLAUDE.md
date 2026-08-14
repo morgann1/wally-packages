@@ -46,8 +46,9 @@ thing is used, not what the next line does.
    `test.project.json` are written by `.lute/sync-projects.luau`, the
    `roblox/` tree and `roblox.project.json` by
    `.lute/vendor-roblox-packages.luau`, the README module table by
-   `.lute/update-readme.luau`, and `docs/foundation/` by
-   `.lute/sync-foundation-docs.luau`. Edit the generator, then regenerate.
+   `.lute/update-readme.luau`, `docs/foundation/` by
+   `.lute/sync-foundation-docs.luau`, and `.moonwave/static/` by
+   `.lute/build-llms-txt.luau`. Edit the generator, then regenerate.
 3. **Publishing.** `wally publish` is permanent: no unpublish, versions are
    immutable. Never publish unless explicitly asked. The `roblox/` packages
    additionally carry a licensing caveat (see `roblox/README.md`) and a
@@ -85,6 +86,10 @@ thing is used, not what the next line does.
 - **Foundation docs pages**: `lute run .lute/sync-foundation-docs.luau`
   regenerates `docs/foundation/` from the `*.code.md` files in the vendored
   tree; rerun after re-vendoring `roblox/`.
+- **llms.txt**: `lute run .lute/build-llms-txt.luau` regenerates
+  `.moonwave/static/llms{,-full}.txt` (the AI-consumable doc surface,
+  served at the site root) from moonwave-extractor output plus `docs/`;
+  rerun after changing doc comments or docs pages.
 - **Local CI**: `lute run .lute/ci.luau` runs the full lint/typecheck
   pipeline; `lute run .lute/build.luau` builds the place file.
 - **Tests**: `lute run .lute/test.luau` builds a place from
