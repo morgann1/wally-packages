@@ -12,19 +12,19 @@
 
 --[=[
 	@within Maybe
-	@type Some<Value> { some: true, value: Value }
+	@type Some { some: true, value: Value }
 ]=]
 export type Some<Value> = { some: true, value: Value }
 
 --[=[
 	@within Maybe
-	@type None<Reason> { some: false, reason: Reason }
+	@type None { some: false, reason: Reason }
 ]=]
 export type None<Reason = string> = { some: false, reason: Reason }
 
 --[=[
 	@within Maybe
-	@type Maybe<Value, Reason> Some<Value> | None<Reason>
+	@type Maybe Some<Value> | None<Reason>
 ]=]
 export type Maybe<Value, Reason = string> = Some<Value> | None<Reason>
 

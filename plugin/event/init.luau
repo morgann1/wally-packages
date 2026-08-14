@@ -19,7 +19,7 @@
 
 --[=[
 	@within Event
-	@type Connect<Args...> (callback: (Args...) -> ()) -> () -> ()
+	@type Connect (callback: (Args...) -> ()) -> () -> ()
 
 	Registers a listener and returns a function that disconnects it.
 ]=]
