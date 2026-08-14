@@ -94,8 +94,9 @@ thing is used, not what the next line does.
   client-only globals guard with `test.skip` so the suite still passes in
   other run contexts.
 - **Publish** (only on request): `lute run .lute/publish.luau [--plugin]` for
-  the main trees; `roblox/` packages go individually in the order listed in
-  `roblox/README.md`, dependencies before dependents.
+  the main trees; `roblox/` packages follow
+  `.claude/skills/publish-roblox-packages/SKILL.md` (dependency order, index
+  collision pre-flight, size cap).
 
 ## Verifying
 
