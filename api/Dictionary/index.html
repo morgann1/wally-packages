@@ -10,8 +10,8 @@ expectations that lists have."><meta data-rh="true" property="og:description" co
 
 Dictionaries can be indexed by any value, but don&#x27;t have the ordering
 expectations that lists have."><link data-rh="true" rel="canonical" href="https://morgann1.github.io/wally-packages/api/Dictionary"><link data-rh="true" rel="alternate" href="https://morgann1.github.io/wally-packages/api/Dictionary" hreflang="en"><link data-rh="true" rel="alternate" href="https://morgann1.github.io/wally-packages/api/Dictionary" hreflang="x-default"><link rel="stylesheet" href="/wally-packages/assets/css/styles.5ec48d9a.css">
-<script src="/wally-packages/assets/js/runtime~main.d6d05daa.js" defer="defer"></script>
-<script src="/wally-packages/assets/js/main.c269f1a9.js" defer="defer"></script>
+<script src="/wally-packages/assets/js/runtime~main.c4f08a1e.js" defer="defer"></script>
+<script src="/wally-packages/assets/js/main.884e3765.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -23,12 +23,11 @@ expectations that lists have."><link data-rh="true" rel="canonical" href="https:
   Dictionaries can be indexed by any value, but don't have the ordering
   expectations that lists have.
 </p>
-</div></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions" translate="no">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="omit"><code style="text-decoration:none">omit</code><a href="#omit" class="hash-link" aria-label="Direct link to omit" title="Direct link to omit" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/cryo/Dictionary/omit.luau#L8"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dictionary<!-- -->.</code><code class="green_DgR4">omit</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
-<p>Returns a Dictionary which excludes the given <code>keys</code>.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="values"><code style="text-decoration:none">values</code><a href="#values" class="hash-link" aria-label="Direct link to values" title="Direct link to values" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/cryo/Dictionary/values.luau#L8"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dictionary<!-- -->.</code><code class="green_DgR4">values</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
-<p>Returns a list of the values of the given dictionary.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="keys"><code style="text-decoration:none">keys</code><a href="#keys" class="hash-link" aria-label="Direct link to keys" title="Direct link to keys" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/cryo/Dictionary/keys.luau#L8"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dictionary<!-- -->.</code><code class="green_DgR4">keys</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+</div></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions" translate="no">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="keys"><code style="text-decoration:none">keys</code><a href="#keys" class="hash-link" aria-label="Direct link to keys" title="Direct link to keys" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/cryo/Dictionary/keys.luau#L8"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dictionary<!-- -->.</code><code class="green_DgR4">keys</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Returns a list of the keys from the given dictionary.</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="map"><code style="text-decoration:none">map</code><a href="#map" class="hash-link" aria-label="Direct link to map" title="Direct link to map" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/cryo/Dictionary/map.luau#L10"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dictionary<!-- -->.</code><code class="green_DgR4">map</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Returns a new Dictionary with keys and values passed through a mapper function.</p>
+<p>Returning a second value in the mapper function will reassign the key.</p>
 </div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="join"><code style="text-decoration:none">join</code><a href="#join" class="hash-link" aria-label="Direct link to join" title="Direct link to join" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/cryo/Dictionary/join.luau#L16"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dictionary<!-- -->.</code><code class="green_DgR4">join</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Combine a number of dictionary-like tables into a new table.</p>
 <p>Keys specified in later tables will overwrite keys in previous tables.</p>
@@ -37,35 +36,14 @@ expectations that lists have."><link data-rh="true" rel="canonical" href="https:
   Lua does not distinguish between a value not being present in a table and a
   value being <code>nil</code>.
 </p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="omit"><code style="text-decoration:none">omit</code><a href="#omit" class="hash-link" aria-label="Direct link to omit" title="Direct link to omit" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/cryo/Dictionary/omit.luau#L8"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dictionary<!-- -->.</code><code class="green_DgR4">omit</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Returns a Dictionary which excludes the given <code>keys</code>.</p>
 </div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="filter"><code style="text-decoration:none">filter</code><a href="#filter" class="hash-link" aria-label="Direct link to filter" title="Direct link to filter" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/cryo/Dictionary/filter.luau#L8"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dictionary<!-- -->.</code><code class="green_DgR4">filter</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
 <p>Returns a Dictionary of only entries for which the <code>predicate</code> function returns true.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="map"><code style="text-decoration:none">map</code><a href="#map" class="hash-link" aria-label="Direct link to map" title="Direct link to map" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/cryo/Dictionary/map.luau#L10"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dictionary<!-- -->.</code><code class="green_DgR4">map</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
-<p>Returns a new Dictionary with keys and values passed through a mapper function.</p>
-<p>Returning a second value in the mapper function will reassign the key.</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="values"><code style="text-decoration:none">values</code><a href="#values" class="hash-link" aria-label="Direct link to values" title="Direct link to values" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/cryo/Dictionary/values.luau#L8"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dictionary<!-- -->.</code><code class="green_DgR4">values</code><code>(</code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Returns a list of the values of the given dictionary.</p>
 </div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
     &quot;functions&quot;: [
-        {
-            &quot;name&quot;: &quot;omit&quot;,
-            &quot;desc&quot;: &quot;Returns a Dictionary which excludes the given `keys`.&quot;,
-            &quot;params&quot;: [],
-            &quot;returns&quot;: [],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 8,
-                &quot;path&quot;: &quot;modules/cryo/Dictionary/omit.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;values&quot;,
-            &quot;desc&quot;: &quot;Returns a list of the values of the given dictionary.&quot;,
-            &quot;params&quot;: [],
-            &quot;returns&quot;: [],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 8,
-                &quot;path&quot;: &quot;modules/cryo/Dictionary/values.luau&quot;
-            }
-        },
         {
             &quot;name&quot;: &quot;keys&quot;,
             &quot;desc&quot;: &quot;Returns a list of the keys from the given dictionary.&quot;,
@@ -75,6 +53,17 @@ expectations that lists have."><link data-rh="true" rel="canonical" href="https:
             &quot;source&quot;: {
                 &quot;line&quot;: 8,
                 &quot;path&quot;: &quot;modules/cryo/Dictionary/keys.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;map&quot;,
+            &quot;desc&quot;: &quot;Returns a new Dictionary with keys and values passed through a mapper function.\n\nReturning a second value in the mapper function will reassign the key.&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 10,
+                &quot;path&quot;: &quot;modules/cryo/Dictionary/map.luau&quot;
             }
         },
         {
@@ -89,6 +78,17 @@ expectations that lists have."><link data-rh="true" rel="canonical" href="https:
             }
         },
         {
+            &quot;name&quot;: &quot;omit&quot;,
+            &quot;desc&quot;: &quot;Returns a Dictionary which excludes the given `keys`.&quot;,
+            &quot;params&quot;: [],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 8,
+                &quot;path&quot;: &quot;modules/cryo/Dictionary/omit.luau&quot;
+            }
+        },
+        {
             &quot;name&quot;: &quot;filter&quot;,
             &quot;desc&quot;: &quot;Returns a Dictionary of only entries for which the `predicate` function returns true.&quot;,
             &quot;params&quot;: [],
@@ -100,14 +100,14 @@ expectations that lists have."><link data-rh="true" rel="canonical" href="https:
             }
         },
         {
-            &quot;name&quot;: &quot;map&quot;,
-            &quot;desc&quot;: &quot;Returns a new Dictionary with keys and values passed through a mapper function.\n\nReturning a second value in the mapper function will reassign the key.&quot;,
+            &quot;name&quot;: &quot;values&quot;,
+            &quot;desc&quot;: &quot;Returns a list of the values of the given dictionary.&quot;,
             &quot;params&quot;: [],
             &quot;returns&quot;: [],
             &quot;function_type&quot;: &quot;static&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 10,
-                &quot;path&quot;: &quot;modules/cryo/Dictionary/map.luau&quot;
+                &quot;line&quot;: 8,
+                &quot;path&quot;: &quot;modules/cryo/Dictionary/values.luau&quot;
             }
         }
     ],
