@@ -10,7 +10,7 @@ The `Avatar` component displays a user's profile picture or a default icon if no
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Avatar = Foundation.Avatar
 local UserPresence = Foundation.Enums.UserPresence

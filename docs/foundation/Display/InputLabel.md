@@ -14,7 +14,7 @@ title: InputLabel
 
 `InputLabel` also supports `onActivated` and `onHover` callbacks, which are used alongside an input button like a `RadioGroupItem`.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local InputLabel = Foundation.InputLabel
 local InputSize = Foundation.Enums.InputSize

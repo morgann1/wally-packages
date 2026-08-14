@@ -20,7 +20,7 @@ There are two ways to use the `Tabs` component:
 
 - Uncontrolled. You pass the `defaultTabId` to set the initial active tab, and you pass content for each tab with the `tabs` prop.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Tabs = Foundation.Tabs
 local InputSize = Foundation.Enums.InputSize
@@ -72,7 +72,7 @@ end
 
 - Controlled. You pass the `activeTabId` to control the active tab, and you also control how to render the content.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Tabs = Foundation.Tabs
 local InputSize = Foundation.Enums.InputSize

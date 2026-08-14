@@ -24,7 +24,7 @@ In normal cases, you can replace `ImageLabel` and `ImageButton` with `Image` dir
 
 See how to style `Image` quickly with the `Style Tags`.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Image = Foundation.Image
 
@@ -43,7 +43,7 @@ return React.createElement(Image, {
 
 The `onLoaded` callback is called when the image asset is finished fetching. The status argument can be one of Success, Failure, or TimedOut. It is called immediately if the asset is already finished fetching. If the onLoaded function reference changes between renders (e.g. not wrapped in useCallback), the callback will re-fire for the current image. Wrap onLoaded in React.useCallback to avoid redundant calls.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Image = Foundation.Image
 

@@ -14,7 +14,7 @@ Use the provided `IconSize` enum to set the size of the icon. The available size
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Icon = Foundation.Icon
 local Enums = Foundation.Enums
@@ -29,7 +29,7 @@ return React.createElement(Icon, {
 
 To browse legacy icons available for use through this component, visit `Images`. When possible use the new Builder Icons, as they are true vector graphics.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Icon = Foundation.Icon
 local IconSize = Foundation.Enums.IconSize

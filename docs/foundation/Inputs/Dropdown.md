@@ -11,7 +11,7 @@ label while the list of options are hidden, and we show the list of options vert
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Dropdown = Foundation.Dropdown
 

@@ -10,7 +10,7 @@ A `Menu` component is a popover-based menu that combines a `Popover` with an `In
 
 ### Simple Menu
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Menu = Foundation.Menu
 local Button = Foundation.Button
@@ -54,7 +54,7 @@ If you don't control the element you need a menu for, but have a reference to it
 Menus can have groups with dividers between them. Pass an array of group objects to the `items` property.
 Each group can have an optional `title` and a required `items` array.
 
-```luau
+```lua
 local menuItems = {
 	{
 		title = "Actions",
@@ -105,7 +105,7 @@ when the trigger item is clicked. Nesting can be arbitrarily deep.
 
 When a leaf item is activated, all ancestor submenus close automatically along with the root menu.
 
-```luau
+```lua
 local menuItems = {
 	{
 		id = "rename",

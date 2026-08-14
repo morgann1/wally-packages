@@ -12,7 +12,7 @@ Pages can feel like they're loading faster by using `Skeleton`. Things feel like
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Skeleton = Foundation.Skeleton
 

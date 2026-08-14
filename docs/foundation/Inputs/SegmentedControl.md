@@ -10,7 +10,7 @@ SegmentedControl is a horizontal control that allows users to select one of seve
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local SegmentedControl = Foundation.SegmentedControl
 local InputSize = Foundation.Enums.InputSize

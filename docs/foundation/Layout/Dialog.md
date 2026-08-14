@@ -72,7 +72,7 @@ You can provide a descriptive label below the action buttons using the `label` p
 
 ### Comprehensive Example
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Dialog = Foundation.Dialog
 local DialogSize = Foundation.Enums.DialogSize
@@ -124,7 +124,7 @@ return React.createElement(Dialog.Root, {
 
 ### Confirm Dialog Example
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Dialog = Foundation.Dialog
 local DialogSize = Foundation.Enums.DialogSize

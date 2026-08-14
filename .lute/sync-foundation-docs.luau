@@ -87,8 +87,10 @@ end
 
 -- Docusaurus parses pages as MDX, which rejects void HTML tags that are not
 -- self-closed. Only <br> appears in the source pages, and only in prose.
+-- Fences are retagged luau -> lua because moonwave's Prism setup only
+-- registers lua; luau fences render as plain text.
 local function sanitizeMdx(body: string): string
-	return (body:gsub("<br>", "<br />"))
+	return (body:gsub("<br>", "<br />"):gsub("```luau", "```lua"))
 end
 
 if fs.exists(DEST_ROOT) then

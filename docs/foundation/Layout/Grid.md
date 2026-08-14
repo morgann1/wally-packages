@@ -31,7 +31,7 @@ Column counts, margins, and gutters are automatically adjusted for each breakpoi
 
 Grid.Cell accepts a `size` prop that should typically be a responsive map using breakpoint short names:
 
-```luau
+```lua
 -- xs=3 cols, sm=6 cols, md+=12 cols
 size = { xs = 3, sm = 6, md = 6, lg = 4, xl = 4 }
 
@@ -63,7 +63,7 @@ When `Wraps = false`, Grid uses regular `UIListLayout.Padding` equal to the gutt
 
 ### Responsive Grid Layout (Recommended)
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Grid = Foundation.Grid
 
@@ -79,7 +79,7 @@ return React.createElement(Grid.Root, {}, {
 
 ### Card Grid with Progressive Enhancement
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Grid = Foundation.Grid
 
@@ -96,7 +96,7 @@ return React.createElement(Grid.Root, {}, {
 
 ### Sidebar Layout
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Grid = Foundation.Grid
 
@@ -114,7 +114,7 @@ return React.createElement(Grid.Root, {}, {
 
 You can apply responsive column tags directly without using Grid.Cell for more control:
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Grid = Foundation.Grid
 local View = Foundation.View
@@ -137,7 +137,7 @@ return React.createElement(Grid.Root, {}, {
 
 ### Responsive Visibility Control
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Grid = Foundation.Grid
 
@@ -170,7 +170,7 @@ PromoSection = React.createElement(View, {
 
 Grid.Debug renders colored overlays using the same grid metrics that Grid.Root renders with and creates a visual grid that sits behind your actual content, helping you to see how your cells align with the underlying column structure.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Grid = Foundation.Grid
 
@@ -195,7 +195,7 @@ For custom grid implementations, Foundation exposes `getGridMetrics` as part of 
 
 ### API
 
-```luau
+```lua
 local getGridMetrics = Foundation.Utility.getGridMetrics
 
 local metrics = getGridMetrics(responsiveConfig, breakpoint, containerWidth, size)
@@ -221,7 +221,7 @@ local metrics = getGridMetrics(responsiveConfig, breakpoint, containerWidth, siz
 
 ### Custom Layout Example
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local React = require(Packages.React)
 local getGridMetrics = Foundation.Utility.getGridMetrics
@@ -256,7 +256,7 @@ end
 
 ### Responsive Custom Layout
 
-```luau
+```lua
 local function ResponsiveCustom(props)
     local responsive = useResponsive()
     local measureRef, setMeasureRef = React.useState(nil)

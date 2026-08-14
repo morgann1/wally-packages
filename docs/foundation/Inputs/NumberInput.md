@@ -23,7 +23,7 @@ You can limit `minimum` and `maximum` values with the corresponding props.
 
 `value` is rounded automatically according to a `precision`. e.g. with the precision being 3, 0.0001 will be rounded to 0, 0.0006 to 0.001
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local NumberInput = Foundation.NumberInput
 

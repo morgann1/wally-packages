@@ -22,7 +22,7 @@ In normal cases, you can replace `TextLabel` and `TextButton` with `Text` direct
 
 See how to style `Text` quickly with the `Style Tags`.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Text = Foundation.Text
 

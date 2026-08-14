@@ -14,7 +14,7 @@ There are 3 variant types defined in `DateTimePickerVariant`
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local DateTimePicker = Foundation.DateTimePicker
 

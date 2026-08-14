@@ -17,7 +17,7 @@ A `Tile` is a surface that displays content and actions on a single topic. The `
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Tile = Foundation.Tile
 local MediaType = Foundation.Enums.MediaType

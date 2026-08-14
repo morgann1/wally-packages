@@ -12,7 +12,7 @@ To browse icons available for use through this component, visit `Images`.
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local IconButton = Foundation.IconButton
 

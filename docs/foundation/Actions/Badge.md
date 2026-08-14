@@ -23,7 +23,7 @@ Text and icon content type can be added any of the badges
 
 `Badge` text has `RichText` enabled by default to support custom colorization of the `text` prop.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Badge = Foundation.Badge
 local BadgeVariant = Foundation.Enums.BadgeVariant

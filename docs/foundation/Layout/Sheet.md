@@ -34,7 +34,7 @@ If snap points are omitted, the bottom sheet will automatically size to fit its 
 
 ### Comprehensive Example
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Sheet = Foundation.Sheet
 

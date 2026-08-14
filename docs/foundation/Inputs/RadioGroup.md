@@ -12,7 +12,7 @@ The `Selectable` prop can be set on the `RadioGroup.Root` to control whether the
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local RadioGroup = Foundation.RadioGroup
 

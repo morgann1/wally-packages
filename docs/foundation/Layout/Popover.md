@@ -18,7 +18,7 @@ Anchor could be an element, reference to the element, or a virtual reference (us
 
 Anchor as an element:
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Popover = Foundation.Popover
 local PopoverSide = Foundation.Enums.PopoverSide

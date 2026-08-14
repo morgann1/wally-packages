@@ -14,7 +14,7 @@ It is a sub-component that appears inside other controls such as [Slider](../Dis
 
 While `Knob` can be rendered on its own for custom compositions, prefer using the higher-level components that include it.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Knob = Foundation.Knob
 local InputSize = Foundation.Enums.InputSize

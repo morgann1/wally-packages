@@ -14,7 +14,7 @@ Checkboxes will automatically size to fit their text, and have a minimum height 
 Checkbox size depends on the size property. Possible values are defined in `InputSize`.
 `Medium` is the default.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Checkbox = Foundation.Checkbox
 local InputSize = Foundation.Enums.InputSize

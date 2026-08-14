@@ -24,7 +24,7 @@ The `StatusIndicator` can display in two states:
 
 `StatusIndicator` takes an optional numeric value and displays it in a compact circular container. The component automatically converts the number to a string for display.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local StatusIndicator = Foundation.StatusIndicator
 local StatusIndicatorVariant = Foundation.Enums.StatusIndicatorVariant

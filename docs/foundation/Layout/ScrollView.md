@@ -22,7 +22,7 @@ In normal cases, you can replace `ScrollingFrame` with `ScrollView` directly. No
 
 See how to style `ScrollView` quickly with the `Style Tags`.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local ScrollView = Foundation.ScrollView
 local Visibility = Foundation.Enums.Visibility

@@ -10,7 +10,7 @@ title: List
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local BuilderIcons = require(Packages.BuilderIcons)
 

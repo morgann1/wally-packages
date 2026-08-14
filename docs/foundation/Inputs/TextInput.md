@@ -19,7 +19,7 @@ focuses the textbox.
 <br />`releaseFocus()`, which unfocuses the textbox.
 <br />`getIsFocused()`, which returns whether the TextBox is currently focused.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local TextInput = Foundation.TextInput
 

@@ -8,7 +8,7 @@ Coachmark is a component for displaying a popover with a title, optional text, o
 
 Actions should be provided as an array, with entries conforming to the ActionProps type (shared with other components):
 
-```luau
+```lua
 type ActionProps = {
     onActivated: () -> (),
     variant: ButtonVariant?,
@@ -27,7 +27,7 @@ Click the anchor element to toggle the coachmark open and closed.
 
 ### Basic Coachmark
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Coachmark = Foundation.Coachmark
 local View = Foundation.View
@@ -78,7 +78,7 @@ React.createElement(
 
 Add a `steps` property to display progress information above the title. This is useful for multi-step guided experiences.
 
-```luau
+```lua
 React.createElement(
 	Coachmark,
 	{
@@ -114,7 +114,7 @@ React.createElement(
 
 Add an `onClose` callback to display a close button in the header. The header text and step indicator will automatically constrain their width to prevent collision with the close button.
 
-```luau
+```lua
 React.createElement(
 	Coachmark,
 	{

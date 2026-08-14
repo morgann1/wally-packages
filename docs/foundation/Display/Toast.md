@@ -20,7 +20,7 @@ If any of the fields are not provided then the corresponding components will not
 
 Actions should be provided as an array, with entries conforming to the ActionProps type (shared with other components):
 
-```luau
+```lua
 type ActionProps = {
     onActivated : (() -> ()),
     variant : ButtonVariant?,
@@ -30,7 +30,7 @@ type ActionProps = {
 
 If buttonVariant is not provided, it will default to `ButtonVariant`.Standard
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Toast = Foundation.Toast
 local ButtonVariant = Foundation.Enums.ButtonVariant

@@ -12,7 +12,7 @@ Toggles are controls for turning a boolean value on or off.
 
 A `Toggle` should be used with a standard size defined in `InputSize`. `Medium` is the default.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Toggle = Foundation.Toggle
 local InputSize = Foundation.Enums.InputSize

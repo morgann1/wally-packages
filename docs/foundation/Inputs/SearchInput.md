@@ -12,7 +12,7 @@ title: SearchInput
 
 `SearchInput` is 400px wide (scaled alongside `Size` tokens) by default unless `width` is specified. The height is determined by the `size` prop.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local SearchInput = Foundation.SearchInput
 local InputSize = Foundation.Enums.InputSize

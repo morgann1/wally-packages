@@ -18,7 +18,7 @@ The `isRequired` property should only be used on the inputs that fall in the min
 The `input` property take a function rendering a component which receives a ref as the only prop.
 The ref should be passed to a component and should have `focus: () -> ()` and `hover: (state: boolean) -> ()` method implemented through `React.useImperativeHandle`. See `InternalTextInput` as an example
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local InputField = Foundation.InputField
 local InputComponent = AnyLibrary.InputComponent

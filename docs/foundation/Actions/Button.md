@@ -37,7 +37,7 @@ Each standard size will apply the corresponding font style, padding, border radi
 
 `Button`s will grow to fit their text until they reach their parents boundaries, in which case they will not exceed that width. Button text does _not_ wrap to multiple lines.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Button = Foundation.Button
 local ButtonVariant = Foundation.Enums.ButtonVariant

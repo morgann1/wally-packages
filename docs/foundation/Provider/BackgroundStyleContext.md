@@ -15,7 +15,7 @@ Example usage can be found in `Chip` with `AvatarGroup`. `AvatarGroup` needs a s
 and to calculate the corresponding opaque color we need to know the exact background `Chip` is placed on top.
 By default, `bg-surface-100` is used and if you position your `Chip` on a different background you have to provide it with the Context.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local View = Foundation.View
 local Chip = Foundation.Chip

@@ -16,7 +16,7 @@ There are four severity levels defined in `AlertSeverity`: `Info`, `Warning`, `S
 
 The component supports up to 3 action buttons. Any additional buttons beyond this limit will be ignored with a warning.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local FeedbackAlert = Foundation.FeedbackAlert
 local AlertSeverity = Foundation.Enums.AlertSeverity

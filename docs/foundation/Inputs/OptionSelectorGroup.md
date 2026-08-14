@@ -10,7 +10,7 @@ An `OptionSelectorGroup` is a way to have a list of options that only allows one
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local OptionSelectorGroup = Foundation.OptionSelectorGroup
 local Orientation = Foundation.Enums.Orientation

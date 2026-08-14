@@ -14,7 +14,7 @@ title: Chip
 
 `Chip`s will grow to fit their text until they reach their parents' boundaries, in which case they will not exceed that width. Chip text does _not_ wrap to multiple lines.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Chip = Foundation.Chip
 ...
@@ -30,7 +30,7 @@ return React.createElement(Chip, {
 
 `Chip` with an `AvatarGroup` looks like this.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Chip = Foundation.Chip
 

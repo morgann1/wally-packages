@@ -12,7 +12,7 @@ It accepts all props that can be passed into an `ImageButton` or the props of th
 
 ## Usage
 
-```luau
+```lua
 local YourComponent = function(props: Props)
 	-- create a binding for control state to change button text and color
 	local controlState, updateControlState = React.useBinding(ControlState.Initialize :: ControlState)

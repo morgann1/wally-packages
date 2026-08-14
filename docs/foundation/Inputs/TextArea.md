@@ -22,7 +22,7 @@ The `textBoxRef` property exposes additional imperative functions to the [TextBo
 - `releaseFocus()`, which unfocuses the textbox
 - `getIsFocused()`, which returns whether the TextBox is currently focused
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local TextArea = Foundation.TextArea
 

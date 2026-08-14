@@ -11,7 +11,7 @@ to evenly distribute the avatars or "stacked" to overlap them slightly.
 
 ## Usage
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local AvatarGroup = Foundation.AvatarGroup
 local AvatarGroupType = Foundation.Enum.AvatarGroupType

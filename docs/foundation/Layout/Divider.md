@@ -20,7 +20,7 @@ Note: When `orientation` is set to `Vertical`, the `variant` property is always 
 
 ### Examples
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Divider = Foundation.Divider
 local DividerVariant = require(Foundation.Enums.DividerVariant)

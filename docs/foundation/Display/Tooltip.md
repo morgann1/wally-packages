@@ -15,7 +15,7 @@ right of the anchor element.
 
 If possible, a shortcut should be created as a constant outside the render function to avoid useless re-renders.
 
-```luau
+```lua
 local Foundation = require(Packages.Foundation)
 local Tooltip = Foundation.Tooltip
 local View = Foundation.View
