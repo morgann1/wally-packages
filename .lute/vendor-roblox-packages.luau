@@ -42,6 +42,14 @@ local NEVER_EXTERNAL: { [string]: boolean } = {
 	Signal = true,
 }
 
+-- Manifest exclude globs, keyed by published (kebab) name. The registry caps
+-- packages at 2MB; foundation-images' sprite sheet PNGs only load under
+-- CorePackages via rbxasset paths, so Wally consumers always take the
+-- FALLBACK_IMAGES uploaded-asset branch and the PNGs can be dropped.
+local PACKAGE_EXCLUDES: { [string]: { string } } = {
+	["foundation-images"] = { "SpriteSheets", "SpriteSheets/**" },
+}
+
 type PackageInfo = {
 	dir: string,
 	source: string,
@@ -381,6 +389,13 @@ for _, key in sortedKeys(vendored) do
 		'realm = "shared"',
 		'repository = "https://github.com/morgann1/wally-packages"',
 	}
+	if PACKAGE_EXCLUDES[name] ~= nil then
+		local globs = {}
+		for _, glob in PACKAGE_EXCLUDES[name] do
+			table.insert(globs, `"{glob}"`)
+		end
+		table.insert(lines, `exclude = [{table.concat(globs, ", ")}]`)
+	end
 	if next(used[key]) ~= nil then
 		table.insert(lines, "")
 		table.insert(lines, "[dependencies]")
