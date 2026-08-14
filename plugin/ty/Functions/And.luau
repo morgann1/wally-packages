@@ -8,6 +8,17 @@ local Maybe = require(Package.Parent.Maybe)
 local Types = require(Package.Types)
 local Def = require(Package.Def)
 
+--[=[
+	@within ty
+	@function And
+
+	Intersection: matches values that satisfy both defs. Casting pipes the
+	first def's output into the last, so converting defs compose.
+
+	@param first Def
+	@param last Def
+	@return Def
+]=]
 local And: Types.FnAnd = function(first, last)
 	return Def.new(`({first.ExpectsType}) & ({last.ExpectsType})`, function(self, x)
 		return first:Matches(x) and last:Matches(x)

@@ -2,16 +2,31 @@
 --!nolint LocalShadow
 -- (c) Fusion, licensed under MIT
 
---[[
-	Cleans up the tasks passed in as the arguments.
-	A task can be any of the following:
+--[=[
+	@class doCleanup
 
-	- an Instance - will be destroyed
-	- an RBXScriptConnection - will be disconnected
+	Cleans up the tasks passed in as the arguments, in the style of Fusion's
+	scopes: collect connections, instances and callbacks into an array as you
+	create them, then hand the array to `doCleanup` when tearing down.
+]=]
+
+--[=[
+	@within doCleanup
+	@function doCleanup
+
+	Cleans up every task passed as an argument. A task can be any of:
+
+	- an `Instance` - will be destroyed
+	- an `RBXScriptConnection` - will be disconnected
 	- a function - will be run
-	- a table with a `Destroy` or `destroy` function - will be called
-	- an array - `cleanup` will be called on each item
-]]
+	- a table with a `destroy` or `Destroy` method - will be called
+	- an array - each item is cleaned up in reverse order, so tasks run
+	  opposite to their construction order, then removed from the array
+
+	Unrecognised values are ignored.
+
+	@param ... unknown -- Tasks to clean up.
+]=]
 
 local function doCleanupOne(task: unknown)
 	local taskType = typeof(task)

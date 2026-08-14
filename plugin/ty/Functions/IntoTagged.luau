@@ -7,6 +7,18 @@ local Maybe = require(Package.Parent.Maybe)
 local Types = require(Package.Types)
 local Def = require(Package.Def)
 
+--[=[
+	@within ty
+	@function IntoTagged
+
+	Casts through the inner def, then stamps the result with a `__tag`
+	field for discriminated unions. Table results are cloned before
+	tagging; other values are wrapped as `{ value = result, __tag = tag }`.
+
+	@param innerDef Def
+	@param tag unknown -- Discriminant stored under `__tag`.
+	@return Def
+]=]
 local IntoTagged: Types.FnIntoTagged = function(innerDef, tag)
 	return Def.new(`\@tagged<{tag}>({innerDef.ExpectsType})`, function(self, x)
 		return innerDef:Matches(x)

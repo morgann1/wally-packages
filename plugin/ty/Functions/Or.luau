@@ -7,6 +7,18 @@ local Maybe = require(Package.Parent.Maybe)
 local Types = require(Package.Types)
 local Def = require(Package.Def)
 
+--[=[
+	@within ty
+	@function Or
+
+	Union: matches values fitting either def. Casting tries `first` and
+	falls back to `last`, so put the more specific (or more converting) def
+	first.
+
+	@param first Def
+	@param last Def
+	@return Def
+]=]
 local Or: Types.FnOr = function<F, L>(first: Types.Def, last: Types.Def)
 	return Def.new(`{first.ExpectsType} | {last.ExpectsType}`, function(self, x)
 		return first:Matches(x) or last:Matches(x)

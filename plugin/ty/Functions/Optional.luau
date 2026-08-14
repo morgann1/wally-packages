@@ -7,6 +7,16 @@ local Maybe = require(Package.Parent.Maybe)
 local Types = require(Package.Types)
 local Def = require(Package.Def)
 
+--[=[
+	@within ty
+	@function Optional
+
+	Also accepts `nil`, which matches and casts to `nil`. The runtime
+	equivalent of Luau's `T?`.
+
+	@param innerDef Def
+	@return Def
+]=]
 local Optional: Types.FnOptional = function<T>(innerDef: Types.Def)
 	return Def.new(`({innerDef.ExpectsType})?`, function(self, x)
 		if x == nil then

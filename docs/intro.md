@@ -13,13 +13,12 @@ with its own API documentation generated from in-source comments.
 
 The packages are split into two top-level groups:
 
-- **Modules** — runtime libraries for Roblox experiences (immutable data,
-  player utilities, type validation, decompression, and more).
-- **Plugin Libraries** — helpers built specifically for Roblox Studio
-  plugins.
+- Modules: runtime libraries for Roblox experiences, such as immutable
+  data, player utilities, type validation, and decompression.
+- Plugin libraries: helpers built for Roblox Studio plugins.
 
-Browse the **API** tab in the navigation bar for the full list, or jump
-straight to a package via its sidebar entry.
+The API tab in the navigation bar has the full list, or jump straight to a
+package via its sidebar entry.
 
 ## Installing
 

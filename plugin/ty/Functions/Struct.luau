@@ -8,6 +8,19 @@ local Maybe = require(Package.Parent.Maybe)
 local Types = require(Package.Types)
 local Def = require(Package.Def)
 
+--[=[
+	@within ty
+	@function Struct
+
+	Matches string-keyed tables field-by-field. Casting rebuilds the table
+	from the declared fields, so a missing field fails unless its def is
+	`Optional` or `IntoDefault`. With `exhaustive = true`, keys outside the
+	declaration reject the cast; otherwise they are silently dropped.
+
+	@param options { exhaustive: boolean }
+	@param object { [string]: Def } -- Field name to the def its value must satisfy.
+	@return Def
+]=]
 local Struct: Types.FnStruct = function<K, V>(options, struct: { [K & string]: Types.Def })
 	local expectTypeParts = {}
 	for key, value in struct do

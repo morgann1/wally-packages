@@ -5,8 +5,25 @@ local Maybe = require(script.Parent.Maybe)
 
 type Pack = { [number]: unknown, n: number }
 
+--[=[
+	@class PushPull
+
+	Single-consumer producer/consumer queues, returned as a `push`/`pull`
+	function pair. Two flavours: `yield` blocks the puller until a value
+	arrives, `maybe` returns immediately with a [Maybe].
+]=]
 local PushPull = {}
 
+--[=[
+	@within PushPull
+
+	Creates a queue whose `pull` yields the calling coroutine until a value
+	is pushed. Values are delivered first-in first-out and each is consumed
+	once. Useful as a wake-up channel inside long-running loops.
+
+	@return (Values...) -> () -- push: enqueues a value and wakes a waiting puller.
+	@return () -> Values... -- pull: dequeues the next value, yielding while the queue is empty.
+]=]
 function PushPull.yield<Values...>(): ((Values...) -> (), () -> Values...)
 	local waiting: { [thread]: true } = {}
 	local buffer: { Pack } = {}
@@ -29,6 +46,16 @@ function PushPull.yield<Values...>(): ((Values...) -> (), () -> Values...)
 	return push, pull :: any
 end
 
+--[=[
+	@within PushPull
+
+	Creates a non-blocking queue: `pull` returns `Maybe.some(value)` when a
+	value is buffered and `Maybe.none` when the queue is empty, never
+	yielding.
+
+	@return (Value) -> () -- push: enqueues a value.
+	@return () -> Maybe<Value> -- pull: dequeues the next value, or a `None` when empty.
+]=]
 function PushPull.maybe<Value>(): ((Value) -> (), () -> Maybe.Maybe<Value>)
 	local buffer: { Value } = {}
 	local function push(v)

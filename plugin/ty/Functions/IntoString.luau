@@ -7,6 +7,15 @@ local Maybe = require(Package.Parent.Maybe)
 local Types = require(Package.Types)
 local Def = require(Package.Def)
 
+--[=[
+	@within ty
+	@function IntoString
+
+	Casts through the inner def, then converts the result with `tostring`.
+
+	@param innerDef Def
+	@return Def -- Casts to a string.
+]=]
 local IntoString: Types.FnIntoString = function(innerDef)
 	return Def.new(`@tostring({innerDef.ExpectsType})`, function(self, x)
 		local Cast = innerDef:Cast(x)

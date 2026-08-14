@@ -9,9 +9,9 @@ classes = [
     "disconnectAndClear",
     "input",
     "safePlayerAdded",
-    "SharedToolbar",
     "SimpleLogger",
     "TypeValidation",
+    "WideLogger",
     "zzlib",
 ]
 
@@ -21,7 +21,23 @@ classes = ["Cryo", "Dictionary", "List"]
 
 [[classOrder]]
 section = "Plugin"
-classes = ["IsLocalDev", "ElttobLog"]
+classes = [
+    "doCleanup",
+    "ElttobLog",
+    "Event",
+    "FinallyTask",
+    "IconRamp",
+    "Interposer",
+    "IsLocalDev",
+    "Leader",
+    "Maybe",
+    "OwnedToolbar",
+    "PushPull",
+    "SensationSounds",
+    "SharedToolbar",
+    "sortingBy",
+    "ty",
+]
 
 [home]
 enabled = true

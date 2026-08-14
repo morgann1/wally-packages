@@ -16,6 +16,17 @@
 	checking it is a valid instance first.
 ]]
 
+--[=[
+	@within TypeValidation
+
+	Validates that the value is a real `Instance` of the expected class
+	(per `IsA`, so subclasses pass). Guards against 'imposter' tables sent
+	through remotes with keys mimicking instance properties.
+
+	@param value unknown
+	@param expectedClass string -- Class name to check with `IsA`.
+	@return boolean
+]=]
 local function validateInstance(value: unknown, expectedClass: string): boolean
 	if typeof(value) ~= "Instance" then
 		return false

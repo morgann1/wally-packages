@@ -11,6 +11,29 @@ local Maybe = require(Packages.Maybe)
 local Interposer = require(Packages.Interposer)
 local Types = require(script.Types)
 
+--[=[
+	@class Leader
+
+	Elects a single leader among plugin instances running in the same Studio
+	session, over an [Interposer] peer network. Used when several copies of
+	a plugin coexist (local dev rig plus installed copy) and exactly one
+	should own a shared resource such as a toolbar.
+
+	Election: each peer first asks the others `whoIsLeader`; a peer that
+	claims itself is believed. If nobody knows, only the peer with the
+	lexicographically lowest id self-elects (ids are GUIDs, so every peer
+	agrees), which avoids the co-arrival race where all peers elect
+	themselves in the same tick. A leader that shuts down hands leadership
+	to another peer on the way out.
+]=]
+
+--[=[
+	@within Leader
+	@interface LeaderApi
+	.leader () -> Peer? -- Current leader, or `nil` while undecided.
+	.selfIsLeader () -> boolean? -- Whether this peer leads; `nil` while undecided.
+	.onLeaderChanged Connect<Peer?> -- Fires whenever a different leader takes over.
+]=]
 export type LeaderApi = Types.LeaderApi
 
 type Scope = { unknown }
@@ -34,6 +57,17 @@ local PROTOCOL = {
 
 local Leader = {}
 
+--[=[
+	@within Leader
+
+	Joins the election and starts tracking leadership. The search runs on a
+	background task registered into `scope`; cleaning up the scope stops
+	tracking and, if this peer is the leader, hands leadership over first.
+
+	@param scope { unknown } -- Cleanup scope (see doCleanup) owning the tracker's connections and task.
+	@param interposer InterposerApi -- A logged-on Interposer session to elect over.
+	@return LeaderApi
+]=]
 function Leader.track(scope: Scope, interposer: Interposer.InterposerApi): Types.LeaderApi
 	local currentLeader: Interposer.Peer? = nil
 	local onLeaderChanged, doLeaderChanged: (Interposer.Peer?) -> () = Event()

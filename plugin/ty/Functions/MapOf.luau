@@ -8,6 +8,18 @@ local Maybe = require(Package.Parent.Maybe)
 local Types = require(Package.Types)
 local Def = require(Package.Def)
 
+--[=[
+	@within ty
+	@function MapOf
+
+	Matches dictionaries where every key fits `keys` and every value fits
+	`values`. Casting rebuilds the table with both keys and values cast.
+	As a method, the def becomes the key type: `IconVariant:MapOf(ty.String)`.
+
+	@param keys Def
+	@param values Def
+	@return Def
+]=]
 local MapOf: Types.FnMapOf = function<K, V>(keys: Types.Def, values: Types.Def)
 	return Def.new(`\{[{keys.ExpectsType}]: {values.ExpectsType}}`, function(self, x)
 		if typeof(x) ~= "table" then

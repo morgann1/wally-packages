@@ -8,6 +8,18 @@ local Maybe = require(Package.Parent.Maybe)
 local Types = require(Package.Types)
 local Def = require(Package.Def)
 
+--[=[
+	@within ty
+	@function Array
+
+	Matches contiguous numeric arrays whose every element fits `values`.
+	Casting rebuilds the array with each element cast; wrap the element def
+	in `IgnoreInvalid` to drop failing elements instead of rejecting the
+	whole array.
+
+	@param values Def -- Def each element must satisfy.
+	@return Def
+]=]
 -- TODO: ensure arrays have no holes, and empty arrays are allowed
 local Array: Types.FnArray = function<V>(values: Types.Def)
 	return Def.new(`\{{values.ExpectsType}}`, function(self, x)

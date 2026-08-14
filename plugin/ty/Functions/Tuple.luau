@@ -8,6 +8,17 @@ local Maybe = require(Package.Parent.Maybe)
 local Types = require(Package.Types)
 local Def = require(Package.Def)
 
+--[=[
+	@within ty
+	@function Tuple
+
+	The numeric-keyed counterpart of `Struct`: each position has its own
+	def. Same missing-field and `exhaustive` semantics.
+
+	@param options { exhaustive: boolean }
+	@param tuple { Def } -- Def per position.
+	@return Def
+]=]
 local Tuple: Types.FnTuple = function<V>(options, tuple)
 	local expectTypeParts = {}
 	for key, value in tuple do

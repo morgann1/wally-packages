@@ -7,6 +7,17 @@ local Maybe = require(Package.Parent.Maybe)
 local Types = require(Package.Types)
 local Def = require(Package.Def)
 
+--[=[
+	@within ty
+	@function IntoNumber
+
+	Casts through the inner def, then converts the result with `tonumber`.
+	Fails when the conversion returns `nil`.
+
+	@param innerDef Def
+	@param base number? -- Numeric base for the conversion, as in `tonumber`.
+	@return Def -- Casts to a number.
+]=]
 local IntoNumber: Types.FnIntoNumber = function(innerDef, base)
 	return Def.new(`@tonumber({innerDef.ExpectsType}{if base == nil then "" else ", " .. base})`, function(self, x)
 		local Cast = innerDef:Cast(x)
