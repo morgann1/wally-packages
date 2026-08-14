@@ -45,8 +45,9 @@ thing is used, not what the next line does.
 2. **Hand-editing generated files.** `default.project.json` and
    `test.project.json` are written by `.lute/sync-projects.luau`, the
    `roblox/` tree and `roblox.project.json` by
-   `.lute/vendor-roblox-packages.luau`, and the README module table by
-   `.lute/update-readme.luau`. Edit the generator, then regenerate.
+   `.lute/vendor-roblox-packages.luau`, the README module table by
+   `.lute/update-readme.luau`, and `docs/foundation/` by
+   `.lute/sync-foundation-docs.luau`. Edit the generator, then regenerate.
 3. **Publishing.** `wally publish` is permanent: no unpublish, versions are
    immutable. Never publish unless explicitly asked. The `roblox/` packages
    additionally carry a licensing caveat (see `roblox/README.md`) and a
@@ -81,6 +82,9 @@ thing is used, not what the next line does.
   `.claude/skills/vendor-roblox-packages/SKILL.md`; the script downloads,
   converts, wires, and validates end to end.
 - **README module table**: `lute run .lute/update-readme.luau`.
+- **Foundation docs pages**: `lute run .lute/sync-foundation-docs.luau`
+  regenerates `docs/foundation/` from the `*.code.md` files in the vendored
+  tree; rerun after re-vendoring `roblox/`.
 - **Local CI**: `lute run .lute/ci.luau` runs the full lint/typecheck
   pipeline; `lute run .lute/build.luau` builds the place file.
 - **Tests**: `lute run .lute/test.luau` builds a place from

@@ -62,11 +62,16 @@ unchanged and only the dependency metadata is translated.
    every vendored package and mount Foundation, which is the real proof the
    conversion holds; regeneration is not done until this is green.
 
-8. `git diff` the regenerated tree; commit only when asked.
+8. Regenerate the docs pages: `lute run .lute/sync-foundation-docs.luau`
+   rebuilds `docs/foundation/` from the tree's `*.code.md` files.
 
-9. Publishing (only on request): `wally publish --project-path roblox/<pkg>`
-   in the printed order, dependencies before dependents. Licensing is the
-   user's call — these are Roblox-authored sources without OSS licenses.
+9. `git diff` the regenerated tree; commit only when asked.
+
+10. Publishing (only on request): `wally publish --project-path roblox/<pkg>`
+    in the printed order, dependencies before dependents; the full
+    procedure (index pre-flight, size cap) is the publish-roblox-packages
+    skill. Licensing is the user's call — these are Roblox-authored sources
+    without OSS licenses.
 
 ## Judgment calls the script automates (and their limits)
 
