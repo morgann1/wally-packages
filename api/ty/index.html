@@ -36,8 +36,8 @@ Every def answers `Matches` (boolean) and `Cast` (a [Maybe] carrying the
 converted value or a nested reason string). Combinators are available
 both as functions on `ty` and as methods on any def, where the def
 becomes the first argument."><link data-rh="true" rel="canonical" href="https://morgann1.github.io/wally-packages/api/ty"><link data-rh="true" rel="alternate" href="https://morgann1.github.io/wally-packages/api/ty" hreflang="en"><link data-rh="true" rel="alternate" href="https://morgann1.github.io/wally-packages/api/ty" hreflang="x-default"><link rel="stylesheet" href="/wally-packages/assets/css/styles.5ec48d9a.css">
-<script src="/wally-packages/assets/js/runtime~main.fe2d2ac1.js" defer="defer"></script>
-<script src="/wally-packages/assets/js/main.2c0be7a8.js" defer="defer"></script>
+<script src="/wally-packages/assets/js/runtime~main.fb606d55.js" defer="defer"></script>
+<script src="/wally-packages/assets/js/main.806034b0.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -85,7 +85,117 @@ becomes the first argument."><link data-rh="true" rel="canonical" href="https://
   Literal defs for the three singleton values: <code>ty.True</code>, <code>ty.False</code> and
   <code>ty.Nil</code>.
 </p>
-</div><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions" translate="no">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="IntoDefault"><code style="text-decoration:none">IntoDefault</code><a href="#IntoDefault" class="hash-link" aria-label="Direct link to IntoDefault" title="Direct link to IntoDefault" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/IntoDefault.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">IntoDefault</code><code>(</code><div class="inset_uKQm"><div><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>defaultValue<!-- -->: </code><code class="blue_P4bS">any</code><span class="inlineDescription_G7Er">-- <span>
+</div><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions" translate="no">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Struct"><code style="text-decoration:none">Struct</code><a href="#Struct" class="hash-link" aria-label="Direct link to Struct" title="Direct link to Struct" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Struct.luau#L24"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Struct</code><code>(</code><div class="inset_uKQm"><div><code>options<!-- -->: </code><code class="purple_ieR2">{</code><code>exhaustive<!-- -->: </code><code class="blue_P4bS">boolean</code><code class="purple_ieR2">}</code><code>,</code></div><div><code>object<!-- -->: </code><code class="purple_ieR2">{</code><span><code>[</code><code class="blue_P4bS">string</code><code>]</code></span><code>: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code class="purple_ieR2">}</code><span class="inlineDescription_G7Er">-- <span>
+<p>Field name to the def its value must satisfy.</p>
+</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Matches string-keyed tables field-by-field. Casting rebuilds the table
+  from the declared fields, so a missing field fails unless its def is
+  <code>Optional</code> or <code>IntoDefault</code>. With <code>exhaustive = true</code>, keys outside the
+  declaration reject the cast; otherwise they are silently dropped.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Array"><code style="text-decoration:none">Array</code><a href="#Array" class="hash-link" aria-label="Direct link to Array" title="Direct link to Array" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Array.luau#L23"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Array</code><code>(</code><div class="inset_uKQm"><div><code>values<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><span class="inlineDescription_G7Er">-- <span>
+<p>Def each element must satisfy.</p>
+</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Matches contiguous numeric arrays whose every element fits <code>values</code>.
+  Casting rebuilds the array with each element cast; wrap the element def
+  in <code>IgnoreInvalid</code> to drop failing elements instead of rejecting the
+  whole array.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="And"><code style="text-decoration:none">And</code><a href="#And" class="hash-link" aria-label="Direct link to And" title="Direct link to And" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/And.luau#L22"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">And</code><code>(</code><div class="inset_uKQm"><div><code>first<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>last<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Intersection: matches values that satisfy both defs. Casting pipes the
+  first def's output into the last, so converting defs compose.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="CastOrError"><code style="text-decoration:none">CastOrError</code><a href="#CastOrError" class="hash-link" aria-label="Direct link to CastOrError" title="Direct link to CastOrError" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/CastOrError.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">CastOrError</code><code>(</code><div class="inset_uKQm"><div><code>def<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>x<!-- -->: </code><code class="blue_P4bS">unknown</code></div></div><code>) → </code><code class="blue_P4bS">unknown</code><span class="inlineDescription_G7Er">-- <span>
+<p>The cast value.</p>
+</span></span></div><div>
+<p>
+  Casts <code>x</code> through the def and returns the converted value directly,
+  erroring with the cast's reason chain instead of returning a <a href="/wally-packages/api/Maybe#Maybe">Maybe</a>.
+  The assertion-style entry point at trust boundaries.
+</p>
+</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Could not cast</td><td>When `x` does not fit the def.</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Typeof"><code style="text-decoration:none">Typeof</code><a href="#Typeof" class="hash-link" aria-label="Direct link to Typeof" title="Direct link to Typeof" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Typeof.luau#L20"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Typeof</code><code>(</code><code>typeString<!-- -->: </code><code class="blue_P4bS">string</code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Matches values whose <code>typeof()</code> equals the given string. Works for
+  Roblox datatypes too: <code>ty.Typeof("Vector2")</code>, <code>ty.Typeof("Instance")</code>.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="MapOf"><code style="text-decoration:none">MapOf</code><a href="#MapOf" class="hash-link" aria-label="Direct link to MapOf" title="Direct link to MapOf" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/MapOf.luau#L23"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">MapOf</code><code>(</code><div class="inset_uKQm"><div><code>keys<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>values<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Matches dictionaries where every key fits <code>keys</code> and every value fits
+  <code>values</code>. Casting rebuilds the table with both keys and values cast.
+  As a method, the def becomes the key type: <code>IconVariant:MapOf(ty.String)</code>.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Just"><code style="text-decoration:none">Just</code><a href="#Just" class="hash-link" aria-label="Direct link to Just" title="Direct link to Just" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Just.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Just</code><code>(</code><div class="inset_uKQm"><div><code>literal<!-- -->: </code><code class="blue_P4bS">unknown</code><code>,</code><span class="inlineDescription_G7Er">-- <span>
+<p>The only accepted value.</p>
+</span></span></div><div><code>type<!-- -->: </code><code class="blue_P4bS">string?</code><span class="inlineDescription_G7Er">-- <span>
+<p>Display name; defaults to <code>tostring(literal)</code>.</p>
+</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Matches exactly one value, compared with <code>rawequal</code>. Chain with <code>Or</code>
+  for string-literal unions: <code>ty.Just("light"):Or(ty.Just("dark"))</code>.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Optional"><code style="text-decoration:none">Optional</code><a href="#Optional" class="hash-link" aria-label="Direct link to Optional" title="Direct link to Optional" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Optional.luau#L20"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Optional</code><code>(</code><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Also accepts <code>nil</code>, which matches and casts to <code>nil</code>. The runtime
+  equivalent of Luau's <code>T?</code>.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Untyped"><code style="text-decoration:none">Untyped</code><a href="#Untyped" class="hash-link" aria-label="Direct link to Untyped" title="Direct link to Untyped" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Untyped.luau#L18"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Untyped</code><code>(</code><code>def<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Returns the def unchanged; exists purely to erase the def's static Luau
+  type at call sites. No runtime effect, like <code>Retype</code>.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Nicknamed"><code style="text-decoration:none">Nicknamed</code><a href="#Nicknamed" class="hash-link" aria-label="Direct link to Nicknamed" title="Direct link to Nicknamed" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Nicknamed.luau#L20"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Nicknamed</code><code>(</code><div class="inset_uKQm"><div><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>newName<!-- -->: </code><code class="blue_P4bS">string</code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Renames a def's <code>ExpectsType</code> so error messages read as your domain
+  name instead of the expanded structural type.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="IntoNumber"><code style="text-decoration:none">IntoNumber</code><a href="#IntoNumber" class="hash-link" aria-label="Direct link to IntoNumber" title="Direct link to IntoNumber" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/IntoNumber.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">IntoNumber</code><code>(</code><div class="inset_uKQm"><div><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>base<!-- -->: </code><code class="blue_P4bS">number?</code><span class="inlineDescription_G7Er">-- <span>
+<p>Numeric base for the conversion, as in <code>tonumber</code>.</p>
+</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><span class="inlineDescription_G7Er">-- <span>
+<p>Casts to a number.</p>
+</span></span></div><div>
+<p>
+  Casts through the inner def, then converts the result with <code>tonumber</code>.
+  Fails when the conversion returns <code>nil</code>.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Predicate"><code style="text-decoration:none">Predicate</code><a href="#Predicate" class="hash-link" aria-label="Direct link to Predicate" title="Direct link to Predicate" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Predicate.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Predicate</code><code>(</code><code>predicate<!-- -->: </code><code class="purple_ieR2">(</code><code class="blue_P4bS">unknown</code><code class="purple_ieR2">)</code><code class="purple_ieR2"> → </code><code class="blue_P4bS">boolean</code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Builds a def from a boolean function; casting passes matching values
+  through unchanged. The escape hatch for checks the other combinators
+  can't express.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="IntoTagged"><code style="text-decoration:none">IntoTagged</code><a href="#IntoTagged" class="hash-link" aria-label="Direct link to IntoTagged" title="Direct link to IntoTagged" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/IntoTagged.luau#L22"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">IntoTagged</code><code>(</code><div class="inset_uKQm"><div><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>tag<!-- -->: </code><code class="blue_P4bS">unknown</code><span class="inlineDescription_G7Er">-- <span>
+<p>Discriminant stored under <code>__tag</code>.</p>
+</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Casts through the inner def, then stamps the result with a <code>__tag</code>
+  field for discriminated unions. Table results are cloned before
+  tagging; other values are wrapped as <code>{ value = result, __tag = tag }</code>.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="IntoString"><code style="text-decoration:none">IntoString</code><a href="#IntoString" class="hash-link" aria-label="Direct link to IntoString" title="Direct link to IntoString" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/IntoString.luau#L19"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">IntoString</code><code>(</code><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><span class="inlineDescription_G7Er">-- <span>
+<p>Casts to a string.</p>
+</span></span></div><div>
+<p>Casts through the inner def, then converts the result with <code>tostring</code>.</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Or"><code style="text-decoration:none">Or</code><a href="#Or" class="hash-link" aria-label="Direct link to Or" title="Direct link to Or" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Or.luau#L22"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Or</code><code>(</code><div class="inset_uKQm"><div><code>first<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>last<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Union: matches values fitting either def. Casting tries <code>first</code> and
+  falls back to <code>last</code>, so put the more specific (or more converting) def
+  first.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Retype"><code style="text-decoration:none">Retype</code><a href="#Retype" class="hash-link" aria-label="Direct link to Retype" title="Direct link to Retype" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Retype.luau#L18"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Retype</code><code>(</code><code>def<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Returns the def unchanged; exists purely so call sites can reassert the
+  def's static Luau type. No runtime effect, like <code>Untyped</code>.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="IgnoreInvalid"><code style="text-decoration:none">IgnoreInvalid</code><a href="#IgnoreInvalid" class="hash-link" aria-label="Direct link to IgnoreInvalid" title="Direct link to IgnoreInvalid" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/IgnoreInvalid.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">IgnoreInvalid</code><code>(</code><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
+<p>
+  Makes a def infallible: values that fit the inner def cast normally,
+  anything else casts to <code>nil</code> instead of failing. Inside <code>Array</code>, this
+  drops invalid elements from the result.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="IntoDefault"><code style="text-decoration:none">IntoDefault</code><a href="#IntoDefault" class="hash-link" aria-label="Direct link to IntoDefault" title="Direct link to IntoDefault" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/IntoDefault.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">IntoDefault</code><code>(</code><div class="inset_uKQm"><div><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>defaultValue<!-- -->: </code><code class="blue_P4bS">any</code><span class="inlineDescription_G7Er">-- <span>
 <p>Substituted when the input is <code>nil</code>.</p>
 </span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
 <p>
@@ -99,118 +209,433 @@ becomes the first argument."><link data-rh="true" rel="canonical" href="https://
   The numeric-keyed counterpart of <code>Struct</code>: each position has its own
   def. Same missing-field and <code>exhaustive</code> semantics.
 </p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Struct"><code style="text-decoration:none">Struct</code><a href="#Struct" class="hash-link" aria-label="Direct link to Struct" title="Direct link to Struct" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Struct.luau#L24"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Struct</code><code>(</code><div class="inset_uKQm"><div><code>options<!-- -->: </code><code class="purple_ieR2">{</code><code>exhaustive<!-- -->: </code><code class="blue_P4bS">boolean</code><code class="purple_ieR2">}</code><code>,</code></div><div><code>object<!-- -->: </code><code class="purple_ieR2">{</code><span><code>[</code><code class="blue_P4bS">string</code><code>]</code></span><code>: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code class="purple_ieR2">}</code><span class="inlineDescription_G7Er">-- <span>
-<p>Field name to the def its value must satisfy.</p>
-</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Matches string-keyed tables field-by-field. Casting rebuilds the table
-  from the declared fields, so a missing field fails unless its def is
-  <code>Optional</code> or <code>IntoDefault</code>. With <code>exhaustive = true</code>, keys outside the
-  declaration reject the cast; otherwise they are silently dropped.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="CastOrError"><code style="text-decoration:none">CastOrError</code><a href="#CastOrError" class="hash-link" aria-label="Direct link to CastOrError" title="Direct link to CastOrError" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/CastOrError.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">CastOrError</code><code>(</code><div class="inset_uKQm"><div><code>def<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>x<!-- -->: </code><code class="blue_P4bS">unknown</code></div></div><code>) → </code><code class="blue_P4bS">unknown</code><span class="inlineDescription_G7Er">-- <span>
-<p>The cast value.</p>
-</span></span></div><div>
-<p>
-  Casts <code>x</code> through the def and returns the converted value directly,
-  erroring with the cast's reason chain instead of returning a <a href="/wally-packages/api/Maybe#Maybe">Maybe</a>.
-  The assertion-style entry point at trust boundaries.
-</p>
-</div><h3>Errors</h3><table class="errorTable_jfN8"><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody><tr><td>Could not cast</td><td>When `x` does not fit the def.</td></tr></tbody></table><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="IntoTagged"><code style="text-decoration:none">IntoTagged</code><a href="#IntoTagged" class="hash-link" aria-label="Direct link to IntoTagged" title="Direct link to IntoTagged" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/IntoTagged.luau#L22"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">IntoTagged</code><code>(</code><div class="inset_uKQm"><div><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>tag<!-- -->: </code><code class="blue_P4bS">unknown</code><span class="inlineDescription_G7Er">-- <span>
-<p>Discriminant stored under <code>__tag</code>.</p>
-</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Casts through the inner def, then stamps the result with a <code>__tag</code>
-  field for discriminated unions. Table results are cloned before
-  tagging; other values are wrapped as <code>{ value = result, __tag = tag }</code>.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Just"><code style="text-decoration:none">Just</code><a href="#Just" class="hash-link" aria-label="Direct link to Just" title="Direct link to Just" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Just.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Just</code><code>(</code><div class="inset_uKQm"><div><code>literal<!-- -->: </code><code class="blue_P4bS">unknown</code><code>,</code><span class="inlineDescription_G7Er">-- <span>
-<p>The only accepted value.</p>
-</span></span></div><div><code>type<!-- -->: </code><code class="blue_P4bS">string?</code><span class="inlineDescription_G7Er">-- <span>
-<p>Display name; defaults to <code>tostring(literal)</code>.</p>
-</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Matches exactly one value, compared with <code>rawequal</code>. Chain with <code>Or</code>
-  for string-literal unions: <code>ty.Just("light"):Or(ty.Just("dark"))</code>.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="MapOf"><code style="text-decoration:none">MapOf</code><a href="#MapOf" class="hash-link" aria-label="Direct link to MapOf" title="Direct link to MapOf" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/MapOf.luau#L23"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">MapOf</code><code>(</code><div class="inset_uKQm"><div><code>keys<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>values<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Matches dictionaries where every key fits <code>keys</code> and every value fits
-  <code>values</code>. Casting rebuilds the table with both keys and values cast.
-  As a method, the def becomes the key type: <code>IconVariant:MapOf(ty.String)</code>.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Predicate"><code style="text-decoration:none">Predicate</code><a href="#Predicate" class="hash-link" aria-label="Direct link to Predicate" title="Direct link to Predicate" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Predicate.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Predicate</code><code>(</code><code>predicate<!-- -->: </code><code class="purple_ieR2">(</code><code class="blue_P4bS">unknown</code><code class="purple_ieR2">)</code><code class="purple_ieR2"> → </code><code class="blue_P4bS">boolean</code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Builds a def from a boolean function; casting passes matching values
-  through unchanged. The escape hatch for checks the other combinators
-  can't express.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Optional"><code style="text-decoration:none">Optional</code><a href="#Optional" class="hash-link" aria-label="Direct link to Optional" title="Direct link to Optional" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Optional.luau#L20"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Optional</code><code>(</code><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Also accepts <code>nil</code>, which matches and casts to <code>nil</code>. The runtime
-  equivalent of Luau's <code>T?</code>.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Typeof"><code style="text-decoration:none">Typeof</code><a href="#Typeof" class="hash-link" aria-label="Direct link to Typeof" title="Direct link to Typeof" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Typeof.luau#L20"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Typeof</code><code>(</code><code>typeString<!-- -->: </code><code class="blue_P4bS">string</code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Matches values whose <code>typeof()</code> equals the given string. Works for
-  Roblox datatypes too: <code>ty.Typeof("Vector2")</code>, <code>ty.Typeof("Instance")</code>.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="IgnoreInvalid"><code style="text-decoration:none">IgnoreInvalid</code><a href="#IgnoreInvalid" class="hash-link" aria-label="Direct link to IgnoreInvalid" title="Direct link to IgnoreInvalid" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/IgnoreInvalid.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">IgnoreInvalid</code><code>(</code><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Makes a def infallible: values that fit the inner def cast normally,
-  anything else casts to <code>nil</code> instead of failing. Inside <code>Array</code>, this
-  drops invalid elements from the result.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Or"><code style="text-decoration:none">Or</code><a href="#Or" class="hash-link" aria-label="Direct link to Or" title="Direct link to Or" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Or.luau#L22"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Or</code><code>(</code><div class="inset_uKQm"><div><code>first<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>last<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Union: matches values fitting either def. Casting tries <code>first</code> and
-  falls back to <code>last</code>, so put the more specific (or more converting) def
-  first.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="IntoNumber"><code style="text-decoration:none">IntoNumber</code><a href="#IntoNumber" class="hash-link" aria-label="Direct link to IntoNumber" title="Direct link to IntoNumber" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/IntoNumber.luau#L21"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">IntoNumber</code><code>(</code><div class="inset_uKQm"><div><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>base<!-- -->: </code><code class="blue_P4bS">number?</code><span class="inlineDescription_G7Er">-- <span>
-<p>Numeric base for the conversion, as in <code>tonumber</code>.</p>
-</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><span class="inlineDescription_G7Er">-- <span>
-<p>Casts to a number.</p>
-</span></span></div><div>
-<p>
-  Casts through the inner def, then converts the result with <code>tonumber</code>.
-  Fails when the conversion returns <code>nil</code>.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Array"><code style="text-decoration:none">Array</code><a href="#Array" class="hash-link" aria-label="Direct link to Array" title="Direct link to Array" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Array.luau#L23"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Array</code><code>(</code><div class="inset_uKQm"><div><code>values<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><span class="inlineDescription_G7Er">-- <span>
-<p>Def each element must satisfy.</p>
-</span></span></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Matches contiguous numeric arrays whose every element fits <code>values</code>.
-  Casting rebuilds the array with each element cast; wrap the element def
-  in <code>IgnoreInvalid</code> to drop failing elements instead of rejecting the
-  whole array.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Retype"><code style="text-decoration:none">Retype</code><a href="#Retype" class="hash-link" aria-label="Direct link to Retype" title="Direct link to Retype" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Retype.luau#L18"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Retype</code><code>(</code><code>def<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Returns the def unchanged; exists purely so call sites can reassert the
-  def's static Luau type. No runtime effect, like <code>Untyped</code>.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Untyped"><code style="text-decoration:none">Untyped</code><a href="#Untyped" class="hash-link" aria-label="Direct link to Untyped" title="Direct link to Untyped" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Untyped.luau#L18"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Untyped</code><code>(</code><code>def<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Returns the def unchanged; exists purely to erase the def's static Luau
-  type at call sites. No runtime effect, like <code>Retype</code>.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="IntoString"><code style="text-decoration:none">IntoString</code><a href="#IntoString" class="hash-link" aria-label="Direct link to IntoString" title="Direct link to IntoString" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/IntoString.luau#L19"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">IntoString</code><code>(</code><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><span class="inlineDescription_G7Er">-- <span>
-<p>Casts to a string.</p>
-</span></span></div><div>
-<p>Casts through the inner def, then converts the result with <code>tostring</code>.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="And"><code style="text-decoration:none">And</code><a href="#And" class="hash-link" aria-label="Direct link to And" title="Direct link to And" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/And.luau#L22"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">And</code><code>(</code><div class="inset_uKQm"><div><code>first<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>last<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Intersection: matches values that satisfy both defs. Casting pipes the
-  first def's output into the last, so converting defs compose.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="Nicknamed"><code style="text-decoration:none">Nicknamed</code><a href="#Nicknamed" class="hash-link" aria-label="Direct link to Nicknamed" title="Direct link to Nicknamed" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/plugin/ty/Functions/Nicknamed.luau#L20"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>ty<!-- -->.</code><code class="green_DgR4">Nicknamed</code><code>(</code><div class="inset_uKQm"><div><code>innerDef<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code><code>,</code></div><div><code>newName<!-- -->: </code><code class="blue_P4bS">string</code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/wally-packages/api/ty#Def">Def</a></code></div><div>
-<p>
-  Renames a def's <code>ExpectsType</code> so error messages read as your domain
-  name instead of the expanded structural type.
-</p>
 </div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
     &quot;functions&quot;: [
+        {
+            &quot;name&quot;: &quot;Struct&quot;,
+            &quot;desc&quot;: &quot;Matches string-keyed tables field-by-field. Casting rebuilds the table\nfrom the declared fields, so a missing field fails unless its def is\n`Optional` or `IntoDefault`. With `exhaustive = true`, keys outside the\ndeclaration reject the cast; otherwise they are silently dropped.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;options&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;{ exhaustive: boolean }&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;object&quot;,
+                    &quot;desc&quot;: &quot;Field name to the def its value must satisfy.&quot;,
+                    &quot;lua_type&quot;: &quot;{ [string]: Def }&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 24,
+                &quot;path&quot;: &quot;plugin/ty/Functions/Struct.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Array&quot;,
+            &quot;desc&quot;: &quot;Matches contiguous numeric arrays whose every element fits `values`.\nCasting rebuilds the array with each element cast; wrap the element def\nin `IgnoreInvalid` to drop failing elements instead of rejecting the\nwhole array.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;values&quot;,
+                    &quot;desc&quot;: &quot;Def each element must satisfy.&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 23,
+                &quot;path&quot;: &quot;plugin/ty/Functions/Array.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;And&quot;,
+            &quot;desc&quot;: &quot;Intersection: matches values that satisfy both defs. Casting pipes the\nfirst def&#x27;s output into the last, so converting defs compose.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;first&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;last&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 22,
+                &quot;path&quot;: &quot;plugin/ty/Functions/And.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;CastOrError&quot;,
+            &quot;desc&quot;: &quot;Casts `x` through the def and returns the converted value directly,\nerroring with the cast&#x27;s reason chain instead of returning a [Maybe].\nThe assertion-style entry point at trust boundaries.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;def&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;x&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;unknown&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The cast value.&quot;,
+                    &quot;lua_type&quot;: &quot;unknown&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;errors&quot;: [
+                {
+                    &quot;lua_type&quot;: &quot;Could not cast&quot;,
+                    &quot;desc&quot;: &quot;When `x` does not fit the def.&quot;
+                }
+            ],
+            &quot;source&quot;: {
+                &quot;line&quot;: 21,
+                &quot;path&quot;: &quot;plugin/ty/Functions/CastOrError.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Typeof&quot;,
+            &quot;desc&quot;: &quot;Matches values whose `typeof()` equals the given string. Works for\nRoblox datatypes too: `ty.Typeof(\&quot;Vector2\&quot;)`, `ty.Typeof(\&quot;Instance\&quot;)`.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;typeString&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 20,
+                &quot;path&quot;: &quot;plugin/ty/Functions/Typeof.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;MapOf&quot;,
+            &quot;desc&quot;: &quot;Matches dictionaries where every key fits `keys` and every value fits\n`values`. Casting rebuilds the table with both keys and values cast.\nAs a method, the def becomes the key type: `IconVariant:MapOf(ty.String)`.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;keys&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;values&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 23,
+                &quot;path&quot;: &quot;plugin/ty/Functions/MapOf.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Just&quot;,
+            &quot;desc&quot;: &quot;Matches exactly one value, compared with `rawequal`. Chain with `Or`\nfor string-literal unions: `ty.Just(\&quot;light\&quot;):Or(ty.Just(\&quot;dark\&quot;))`.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;literal&quot;,
+                    &quot;desc&quot;: &quot;The only accepted value.&quot;,
+                    &quot;lua_type&quot;: &quot;unknown&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;type&quot;,
+                    &quot;desc&quot;: &quot;Display name; defaults to `tostring(literal)`.&quot;,
+                    &quot;lua_type&quot;: &quot;string?&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 21,
+                &quot;path&quot;: &quot;plugin/ty/Functions/Just.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Optional&quot;,
+            &quot;desc&quot;: &quot;Also accepts `nil`, which matches and casts to `nil`. The runtime\nequivalent of Luau&#x27;s `T?`.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;innerDef&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 20,
+                &quot;path&quot;: &quot;plugin/ty/Functions/Optional.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Untyped&quot;,
+            &quot;desc&quot;: &quot;Returns the def unchanged; exists purely to erase the def&#x27;s static Luau\ntype at call sites. No runtime effect, like `Retype`.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;def&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 18,
+                &quot;path&quot;: &quot;plugin/ty/Functions/Untyped.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Nicknamed&quot;,
+            &quot;desc&quot;: &quot;Renames a def&#x27;s `ExpectsType` so error messages read as your domain\nname instead of the expanded structural type.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;innerDef&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;newName&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 20,
+                &quot;path&quot;: &quot;plugin/ty/Functions/Nicknamed.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;IntoNumber&quot;,
+            &quot;desc&quot;: &quot;Casts through the inner def, then converts the result with `tonumber`.\nFails when the conversion returns `nil`.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;innerDef&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;base&quot;,
+                    &quot;desc&quot;: &quot;Numeric base for the conversion, as in `tonumber`.&quot;,
+                    &quot;lua_type&quot;: &quot;number?&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;Casts to a number.&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 21,
+                &quot;path&quot;: &quot;plugin/ty/Functions/IntoNumber.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Predicate&quot;,
+            &quot;desc&quot;: &quot;Builds a def from a boolean function; casting passes matching values\nthrough unchanged. The escape hatch for checks the other combinators\ncan&#x27;t express.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;predicate&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;(unknown) -&gt; boolean&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 21,
+                &quot;path&quot;: &quot;plugin/ty/Functions/Predicate.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;IntoTagged&quot;,
+            &quot;desc&quot;: &quot;Casts through the inner def, then stamps the result with a `__tag`\nfield for discriminated unions. Table results are cloned before\ntagging; other values are wrapped as `{ value = result, __tag = tag }`.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;innerDef&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;tag&quot;,
+                    &quot;desc&quot;: &quot;Discriminant stored under `__tag`.&quot;,
+                    &quot;lua_type&quot;: &quot;unknown&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 22,
+                &quot;path&quot;: &quot;plugin/ty/Functions/IntoTagged.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;IntoString&quot;,
+            &quot;desc&quot;: &quot;Casts through the inner def, then converts the result with `tostring`.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;innerDef&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;Casts to a string.&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 19,
+                &quot;path&quot;: &quot;plugin/ty/Functions/IntoString.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Or&quot;,
+            &quot;desc&quot;: &quot;Union: matches values fitting either def. Casting tries `first` and\nfalls back to `last`, so put the more specific (or more converting) def\nfirst.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;first&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;last&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 22,
+                &quot;path&quot;: &quot;plugin/ty/Functions/Or.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Retype&quot;,
+            &quot;desc&quot;: &quot;Returns the def unchanged; exists purely so call sites can reassert the\ndef&#x27;s static Luau type. No runtime effect, like `Untyped`.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;def&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 18,
+                &quot;path&quot;: &quot;plugin/ty/Functions/Retype.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;IgnoreInvalid&quot;,
+            &quot;desc&quot;: &quot;Makes a def infallible: values that fit the inner def cast normally,\nanything else casts to `nil` instead of failing. Inside `Array`, this\ndrops invalid elements from the result.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;innerDef&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Def&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 21,
+                &quot;path&quot;: &quot;plugin/ty/Functions/IgnoreInvalid.luau&quot;
+            }
+        },
         {
             &quot;name&quot;: &quot;IntoDefault&quot;,
             &quot;desc&quot;: &quot;Casts `nil` to `defaultValue`; any other value goes through the inner\ndef. Use for optional fields that should come out filled in.&quot;,
@@ -263,431 +688,6 @@ becomes the first argument."><link data-rh="true" rel="canonical" href="https://
             &quot;source&quot;: {
                 &quot;line&quot;: 22,
                 &quot;path&quot;: &quot;plugin/ty/Functions/Tuple.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;Struct&quot;,
-            &quot;desc&quot;: &quot;Matches string-keyed tables field-by-field. Casting rebuilds the table\nfrom the declared fields, so a missing field fails unless its def is\n`Optional` or `IntoDefault`. With `exhaustive = true`, keys outside the\ndeclaration reject the cast; otherwise they are silently dropped.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;options&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;{ exhaustive: boolean }&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;object&quot;,
-                    &quot;desc&quot;: &quot;Field name to the def its value must satisfy.&quot;,
-                    &quot;lua_type&quot;: &quot;{ [string]: Def }&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 24,
-                &quot;path&quot;: &quot;plugin/ty/Functions/Struct.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;CastOrError&quot;,
-            &quot;desc&quot;: &quot;Casts `x` through the def and returns the converted value directly,\nerroring with the cast&#x27;s reason chain instead of returning a [Maybe].\nThe assertion-style entry point at trust boundaries.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;def&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;x&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;unknown&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;The cast value.&quot;,
-                    &quot;lua_type&quot;: &quot;unknown&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;errors&quot;: [
-                {
-                    &quot;lua_type&quot;: &quot;Could not cast&quot;,
-                    &quot;desc&quot;: &quot;When `x` does not fit the def.&quot;
-                }
-            ],
-            &quot;source&quot;: {
-                &quot;line&quot;: 21,
-                &quot;path&quot;: &quot;plugin/ty/Functions/CastOrError.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;IntoTagged&quot;,
-            &quot;desc&quot;: &quot;Casts through the inner def, then stamps the result with a `__tag`\nfield for discriminated unions. Table results are cloned before\ntagging; other values are wrapped as `{ value = result, __tag = tag }`.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;innerDef&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;tag&quot;,
-                    &quot;desc&quot;: &quot;Discriminant stored under `__tag`.&quot;,
-                    &quot;lua_type&quot;: &quot;unknown&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 22,
-                &quot;path&quot;: &quot;plugin/ty/Functions/IntoTagged.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;Just&quot;,
-            &quot;desc&quot;: &quot;Matches exactly one value, compared with `rawequal`. Chain with `Or`\nfor string-literal unions: `ty.Just(\&quot;light\&quot;):Or(ty.Just(\&quot;dark\&quot;))`.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;literal&quot;,
-                    &quot;desc&quot;: &quot;The only accepted value.&quot;,
-                    &quot;lua_type&quot;: &quot;unknown&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;type&quot;,
-                    &quot;desc&quot;: &quot;Display name; defaults to `tostring(literal)`.&quot;,
-                    &quot;lua_type&quot;: &quot;string?&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 21,
-                &quot;path&quot;: &quot;plugin/ty/Functions/Just.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;MapOf&quot;,
-            &quot;desc&quot;: &quot;Matches dictionaries where every key fits `keys` and every value fits\n`values`. Casting rebuilds the table with both keys and values cast.\nAs a method, the def becomes the key type: `IconVariant:MapOf(ty.String)`.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;keys&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;values&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 23,
-                &quot;path&quot;: &quot;plugin/ty/Functions/MapOf.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;Predicate&quot;,
-            &quot;desc&quot;: &quot;Builds a def from a boolean function; casting passes matching values\nthrough unchanged. The escape hatch for checks the other combinators\ncan&#x27;t express.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;predicate&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;(unknown) -&gt; boolean&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 21,
-                &quot;path&quot;: &quot;plugin/ty/Functions/Predicate.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;Optional&quot;,
-            &quot;desc&quot;: &quot;Also accepts `nil`, which matches and casts to `nil`. The runtime\nequivalent of Luau&#x27;s `T?`.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;innerDef&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 20,
-                &quot;path&quot;: &quot;plugin/ty/Functions/Optional.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;Typeof&quot;,
-            &quot;desc&quot;: &quot;Matches values whose `typeof()` equals the given string. Works for\nRoblox datatypes too: `ty.Typeof(\&quot;Vector2\&quot;)`, `ty.Typeof(\&quot;Instance\&quot;)`.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;typeString&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;string&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 20,
-                &quot;path&quot;: &quot;plugin/ty/Functions/Typeof.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;IgnoreInvalid&quot;,
-            &quot;desc&quot;: &quot;Makes a def infallible: values that fit the inner def cast normally,\nanything else casts to `nil` instead of failing. Inside `Array`, this\ndrops invalid elements from the result.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;innerDef&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 21,
-                &quot;path&quot;: &quot;plugin/ty/Functions/IgnoreInvalid.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;Or&quot;,
-            &quot;desc&quot;: &quot;Union: matches values fitting either def. Casting tries `first` and\nfalls back to `last`, so put the more specific (or more converting) def\nfirst.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;first&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;last&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 22,
-                &quot;path&quot;: &quot;plugin/ty/Functions/Or.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;IntoNumber&quot;,
-            &quot;desc&quot;: &quot;Casts through the inner def, then converts the result with `tonumber`.\nFails when the conversion returns `nil`.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;innerDef&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;base&quot;,
-                    &quot;desc&quot;: &quot;Numeric base for the conversion, as in `tonumber`.&quot;,
-                    &quot;lua_type&quot;: &quot;number?&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;Casts to a number.&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 21,
-                &quot;path&quot;: &quot;plugin/ty/Functions/IntoNumber.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;Array&quot;,
-            &quot;desc&quot;: &quot;Matches contiguous numeric arrays whose every element fits `values`.\nCasting rebuilds the array with each element cast; wrap the element def\nin `IgnoreInvalid` to drop failing elements instead of rejecting the\nwhole array.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;values&quot;,
-                    &quot;desc&quot;: &quot;Def each element must satisfy.&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 23,
-                &quot;path&quot;: &quot;plugin/ty/Functions/Array.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;Retype&quot;,
-            &quot;desc&quot;: &quot;Returns the def unchanged; exists purely so call sites can reassert the\ndef&#x27;s static Luau type. No runtime effect, like `Untyped`.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;def&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 18,
-                &quot;path&quot;: &quot;plugin/ty/Functions/Retype.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;Untyped&quot;,
-            &quot;desc&quot;: &quot;Returns the def unchanged; exists purely to erase the def&#x27;s static Luau\ntype at call sites. No runtime effect, like `Retype`.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;def&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 18,
-                &quot;path&quot;: &quot;plugin/ty/Functions/Untyped.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;IntoString&quot;,
-            &quot;desc&quot;: &quot;Casts through the inner def, then converts the result with `tostring`.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;innerDef&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;Casts to a string.&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 19,
-                &quot;path&quot;: &quot;plugin/ty/Functions/IntoString.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;And&quot;,
-            &quot;desc&quot;: &quot;Intersection: matches values that satisfy both defs. Casting pipes the\nfirst def&#x27;s output into the last, so converting defs compose.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;first&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;last&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 22,
-                &quot;path&quot;: &quot;plugin/ty/Functions/And.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;Nicknamed&quot;,
-            &quot;desc&quot;: &quot;Renames a def&#x27;s `ExpectsType` so error messages read as your domain\nname instead of the expanded structural type.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;innerDef&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                },
-                {
-                    &quot;name&quot;: &quot;newName&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;string&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;Def&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 20,
-                &quot;path&quot;: &quot;plugin/ty/Functions/Nicknamed.luau&quot;
             }
         }
     ],

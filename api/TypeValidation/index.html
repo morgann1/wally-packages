@@ -24,8 +24,8 @@ Exposed validators:
 - `validateNumber`
 - `validateSimpleTable`
 - `validateVector3`"><link data-rh="true" rel="canonical" href="https://morgann1.github.io/wally-packages/api/TypeValidation"><link data-rh="true" rel="alternate" href="https://morgann1.github.io/wally-packages/api/TypeValidation" hreflang="en"><link data-rh="true" rel="alternate" href="https://morgann1.github.io/wally-packages/api/TypeValidation" hreflang="x-default"><link rel="stylesheet" href="/wally-packages/assets/css/styles.5ec48d9a.css">
-<script src="/wally-packages/assets/js/runtime~main.fe2d2ac1.js" defer="defer"></script>
-<script src="/wally-packages/assets/js/main.2c0be7a8.js" defer="defer"></script>
+<script src="/wally-packages/assets/js/runtime~main.fb606d55.js" defer="defer"></script>
+<script src="/wally-packages/assets/js/main.806034b0.js" defer="defer"></script>
 </head>
 <body>
 <svg style="display: none;"><defs>
@@ -45,18 +45,25 @@ Exposed validators:
   <li><code>validateSimpleTable</code></li>
   <li><code>validateVector3</code></li>
 </ul>
-</div></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions" translate="no">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="validateInstance"><code style="text-decoration:none">validateInstance</code><a href="#validateInstance" class="hash-link" aria-label="Direct link to validateInstance" title="Direct link to validateInstance" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/type-validation/validateInstance.luau#L30"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>TypeValidation<!-- -->.</code><code class="green_DgR4">validateInstance</code><code>(</code><div class="inset_uKQm"><div><code>value<!-- -->: </code><code class="blue_P4bS">unknown</code><code>,</code></div><div><code>expectedClass<!-- -->: </code><code class="blue_P4bS">string</code><span class="inlineDescription_G7Er">-- <span>
+</div></header><h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="functions">Functions<a href="#functions" class="hash-link" aria-label="Direct link to Functions" title="Direct link to Functions" translate="no">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="validateVector3"><code style="text-decoration:none">validateVector3</code><a href="#validateVector3" class="hash-link" aria-label="Direct link to validateVector3" title="Direct link to validateVector3" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/type-validation/validateVector3.luau#L11"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>TypeValidation<!-- -->.</code><code class="green_DgR4">validateVector3</code><code>(</code><code>value<!-- -->: </code><code class="blue_P4bS">unknown</code><code>) → </code><code class="blue_P4bS">boolean</code></div><div>
+<p>
+  Validates a <code>Vector3</code> with no NaN components (a Vector3 compares
+  unequal to itself when any component is NaN).
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="validateNumber"><code style="text-decoration:none">validateNumber</code><a href="#validateNumber" class="hash-link" aria-label="Direct link to validateNumber" title="Direct link to validateNumber" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/type-validation/validateNumber.luau#L11"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>TypeValidation<!-- -->.</code><code class="green_DgR4">validateNumber</code><code>(</code><code>value<!-- -->: </code><code class="blue_P4bS">unknown</code><code>) → </code><code class="blue_P4bS">boolean</code></div><div>
+<p>
+  Validates a number that is not NaN. Note infinity passes; add a range
+  check at the call site when bounds matter.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="validateCFrame"><code style="text-decoration:none">validateCFrame</code><a href="#validateCFrame" class="hash-link" aria-label="Direct link to validateCFrame" title="Direct link to validateCFrame" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/type-validation/validateCFrame.luau#L12"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>TypeValidation<!-- -->.</code><code class="green_DgR4">validateCFrame</code><code>(</code><code>value<!-- -->: </code><code class="blue_P4bS">unknown</code><code>) → </code><code class="blue_P4bS">boolean</code></div><div>
+<p>Validates a <code>CFrame</code> whose position and look vector are both NaN-free.</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="validateInstance"><code style="text-decoration:none">validateInstance</code><a href="#validateInstance" class="hash-link" aria-label="Direct link to validateInstance" title="Direct link to validateInstance" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/type-validation/validateInstance.luau#L30"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>TypeValidation<!-- -->.</code><code class="green_DgR4">validateInstance</code><code>(</code><div class="inset_uKQm"><div><code>value<!-- -->: </code><code class="blue_P4bS">unknown</code><code>,</code></div><div><code>expectedClass<!-- -->: </code><code class="blue_P4bS">string</code><span class="inlineDescription_G7Er">-- <span>
 <p>Class name to check with <code>IsA</code>.</p>
 </span></span></div></div><code>) → </code><code class="blue_P4bS">boolean</code></div><div>
 <p>
   Validates that the value is a real <code>Instance</code> of the expected class
   (per <code>IsA</code>, so subclasses pass). Guards against 'imposter' tables sent
   through remotes with keys mimicking instance properties.
-</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="validateVector3"><code style="text-decoration:none">validateVector3</code><a href="#validateVector3" class="hash-link" aria-label="Direct link to validateVector3" title="Direct link to validateVector3" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/type-validation/validateVector3.luau#L11"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>TypeValidation<!-- -->.</code><code class="green_DgR4">validateVector3</code><code>(</code><code>value<!-- -->: </code><code class="blue_P4bS">unknown</code><code>) → </code><code class="blue_P4bS">boolean</code></div><div>
-<p>
-  Validates a <code>Vector3</code> with no NaN components (a Vector3 compares
-  unequal to itself when any component is NaN).
 </p>
 </div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="validateSimpleTable"><code style="text-decoration:none">validateSimpleTable</code><a href="#validateSimpleTable" class="hash-link" aria-label="Direct link to validateSimpleTable" title="Direct link to validateSimpleTable" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/type-validation/validateSimpleTable.luau#L14"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>TypeValidation<!-- -->.</code><code class="green_DgR4">validateSimpleTable</code><code>(</code><div class="inset_uKQm"><div><code>value<!-- -->: </code><code class="blue_P4bS">unknown</code><code>,</code></div><div><code>keyType<!-- -->: </code><code class="blue_P4bS">string</code><code>,</code><span class="inlineDescription_G7Er">-- <span>
 <p>Required <code>typeof</code> of every key, e.g. <code>"string"</code>.</p>
@@ -68,15 +75,74 @@ Exposed validators:
   and every value must pass the validator. Compose with the other
   validators, e.g. <code>validateSimpleTable(value, "number", validateVector3)</code>.
 </p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="validateCFrame"><code style="text-decoration:none">validateCFrame</code><a href="#validateCFrame" class="hash-link" aria-label="Direct link to validateCFrame" title="Direct link to validateCFrame" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/type-validation/validateCFrame.luau#L12"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>TypeValidation<!-- -->.</code><code class="green_DgR4">validateCFrame</code><code>(</code><code>value<!-- -->: </code><code class="blue_P4bS">unknown</code><code>) → </code><code class="blue_P4bS">boolean</code></div><div>
-<p>Validates a <code>CFrame</code> whose position and look vector are both NaN-free.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="validateNumber"><code style="text-decoration:none">validateNumber</code><a href="#validateNumber" class="hash-link" aria-label="Direct link to validateNumber" title="Direct link to validateNumber" translate="no">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/morgann1/wally-packages/blob/main/modules/type-validation/validateNumber.luau#L11"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>TypeValidation<!-- -->.</code><code class="green_DgR4">validateNumber</code><code>(</code><code>value<!-- -->: </code><code class="blue_P4bS">unknown</code><code>) → </code><code class="blue_P4bS">boolean</code></div><div>
-<p>
-  Validates a number that is not NaN. Note infinity passes; add a range
-  check at the call site when bounds matter.
-</p>
 </div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
     &quot;functions&quot;: [
+        {
+            &quot;name&quot;: &quot;validateVector3&quot;,
+            &quot;desc&quot;: &quot;Validates a `Vector3` with no NaN components (a Vector3 compares\nunequal to itself when any component is NaN).&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;value&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;unknown&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;boolean&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 11,
+                &quot;path&quot;: &quot;modules/type-validation/validateVector3.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;validateNumber&quot;,
+            &quot;desc&quot;: &quot;Validates a number that is not NaN. Note infinity passes; add a range\ncheck at the call site when bounds matter.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;value&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;unknown&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;boolean&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 11,
+                &quot;path&quot;: &quot;modules/type-validation/validateNumber.luau&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;validateCFrame&quot;,
+            &quot;desc&quot;: &quot;Validates a `CFrame` whose position and look vector are both NaN-free.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;value&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;unknown&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;boolean&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 12,
+                &quot;path&quot;: &quot;modules/type-validation/validateCFrame.luau&quot;
+            }
+        },
         {
             &quot;name&quot;: &quot;validateInstance&quot;,
             &quot;desc&quot;: &quot;Validates that the value is a real `Instance` of the expected class\n(per `IsA`, so subclasses pass). Guards against &#x27;imposter&#x27; tables sent\nthrough remotes with keys mimicking instance properties.&quot;,
@@ -102,28 +168,6 @@ Exposed validators:
             &quot;source&quot;: {
                 &quot;line&quot;: 30,
                 &quot;path&quot;: &quot;modules/type-validation/validateInstance.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;validateVector3&quot;,
-            &quot;desc&quot;: &quot;Validates a `Vector3` with no NaN components (a Vector3 compares\nunequal to itself when any component is NaN).&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;value&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;unknown&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;boolean&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 11,
-                &quot;path&quot;: &quot;modules/type-validation/validateVector3.luau&quot;
             }
         },
         {
@@ -156,50 +200,6 @@ Exposed validators:
             &quot;source&quot;: {
                 &quot;line&quot;: 14,
                 &quot;path&quot;: &quot;modules/type-validation/validateSimpleTable.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;validateCFrame&quot;,
-            &quot;desc&quot;: &quot;Validates a `CFrame` whose position and look vector are both NaN-free.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;value&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;unknown&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;boolean&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 12,
-                &quot;path&quot;: &quot;modules/type-validation/validateCFrame.luau&quot;
-            }
-        },
-        {
-            &quot;name&quot;: &quot;validateNumber&quot;,
-            &quot;desc&quot;: &quot;Validates a number that is not NaN. Note infinity passes; add a range\ncheck at the call site when bounds matter.&quot;,
-            &quot;params&quot;: [
-                {
-                    &quot;name&quot;: &quot;value&quot;,
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;unknown&quot;
-                }
-            ],
-            &quot;returns&quot;: [
-                {
-                    &quot;desc&quot;: &quot;&quot;,
-                    &quot;lua_type&quot;: &quot;boolean&quot;
-                }
-            ],
-            &quot;function_type&quot;: &quot;static&quot;,
-            &quot;source&quot;: {
-                &quot;line&quot;: 11,
-                &quot;path&quot;: &quot;modules/type-validation/validateNumber.luau&quot;
             }
         }
     ],
