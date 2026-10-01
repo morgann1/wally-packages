@@ -1,0 +1,12 @@
+[package]
+name = "morgann1/wait-for"
+description = "Wally port of Sleitnick's WaitFor, typed on promise-luau"
+version = "0.1.0"
+license = "MIT"
+authors = ["morgann1", "sleitnick"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+repository = "https://github.com/morgann1/wally-packages"
+
+[dependencies]
+PromiseLuau = "morgann1/promise-luau@4.1.0"

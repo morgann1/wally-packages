@@ -12,6 +12,9 @@ React = "jsdotlua/react@17.2.1"
 # mounted into that package's container so `script.Parent.Promise` resolves.
 Promise = "evaera/promise@4.0.0"
 
+# External dep of modules/wait-for, aliased apart from the evaera Promise above.
+PromiseLuau = "morgann1/promise-luau@4.1.0"
+
 # External deps of the vendored roblox/ packages; their generated linkers are
 # wired into default.project.json so luau-lsp resolves the vendored requires.
 Collections = "roblox/luau-polyfill-collections@1.2.5"
